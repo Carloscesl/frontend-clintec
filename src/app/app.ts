@@ -8,6 +8,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css',
 })
 export class App {
-  city = 'Clintec';
   protected readonly title = signal('frontend-clintec');
 }

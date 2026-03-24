@@ -1,0 +1,112 @@
+/* Contenedor principal para centrar todo */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* La tarjeta blanca */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auth-title {
+  color: #2563eb; /* Azul Clintec */
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Espaciado de los inputs */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 0.875rem;
+  color: #374151; /* Color gris oscuro para la etiqueta */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  box-sizing: border-box; /* Importante para el padding */
+
+  /* --- AJUSTES DE VISIBILIDAD --- */
+  background-color: #ffffff; /* Fondo siempre blanco */
+  color: #1f2937; /* Texto gris muy oscuro (visible) */
+  font-size: 1rem;
+}
+
+/* Color del texto de sugerencia */
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+/* Estilo cuando el usuario hace clic en el input */
+.form-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+  color: #000000; /* Texto negro puro al escribir */
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+/* El botón azul */
+.btn-primary {
+  width: 100%;
+  background-color: #2563eb;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 1rem;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+/* Mensaje de error */
+.error-alert {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  border: 1px solid #f87171;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.auth-footer a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
