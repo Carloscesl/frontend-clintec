@@ -1,0 +1,53 @@
+<div class="layout-container">
+  <aside class="sidebar">
+    <div class="sidebar-logo">Clintec CRM</div>
+
+    <nav class="sidebar-nav">
+      <a
+        *ngIf="auth.getRole() === 'ADMINISTRADOR'"
+        routerLink="/admin"
+        routerLinkActive="active-link"
+        class="nav-item"
+      >
+        <span class="icon">⚙️</span> Panel Admin
+      </a>
+
+      <a
+        *ngIf="auth.getRole() === 'ASESOR' || auth.getRole() === 'ADMINISTRADOR'"
+        routerLink="/asesor"
+        routerLinkActive="active-link"
+        class="nav-item"
+      >
+        <span class="icon">👥</span> Clientes
+      </a>
+
+      <a
+        *ngIf="auth.getRole() === 'GERENTE' || auth.getRole() === 'ADMINISTRADOR'"
+        routerLink="/gerente"
+        routerLinkActive="active-link"
+        class="nav-item"
+      >
+        <span class="icon">📊</span> Reportes
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button (click)="auth.logout()" class="btn-logout">Cerrar Sesión</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="top-header">
+      <div class="user-info">
+        Bienvenido, <strong>{{ auth.currentUser()?.username }}</strong>
+      </div>
+      <div class="role-badge">
+        {{ auth.getRole() }}
+      </div>
+    </header>
+
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
