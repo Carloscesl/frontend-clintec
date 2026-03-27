@@ -27,20 +27,20 @@ export const routes: Routes = [
     children: [
       {
         path: 'admin',
-        loadChildren: () => import('./features/admin/admin-module').then((m) => m.AdminModule),
-        canActivate: [roleGuard], // 👈 El authGuard ya está en el padre, no hace falta repetirlo aquí
+        loadComponent: () => import('./features/admin/pages/admin-dashboard/admin-dashboard').then((m) => m.AdminDashboard),
+        canActivate: [roleGuard], //El authGuard ya está en el padre, no hace falta repetirlo aquí
         data: { roles: ['ADMINISTRADOR'] },
       },
       {
         path: 'asesor',
-        loadChildren: () => import('./features/asesor/asesor-module').then((m) => m.AsesorModule),
+        loadComponent: () => import('./features/asesor/pages/asesor-dashboard/asesor-dashboard').then((m) => m.AsesorDashboard),
         canActivate: [roleGuard],
         data: { roles: ['ADMINISTRADOR', 'ASESOR'] },
       },
       {
         path: 'gerente',
-        loadChildren: () =>
-          import('./features/gerente/gerente-module').then((m) => m.GerenteModule),
+        loadComponent: () =>
+          import('./features/gerente/pages/gerente-dashboard/gerente-dashboard').then((m) => m.GerenteDashboard),
         canActivate: [roleGuard],
         data: { roles: ['ADMINISTRADOR', 'GERENTE'] },
       },
