@@ -3,25 +3,21 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
 import { isPlatformBrowser } from '@angular/common';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
 
-  // 1. SI ESTÁ EN EL SERVIDOR: No bloquees nada.
-  // Esto evita el mensaje en la terminal y el parpadeo inicial.
+  // En el servidor nunca bloquees — las rutas protegidas
+  // ya tienen RenderMode.Client así que esto es solo por seguridad
   if (!isPlatformBrowser(platformId)) {
     return true;
   }
 
-  // 2. SI ESTÁ EN EL NAVEGADOR: Aquí sí validamos en serio.
-  const user = authService.currentUser();
-  if (user && user.token) {
+  // En el browser sí validamos con localStorage disponible
+  if (authService.isAuthenticated()) {
     return true;
   }
 
-  // Si realmente no hay sesión en el navegador, al login.
-  console.warn('Acceso denegado en el navegador: Redirigiendo a login');
-  router.navigate(['/login']);
-  return false;
+  return router.createUrlTree(['/login']);
 };

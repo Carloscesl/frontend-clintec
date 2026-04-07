@@ -18,6 +18,7 @@ export class AuthService {
   //Estado del usuario
   currentUser = signal<User | null>(this.getUserFromStorage());
   isAuthenticated = computed(() => !!this.currentUser());
+  isReady = signal<boolean>(isPlatformBrowser(this.platformId));
 
   //LOGIN
   login(credentials: any): Observable<User> {

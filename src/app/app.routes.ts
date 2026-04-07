@@ -1,46 +1,53 @@
 import { Routes } from '@angular/router';
-import { Login } from './features/auth/login/login';
-import { Register } from './features/auth/register/register';
 import { roleGuard } from './core/guards/role-guard';
 import { authGuard } from './core/guards/auth-guard';
-import { Layout } from './shared/components/layout/layout';
+
 export const routes: Routes = [
-  // --- Redirecciones ---
+  // --- Redirección raíz ---
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  // --- Rutas públicas ---
+
+  // --- Rutas públicas --- solo loadComponent, sin component
   {
     path: 'login',
-    component: Login,
+    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
   },
   {
     path: 'register',
-    component: Register,
+    loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
   },
 
-  // -- Rutas protegidas por roles --
-
-  // Ruta para el Administrador
+  // --- Rutas protegidas ---
   {
     path: '',
-    component: Layout,
+    loadComponent: () => import('./shared/components/layout/layout').then((m) => m.Layout),
     canActivate: [authGuard],
     children: [
+      // Ruta por defecto dentro del layout
+      { path: '', redirectTo: 'admin', pathMatch: 'full' },
       {
         path: 'admin',
-        loadComponent: () => import('./features/admin/pages/admin-dashboard/admin-dashboard').then((m) => m.AdminDashboard),
-        canActivate: [roleGuard], //El authGuard ya está en el padre, no hace falta repetirlo aquí
+        loadComponent: () =>
+          import('./features/admin/pages/admin-dashboard/admin-dashboard').then(
+            (m) => m.AdminDashboard,
+          ),
+        canActivate: [roleGuard],
         data: { roles: ['ADMINISTRADOR'] },
       },
       {
         path: 'asesor',
-        loadComponent: () => import('./features/asesor/pages/asesor-dashboard/asesor-dashboard').then((m) => m.AsesorDashboard),
+        loadComponent: () =>
+          import('./features/asesor/pages/asesor-dashboard/asesor-dashboard').then(
+            (m) => m.AsesorDashboard,
+          ),
         canActivate: [roleGuard],
         data: { roles: ['ADMINISTRADOR', 'ASESOR'] },
       },
       {
         path: 'gerente',
         loadComponent: () =>
-          import('./features/gerente/pages/gerente-dashboard/gerente-dashboard').then((m) => m.GerenteDashboard),
+          import('./features/gerente/pages/gerente-dashboard/gerente-dashboard').then(
+            (m) => m.GerenteDashboard,
+          ),
         canActivate: [roleGuard],
         data: { roles: ['ADMINISTRADOR', 'GERENTE'] },
       },
