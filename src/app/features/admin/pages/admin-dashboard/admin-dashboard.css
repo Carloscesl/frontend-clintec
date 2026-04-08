@@ -1,0 +1,79 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.dash-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--clintec-white);
+  border: 1px solid var(--clintec-border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s,
+    transform 0.15s;
+}
+
+.dash-card:hover {
+  border-color: var(--clintec-accent);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.1);
+  transform: translateY(-2px);
+}
+
+.dash-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.375rem;
+  flex-shrink: 0;
+}
+
+.icon-usuarios {
+  background: #e0e7ff;
+}
+.icon-clientes {
+  background: #dcfce7;
+}
+.icon-reportes {
+  background: #fef3c7;
+}
+
+.dash-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dash-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.dash-card-desc {
+  font-size: 0.8rem;
+  color: var(--clintec-text-muted);
+}
+
+.dash-card-arrow {
+  font-size: 1.1rem;
+  color: var(--clintec-text-muted);
+  transition:
+    transform 0.2s,
+    color 0.2s;
+}
+
+.dash-card:hover .dash-card-arrow {
+  transform: translateX(4px);
+  color: var(--clintec-accent);
+}

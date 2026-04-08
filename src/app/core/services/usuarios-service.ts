@@ -1,34 +1,47 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment.prod';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { UsuarioResponse, UsuarioRequest, UsuarioUpdateRequest } from '../models/usuario.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuariosService {
   private http = inject(HttpClient);
-  private router = inject(Router);
-  private platformId = inject(PLATFORM_ID);
+  private readonly API_URL = `${environment.apiUrl}/api/usuarios`;
 
-  private readonly API_URL = `${environment.apiUrl}/api`;
-
-  listarUsuarios() {
-    return this.http.get(`${this.API_URL}/usuarios`);
+  // GET /api/usuarios → lista completa
+  listarTodos(): Observable<UsuarioResponse[]> {
+    return this.http.get<UsuarioResponse[]>(this.API_URL);
   }
 
-  desactivarUsuario(email: string) {
-    return this.http.post(`${this.API_URL}/usuarios/${email}/desactivar`, {});
+  // GET /api/usuarios/id/{id}
+  buscarPorId(id: number): Observable<UsuarioResponse> {
+    return this.http.get<UsuarioResponse>(`${this.API_URL}/id/${id}`);
+  }
+  // GET /api/usuarios/email/{email}
+  buscarPorEmail(email: string): Observable<UsuarioResponse> {
+    return this.http.get<UsuarioResponse>(`${this.API_URL}/email/${email}`);
   }
 
-  activarUsuario(email: string) {
-    return this.http.post(`${this.API_URL}/usuarios/${email}/activar`, {});
+  // POST /api/usuarios → crear usuario
+  crear(dto: UsuarioRequest): Observable<UsuarioResponse> {
+    return this.http.post<UsuarioResponse>(this.API_URL, dto);
   }
 
-  actualizarUsuario(id: number, data: any) {
-    return this.http.put(`${this.API_URL}/usuarios/${id}`, data);
+  // PUT /api/usuarios/{id} → actualizar usuario
+  actualizar(id: number, dto: UsuarioUpdateRequest): Observable<UsuarioResponse> {
+    return this.http.put<UsuarioResponse>(`${this.API_URL}/${id}`, dto);
   }
-  crearUsuario(userData: any) {
-    return this.http.post(`${this.API_URL}/usuarios`, userData);
+
+  // PATCH /api/usuarios/{email}/desactivar
+  desactivar(email: string): Observable<void> {
+    return this.http.patch<void>(`${this.API_URL}/${email}/desactivar`, {});
+  }
+
+  // PATCH /api/usuarios/{email}/activar
+  activar(email: string): Observable<void> {
+    return this.http.patch<void>(`${this.API_URL}/${email}/activar`, {});
   }
 }

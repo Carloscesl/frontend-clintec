@@ -7,15 +7,26 @@
         *ngIf="auth.getRole() === 'ADMINISTRADOR'"
         routerLink="/admin"
         routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
         class="nav-item"
       >
         <span class="icon">⚙️</span> Panel Admin
       </a>
 
       <a
+        *ngIf="auth.getRole() === 'ADMINISTRADOR'"
+        routerLink="/admin/usuarios"
+        routerLinkActive="active-link"
+        class="nav-sub"
+      >
+        <span class="icon">👤</span> Usuarios
+      </a>
+
+      <a
         *ngIf="auth.getRole() === 'ASESOR' || auth.getRole() === 'ADMINISTRADOR'"
         routerLink="/asesor"
         routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
         class="nav-item"
       >
         <span class="icon">👥</span> Clientes
@@ -25,6 +36,7 @@
         *ngIf="auth.getRole() === 'GERENTE' || auth.getRole() === 'ADMINISTRADOR'"
         routerLink="/gerente"
         routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
         class="nav-item"
       >
         <span class="icon">📊</span> Reportes
@@ -51,3 +63,4 @@
     </main>
   </div>
 </div>
+<app-modal-resultado></app-modal-resultado>

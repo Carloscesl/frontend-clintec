@@ -6,7 +6,7 @@ export const routes: Routes = [
   // --- Redirección raíz ---
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // --- Rutas públicas --- solo loadComponent, sin component
+  // --- Rutas públicas ---
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
@@ -24,15 +24,48 @@ export const routes: Routes = [
     children: [
       // Ruta por defecto dentro del layout
       { path: '', redirectTo: 'admin', pathMatch: 'full' },
+
+      // ── ADMIN ──────────────────────────────────────────────
       {
         path: 'admin',
-        loadComponent: () =>
-          import('./features/admin/pages/admin-dashboard/admin-dashboard').then(
-            (m) => m.AdminDashboard,
-          ),
         canActivate: [roleGuard],
         data: { roles: ['ADMINISTRADOR'] },
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/admin/pages/admin-dashboard/admin-dashboard').then(
+                (m) => m.AdminDashboard,
+              ),
+          },
+          // Lista de usuarios
+          {
+            path: 'usuarios',
+            loadComponent: () =>
+              import('./features/admin/usuarios/pages/lista-usuario/lista-usuario').then(
+                (m) => m.ListaUsuario,
+              ),
+          },
+          // Formulario para crear usuario
+          {
+            path: 'usuarios/nuevo',
+            loadComponent: () =>
+              import('./features/admin/usuarios/pages/form-usuario/form-usuario').then(
+                (m) => m.FormUsuario,
+              ),
+          },
+          // Formulario para editar usuario (mismo componente, distinto modo)
+          {
+            path: 'usuarios/editar/:id',
+            loadComponent: () =>
+              import('./features/admin/usuarios/pages/form-usuario/form-usuario').then(
+                (m) => m.FormUsuario,
+              ),
+          },
+        ],
       },
+
+      // ── ASESOR ─────────────────────────────────────────────
       {
         path: 'asesor',
         loadComponent: () =>
@@ -42,6 +75,8 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: ['ADMINISTRADOR', 'ASESOR'] },
       },
+
+      // ── GERENTE ────────────────────────────────────────────
       {
         path: 'gerente',
         loadComponent: () =>
