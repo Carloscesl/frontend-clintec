@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class UsuariosService {
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
 
-  private readonly API_URL = 'http://localhost:8080/api';
+  private readonly API_URL = `${environment.apiUrl}/api`;
 
   listarUsuarios() {
     return this.http.get(`${this.API_URL}/usuarios`);
@@ -30,5 +31,4 @@ export class UsuariosService {
   crearUsuario(userData: any) {
     return this.http.post(`${this.API_URL}/usuarios`, userData);
   }
-
 }
