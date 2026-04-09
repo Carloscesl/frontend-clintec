@@ -1,0 +1,50 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Clientes</h1>
+    <button (click)="irACrear()" class="btn-primary">+ Nuevo Cliente</button>
+  </div>
+
+  @if (cargando()) {
+    <p class="estado-info">Cargando clientes...</p>
+  }
+
+  @if (error()) {
+    <div class="estado-error">
+      <p>{{ error() }}</p>
+      <button (click)="cargarClientes()">Reintentar</button>
+    </div>
+  }
+
+  @if (!cargando() && !error() && clientes().length > 0) {
+    <table class="tabla-usuarios">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Empresa</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Dirección</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cliente of clientes(); track cliente.id) {
+          <tr>
+            <td>{{ cliente.nombreCliente }}</td>
+            <td>{{ cliente.empresa }}</td>
+            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.telefono }}</td>
+            <td>{{ cliente.direccion }}</td>
+            <td class="acciones">
+              <button (click)="irAEditar(cliente.id)" class="btn-secundario">Editar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (!cargando() && !error() && clientes().length === 0) {
+    <p class="estado-info">No hay clientes registrados aún.</p>
+  }
+</div>

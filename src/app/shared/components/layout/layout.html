@@ -3,6 +3,8 @@
     <div class="sidebar-logo">Clintec CRM</div>
 
     <nav class="sidebar-nav">
+      <!-- ── ADMIN ── -->
+
       <a
         *ngIf="auth.getRole() === 'ADMINISTRADOR'"
         routerLink="/admin"
@@ -22,6 +24,7 @@
         <span class="icon">👤</span> Usuarios
       </a>
 
+      <!-- ── CLIENTES (ASESOR y ADMIN) ── -->
       <a
         *ngIf="auth.getRole() === 'ASESOR' || auth.getRole() === 'ADMINISTRADOR'"
         routerLink="/asesor"
@@ -33,6 +36,26 @@
       </a>
 
       <a
+        *ngIf="auth.getRole() === 'ASESOR' || auth.getRole() === 'ADMINISTRADOR'"
+        routerLink="/asesor/clientes"
+        routerLinkActive="active-link"
+        class="nav-sub"
+      >
+        <span class="icon">📋</span> Ver Clientes
+      </a>
+
+      <a
+        *ngIf="auth.getRole() === 'ASESOR' || auth.getRole() === 'ADMINISTRADOR'"
+        routerLink="/asesor/clientes/nuevo"
+        routerLinkActive="active-link"
+        class="nav-sub"
+      >
+        <span class="icon">➕</span> Nuevo Cliente
+      </a>
+
+      <!-- ── REPORTES (GERENTE y ADMIN) ── -->
+
+      <a
         *ngIf="auth.getRole() === 'GERENTE' || auth.getRole() === 'ADMINISTRADOR'"
         routerLink="/gerente"
         routerLinkActive="active-link"
@@ -40,6 +63,15 @@
         class="nav-item"
       >
         <span class="icon">📊</span> Reportes
+      </a>
+
+      <a
+        *ngIf="auth.getRole() === 'GERENTE' || auth.getRole() === 'ADMINISTRADOR'"
+        routerLink="/gerente/clientes"
+        routerLinkActive="active-link"
+        class="nav-sub"
+      >
+        <span class="icon">📋</span> Ver Clientes
       </a>
     </nav>
 
@@ -63,4 +95,5 @@
     </main>
   </div>
 </div>
+
 <app-modal-resultado></app-modal-resultado>

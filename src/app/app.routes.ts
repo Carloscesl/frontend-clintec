@@ -68,23 +68,75 @@ export const routes: Routes = [
       // ── ASESOR ─────────────────────────────────────────────
       {
         path: 'asesor',
-        loadComponent: () =>
-          import('./features/asesor/pages/asesor-dashboard/asesor-dashboard').then(
-            (m) => m.AsesorDashboard,
-          ),
         canActivate: [roleGuard],
         data: { roles: ['ADMINISTRADOR', 'ASESOR'] },
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/asesor/pages/asesor-dashboard/asesor-dashboard').then(
+                (m) => m.AsesorDashboard,
+              ),
+          },
+          {
+            path: 'clientes',
+            loadComponent: () =>
+              import('./features/asesor/clientes/pages/lista-clientes/lista-clientes').then(
+                (m) => m.ListaClientes,
+              ),
+          },
+          {
+            path: 'clientes/nuevo',
+            loadComponent: () =>
+              import('./features/asesor/clientes/pages/form-clientes/form-clientes').then(
+                (m) => m.FormClientes,
+              ),
+          },
+          {
+            path: 'clientes/editar/:id',
+            loadComponent: () =>
+              import('./features/asesor/clientes/pages/form-clientes/form-clientes').then(
+                (m) => m.FormClientes,
+              ),
+          },
+        ],
       },
 
       // ── GERENTE ────────────────────────────────────────────
       {
         path: 'gerente',
-        loadComponent: () =>
-          import('./features/gerente/pages/gerente-dashboard/gerente-dashboard').then(
-            (m) => m.GerenteDashboard,
-          ),
         canActivate: [roleGuard],
         data: { roles: ['ADMINISTRADOR', 'GERENTE'] },
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/gerente/pages/gerente-dashboard/gerente-dashboard').then(
+                (m) => m.GerenteDashboard,
+              ),
+          },
+          {
+            path: 'clientes',
+            loadComponent: () =>
+              import('./features/asesor/clientes/pages/lista-clientes/lista-clientes').then(
+                (m) => m.ListaClientes,
+              ),
+          },
+          {
+            path: 'clientes/nuevo',
+            loadComponent: () =>
+              import('./features/asesor/clientes/pages/form-clientes/form-clientes').then(
+                (m) => m.FormClientes,
+              ),
+          },
+          {
+            path: 'clientes/editar/:id',
+            loadComponent: () =>
+              import('./features/asesor/clientes/pages/form-clientes/form-clientes').then(
+                (m) => m.FormClientes,
+              ),
+          },
+        ],
       },
     ],
   },
