@@ -1,0 +1,32 @@
+# Dependencias
+node_modules/
+
+# Compilados
+dist/
+
+# Angular cache
+.angular/
+
+# IDE
+.idea/
+.vscode/
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+Dockerfile.dev
+docker-compose*.yml
+.dockerignore
+
+# Variables de entorno
+.env
+
+# Documentación
+*.md
+
+# OS
+.DS_Store
+Thumbs.db

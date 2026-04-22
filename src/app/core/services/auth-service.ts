@@ -12,7 +12,7 @@ export class AuthService {
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
 
-  private readonly API_URL = `${environment.apiUrl}/auth`;
+  private readonly API_URL = `${environment.apiUrl}/api/auth`;
   private readonly TOKEN_KEY = 'clintec_token';
   private readonly USER_KEY = 'clintec_user';
 

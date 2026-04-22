@@ -52,7 +52,9 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "outputMode": "static",
+              "ssr": false 
             }
           },
           "defaultConfiguration": "production"
@@ -64,7 +66,8 @@
               "buildTarget": "frontend-clintec:build:production"
             },
             "development": {
-              "buildTarget": "frontend-clintec:build:development"
+              "buildTarget": "frontend-clintec:build:development",
+              "proxyConfig": "proxy.conf.json" 
             }
           },
           "defaultConfiguration": "development"
