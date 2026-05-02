@@ -1,142 +1,66 @@
 import { Routes } from '@angular/router';
-import { roleGuard } from './core/guards/role-guard';
 import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
-  // --- Redirección raíz ---
+  // Ruta raíz
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // --- Rutas públicas ---
-  {
-    path: 'login',
-    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
-  },
-  {
-    path: 'register',
-    loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
-  },
-
-  // --- Rutas protegidas ---
+  // Auth — carga sus propias rutas
   {
     path: '',
-    loadComponent: () => import('./shared/components/layout/layout').then((m) => m.Layout),
+    loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
+  },
+
+  // Rutas protegidas dentro del layout
+  {
+    path: '',
+    loadComponent: () =>
+      import('./shared/components/layout/main-layout/main-layout.component').then(
+        (m) => m.MainLayoutComponent,
+      ),
     canActivate: [authGuard],
     children: [
-      // Ruta por defecto dentro del layout
-      { path: '', redirectTo: 'admin', pathMatch: 'full' },
-
-      // ── ADMIN ──────────────────────────────────────────────
+      // Cada feature carga sus propias rutas
       {
-        path: 'admin',
-        canActivate: [roleGuard],
-        data: { roles: ['ADMINISTRADOR'] },
-        children: [
-          {
-            path: '',
-            loadComponent: () =>
-              import('./features/admin/pages/admin-dashboard/admin-dashboard').then(
-                (m) => m.AdminDashboard,
-              ),
-          },
-          // Lista de usuarios
-          {
-            path: 'usuarios',
-            loadComponent: () =>
-              import('./features/admin/usuarios/pages/lista-usuario/lista-usuario').then(
-                (m) => m.ListaUsuario,
-              ),
-          },
-          // Formulario para crear usuario
-          {
-            path: 'usuarios/nuevo',
-            loadComponent: () =>
-              import('./features/admin/usuarios/pages/form-usuario/form-usuario').then(
-                (m) => m.FormUsuario,
-              ),
-          },
-          // Formulario para editar usuario (mismo componente, distinto modo)
-          {
-            path: 'usuarios/editar/:id',
-            loadComponent: () =>
-              import('./features/admin/usuarios/pages/form-usuario/form-usuario').then(
-                (m) => m.FormUsuario,
-              ),
-          },
-        ],
+        path: '',
+        loadChildren: () => import('./features/users/users.routes').then((m) => m.USERS_ROUTES),
       },
-
-      // ── ASESOR ─────────────────────────────────────────────
       {
-        path: 'asesor',
-        canActivate: [roleGuard],
-        data: { roles: ['ADMINISTRADOR', 'ASESOR'] },
-        children: [
-          {
-            path: '',
-            loadComponent: () =>
-              import('./features/asesor/pages/asesor-dashboard/asesor-dashboard').then(
-                (m) => m.AsesorDashboard,
-              ),
-          },
-          {
-            path: 'clientes',
-            loadComponent: () =>
-              import('./features/asesor/clientes/pages/lista-clientes/lista-clientes').then(
-                (m) => m.ListaClientes,
-              ),
-          },
-          {
-            path: 'clientes/nuevo',
-            loadComponent: () =>
-              import('./features/asesor/clientes/pages/form-clientes/form-clientes').then(
-                (m) => m.FormClientes,
-              ),
-          },
-          {
-            path: 'clientes/editar/:id',
-            loadComponent: () =>
-              import('./features/asesor/clientes/pages/form-clientes/form-clientes').then(
-                (m) => m.FormClientes,
-              ),
-          },
-        ],
+        path: '',
+        loadChildren: () =>
+          import('./features/clients/clients.routes').then((m) => m.CLIENTS_ROUTES),
       },
-
-      // ── GERENTE ────────────────────────────────────────────
       {
-        path: 'gerente',
-        canActivate: [roleGuard],
-        data: { roles: ['ADMINISTRADOR', 'GERENTE'] },
-        children: [
-          {
-            path: '',
-            loadComponent: () =>
-              import('./features/gerente/pages/gerente-dashboard/gerente-dashboard').then(
-                (m) => m.GerenteDashboard,
-              ),
-          },
-          {
-            path: 'clientes',
-            loadComponent: () =>
-              import('./features/asesor/clientes/pages/lista-clientes/lista-clientes').then(
-                (m) => m.ListaClientes,
-              ),
-          },
-          {
-            path: 'clientes/nuevo',
-            loadComponent: () =>
-              import('./features/asesor/clientes/pages/form-clientes/form-clientes').then(
-                (m) => m.FormClientes,
-              ),
-          },
-          {
-            path: 'clientes/editar/:id',
-            loadComponent: () =>
-              import('./features/asesor/clientes/pages/form-clientes/form-clientes').then(
-                (m) => m.FormClientes,
-              ),
-          },
-        ],
+        path: '',
+        loadChildren: () =>
+          import('./features/opportunities/opportunities.routes').then(
+            (m) => m.OPPORTUNITIES_ROUTES,
+          ),
+      },
+      {
+        path: '',
+        loadChildren: () => import('./features/sales/sales.routes').then((m) => m.SALES_ROUTES),
+      },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/interactions/interactions.routes').then((m) => m.INTERACTIONS_ROUTES),
+      },
+      {
+        path: '',
+        loadChildren: () => import('./features/alerts/alerts.routes').then((m) => m.ALERTS_ROUTES),
+      },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/qualifications/qualifications.routes').then(
+            (m) => m.QUALIFICATIONS_ROUTES,
+          ),
+      },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES),
       },
     ],
   },

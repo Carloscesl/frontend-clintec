@@ -8,7 +8,24 @@
   "projects": {
     "frontend-clintec": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": true,
+          "style": "css",
+          "skipTests": false,
+          "type": "component"
+        },
+        "@schematics/angular:service": {
+          "skipTests": false,
+          "type": "service"
+        },
+        "@schematics/angular:guard": {
+          "skipTests": false
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -18,20 +35,14 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "polyfills": ["zone.js"],
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -54,10 +65,10 @@
               "extractLicenses": false,
               "sourceMap": true,
               "outputMode": "static",
-              "ssr": false 
+              "ssr": false
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
@@ -67,7 +78,7 @@
             },
             "development": {
               "buildTarget": "frontend-clintec:build:development",
-              "proxyConfig": "proxy.conf.json" 
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

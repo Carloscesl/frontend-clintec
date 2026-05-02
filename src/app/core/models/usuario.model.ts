@@ -1,23 +1,24 @@
-// Mapea lo que devuelve el backend en UsuarioResponseDTO
 export interface UsuarioResponse {
   id: number;
-  nombre: string;
+  nombreUser: string;
   email: string;
-  rol: 'ADMINISTRADOR' | 'GERENTE' | 'ASESOR';
+  rol: Rol;
   activo: boolean;
+  fechaCreacion: string;
 }
 
-// Mapea lo que espera el backend en UsuarioRequestDTO
 export interface UsuarioRequest {
   nombre: string;
   email: string;
-  password?: string; // Solo requerido al crear
-  rol: 'ADMINISTRADOR' | 'GERENTE' | 'ASESOR';
+  password: string;
+  rol: Rol;
 }
 
 export interface UsuarioUpdateRequest {
   nombre: string;
   email: string;
-  password?: string; // opcional en edición
-  rol: 'ADMINISTRADOR' | 'GERENTE' | 'ASESOR';
+  password?: string;
+  rol: Rol;
 }
+
+export type Rol = 'ADMINISTRADOR' | 'ASESOR' | 'GERENTE';

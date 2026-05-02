@@ -1,0 +1,62 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>CRM Clintec</h1>
+      <p>Inicia sesión para continuar</p>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="campo">
+        <label for="email"> Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="correo@ejemplo.com"
+          [class.input-error]="campo('email')?.invalid && campo('email')?.touched"
+        />
+        @if (campo('email')?.invalid && campo('email')?.touched) {
+          <span class="error-texto">
+            @if (campo('email')?.errors?.['required']) {
+              El email es obligatorio
+            }
+            @if (campo('email')?.errors?.['email']) {
+              Ingresa un email válido
+            }
+          </span>
+        }
+      </div>
+      <div class="campo">
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          [class.input-error]="campo('password')?.invalid && campo('password')?.touched"
+        />
+        @if (campo('password')?.invalid && campo('password')?.touched) {
+          <span class="error-texto">
+            @if (campo('password')?.errors?.['required']) {
+              La contraseña es obligatoria
+            }
+            @if (campo('password')?.errors?.['minlength']) {
+              Mínimo 6 caracteres
+            }
+          </span>
+        }
+      </div>
+      @if (error) {
+        <div class="error-backend">
+          {{ error }}
+        </div>
+      }
+      <button type="submit" class="btn-login" [disabled]="cargando">
+        @if (cargando) {
+          Cargando...
+        } @else {
+          Iniciar Sesión
+        }
+      </button>
+    </form>
+  </div>
+</div>
