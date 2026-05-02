@@ -1,0 +1,65 @@
+<aside class="sidebar" [class.collapsed]="collapsed()">
+  <!-- Logo -->
+  <div class="sidebar-logo">
+    <div class="logo-icon">C</div>
+    @if (!collapsed()) {
+      <span class="logo-text">Clintec</span>
+    }
+  </div>
+
+  <!-- Navegación -->
+  <nav class="sidebar-nav">
+    @for (item of itemsVisibles; track item.path) {
+      <a
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item"
+        [title]="collapsed() ? item.label : ''"
+      >
+        <svg
+          class="nav-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path [attr.d]="item.icon" />
+        </svg>
+        @if (!collapsed()) {
+          <span class="nav-label">{{ item.label }}</span>
+        }
+      </a>
+    }
+  </nav>
+
+  <!-- Footer: colapsar + cerrar sesión -->
+  <div class="sidebar-footer">
+    <button
+      class="nav-item"
+      (click)="toggleCollapse()"
+      [title]="collapsed() ? 'Expandir' : 'Colapsar'"
+    >
+      <svg
+        class="nav-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        @if (collapsed()) {
+          <path d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+        } @else {
+          <path d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />
+        }
+      </svg>
+      @if (!collapsed()) {
+        <span class="nav-label">Colapsar</span>
+      }
+    </button>
+  </div>
+</aside>

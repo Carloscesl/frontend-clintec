@@ -1,0 +1,70 @@
+<div class="dashboard">
+  <div class="dash-header">
+    <div>
+      <h1>Panel Administrador</h1>
+      <p>Bienvenido, {{ usuario?.username }}</p>
+    </div>
+    <button class="btn-refresh" (click)="cargar()">↻ Actualizar</button>
+  </div>
+
+  @if (loading()) {
+    <div class="loading">Cargando dashboard...</div>
+  }
+
+  @if (error()) {
+    <div class="error">
+      {{ error() }}
+      <button (click)="cargar()">Reintentar</button>
+    </div>
+  }
+
+  @if (!loading() && data()) {
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi azul">
+        <div class="kpi-icon">👥</div>
+        <div class="kpi-num">{{ data()!.totalClientes }}</div>
+        <div class="kpi-lbl">Clientes</div>
+      </div>
+      <div class="kpi verde">
+        <div class="kpi-icon">✅</div>
+        <div class="kpi-num">{{ data()!.oportunidadesGanadas }}</div>
+        <div class="kpi-lbl">Oportunidades ganadas</div>
+      </div>
+      <div class="kpi amarillo">
+        <div class="kpi-icon">💼</div>
+        <div class="kpi-num">{{ data()!.oportunidadesActivas }}</div>
+        <div class="kpi-lbl">Oportunidades activas</div>
+      </div>
+      <div class="kpi morado">
+        <div class="kpi-icon">📈</div>
+        <div class="kpi-num">
+          {{ data()!.valorOportunidadesGanadas | currency: 'COP' : 'symbol' : '1.0-0' }}
+        </div>
+        <div class="kpi-lbl">Valor ganado</div>
+      </div>
+      <div class="kpi gris">
+        <div class="kpi-icon">🔑</div>
+        <div class="kpi-num">{{ data()!.totalUsuarios }}</div>
+        <div class="kpi-lbl">Usuarios</div>
+      </div>
+      <div class="kpi rojo">
+        <div class="kpi-icon">🔔</div>
+        <div class="kpi-num">{{ data()!.alertasPendientes }}</div>
+        <div class="kpi-lbl">Alertas pendientes</div>
+      </div>
+    </div>
+
+    <!-- Gráficas -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Embudo de ventas por etapa</h3>
+        <canvas #graficaEmbudo></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Oportunidades por estado</h3>
+        <canvas #graficaEstado></canvas>
+      </div>
+    </div>
+  }
+</div>

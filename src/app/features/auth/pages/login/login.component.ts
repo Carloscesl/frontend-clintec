@@ -18,9 +18,9 @@ export class LoginComponent {
   error = '';
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
+    private readonly fb: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly router: Router,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -46,7 +46,6 @@ export class LoginComponent {
     this.authService.login({ email, password }).subscribe({
       next: (response) => {
         this.authService.guardarSesion(response);
-
         this.redirigirSegunRol(response.roles[0]);
       },
       error: (err) => {
@@ -57,15 +56,16 @@ export class LoginComponent {
   }
 
   private redirigirSegunRol(rol: string): void {
-    switch (rol) {
+    const rolLimpio = rol.replace('ROLE_', '');
+    switch (rolLimpio) {
       case 'ADMINISTRADOR':
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard/admin']);
         break;
       case 'GERENTE':
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard/gerente']);
         break;
       case 'ASESOR':
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard/asesor']);
         break;
       default:
         this.router.navigate(['/login']);

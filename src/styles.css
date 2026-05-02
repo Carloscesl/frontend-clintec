@@ -1,40 +1,60 @@
-/* ── Tokens del sistema Clintec ─────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
 :root {
-  --clintec-sidebar: #0f172a;
-  --clintec-sidebar-2: #1e293b;
-  --clintec-accent: #4f46e5;
-  --clintec-accent-soft: #e0e7ff;
-  --clintec-accent-text: #4338ca;
-  --clintec-text-muted: #94a3b8;
-  --clintec-border: #e2e8f0;
-  --clintec-bg: #f8fafc;
-  --clintec-white: #ffffff;
+  /* Paleta principal */
+  --cl-sidebar-bg: #0f1117;
+  --cl-sidebar-border: #1e2130;
+  --cl-sidebar-text: #8b92a5;
+  --cl-sidebar-hover: #1a1f2e;
+  --cl-sidebar-active: #2563eb;
+  --cl-sidebar-active-soft: rgba(37, 99, 235, 0.12);
+  --cl-sidebar-width: 240px;
+  --cl-sidebar-collapsed: 64px;
+
+  /* Contenido */
+  --cl-bg: #f4f6f9;
+  --cl-surface: #ffffff;
+  --cl-border: #e5e9f0;
+  --cl-text-primary: #111827;
+  --cl-text-secondary: #6b7280;
+  --cl-text-muted: #9ca3af;
+
+  /* Acento */
+  --cl-accent: #2563eb;
+  --cl-accent-hover: #1d4ed8;
+  --cl-accent-soft: #eff6ff;
 
   /* Semánticos */
-  --clintec-success: #16a34a;
-  --clintec-success-soft: #dcfce7;
-  --clintec-danger: #dc2626;
-  --clintec-danger-soft: #fee2e2;
-  --clintec-warning: #d97706;
-  --clintec-warning-soft: #fef3c7;
+  --cl-success: #16a34a;
+  --cl-success-soft: #f0fdf4;
+  --cl-warning: #d97706;
+  --cl-warning-soft: #fffbeb;
+  --cl-danger: #dc2626;
+  --cl-danger-soft: #fef2f2;
+
+  /* Tipografía */
+  --cl-font: 'DM Sans', system-ui, sans-serif;
+  --cl-font-mono: 'DM Mono', monospace;
+
+  /* Transiciones */
+  --cl-transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── Reset base ─────────────────────────────────────── */
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 body {
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-  background: var(--clintec-bg);
-  color: #1e293b;
+  font-family: var(--cl-font);
+  background: var(--cl-bg);
+  color: var(--cl-text-primary);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
+
 button {
   cursor: pointer;
   border: none;
@@ -42,12 +62,17 @@ button {
   font-family: inherit;
   font-size: inherit;
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
-/* ── Utilidades compartidas entre features ──────────── */
+/* ── Utilidades compartidas ─────────────────────── */
 .page-container {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  padding: 2rem;
 }
 
 .page-header {
@@ -55,129 +80,266 @@ button {
   align-items: center;
   justify-content: space-between;
 }
+
 .page-header h1 {
   font-size: 1.375rem;
-  font-weight: 700;
-  color: #0f172a;
+  font-weight: 600;
+  color: var(--cl-text-primary);
+  letter-spacing: -0.02em;
 }
 
 /* Botones */
 .btn-primary {
-  padding: 0.5rem 1.25rem;
-  background: var(--clintec-accent);
+  padding: 0.5rem 1.125rem;
+  background: var(--cl-accent);
   color: #fff;
-  border-radius: 0.5rem;
-  font-weight: 600;
+  border-radius: 8px;
+  font-weight: 500;
   font-size: 0.875rem;
-  transition: background 0.2s;
+  transition: background var(--cl-transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .btn-primary:hover {
-  background: #4338ca;
+  background: var(--cl-accent-hover);
 }
 
-.btn-secundario {
+.btn-secondary {
   padding: 0.5rem 1rem;
-  background: var(--clintec-white);
-  color: #475569;
-  border: 1px solid var(--clintec-border);
-  border-radius: 0.5rem;
+  background: var(--cl-surface);
+  color: var(--cl-text-secondary);
+  border: 1px solid var(--cl-border);
+  border-radius: 8px;
   font-size: 0.875rem;
-  transition: background 0.2s;
+  font-weight: 500;
+  transition:
+    background var(--cl-transition),
+    border-color var(--cl-transition);
 }
-.btn-secundario:hover {
-  background: var(--clintec-bg);
-}
-
-.btn-success {
-  padding: 0.375rem 0.875rem;
-  background: var(--clintec-success-soft);
-  color: var(--clintec-success);
-  border: 1px solid #bbf7d0;
-  border-radius: 0.375rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  transition: 0.2s;
-}
-.btn-success:hover {
-  background: var(--clintec-success);
-  color: #fff;
+.btn-secondary:hover {
+  background: var(--cl-bg);
+  border-color: #d1d5db;
 }
 
 .btn-danger {
   padding: 0.375rem 0.875rem;
-  background: var(--clintec-danger-soft);
-  color: var(--clintec-danger);
+  background: var(--cl-danger-soft);
+  color: var(--cl-danger);
   border: 1px solid #fecaca;
-  border-radius: 0.375rem;
+  border-radius: 6px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 500;
   transition: 0.2s;
 }
 .btn-danger:hover {
-  background: var(--clintec-danger);
+  background: var(--cl-danger);
   color: #fff;
+}
+
+.btn-success {
+  padding: 0.375rem 0.875rem;
+  background: var(--cl-success-soft);
+  color: var(--cl-success);
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+.btn-success:hover {
+  background: var(--cl-success);
+  color: #fff;
+}
+
+/* Tabla */
+.cl-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--cl-surface);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--cl-border);
+  font-size: 0.875rem;
+}
+.cl-table thead {
+  background: var(--cl-bg);
+  border-bottom: 1px solid var(--cl-border);
+}
+.cl-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cl-text-muted);
+}
+.cl-table td {
+  padding: 0.875rem 1rem;
+  color: var(--cl-text-primary);
+  border-bottom: 1px solid var(--cl-border);
+  vertical-align: middle;
+}
+.cl-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.cl-table tbody tr:hover {
+  background: #fafbfc;
+}
+
+/* Formulario */
+.cl-form {
+  background: var(--cl-surface);
+  border: 1px solid var(--cl-border);
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 560px;
+}
+
+.cl-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.cl-campo label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--cl-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cl-campo input,
+.cl-campo select,
+.cl-campo textarea {
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--cl-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--cl-text-primary);
+  background: var(--cl-surface);
+  font-family: var(--cl-font);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  outline: none;
+}
+.cl-campo input:focus,
+.cl-campo select:focus {
+  border-color: var(--cl-accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+.cl-campo input.ng-invalid.ng-touched {
+  border-color: var(--cl-danger);
+}
+.cl-error {
+  font-size: 0.78rem;
+  color: var(--cl-danger);
+  font-weight: 500;
+}
+
+.cl-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--cl-border);
+}
+
+/* Badges de rol */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-administrador {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+.badge-gerente {
+  background: #fffbeb;
+  color: #b45309;
+}
+.badge-asesor {
+  background: #f0fdf4;
+  color: #15803d;
+}
+.badge-activo {
+  background: #f0fdf4;
+  color: #15803d;
+}
+.badge-inactivo {
+  background: #f9fafb;
+  color: #6b7280;
 }
 
 /* Estados */
 .estado-info {
-  color: var(--clintec-text-muted);
-  font-size: 0.9rem;
-  padding: 2rem 0;
   text-align: center;
+  color: var(--cl-text-muted);
+  padding: 3rem 0;
+  font-size: 0.9rem;
 }
 .estado-error {
-  background: var(--clintec-danger-soft);
-  color: var(--clintec-danger);
+  background: var(--cl-danger-soft);
+  color: var(--cl-danger);
   border: 1px solid #fecaca;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   padding: 0.875rem 1rem;
   font-size: 0.875rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+/* Modal */
+.cl-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 17, 23, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}
+.cl-modal {
+  background: var(--cl-surface);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 1rem;
+  animation: scaleIn 0.22s ease;
 }
-.estado-error button {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-decoration: underline;
-  color: var(--clintec-danger);
-  background: none;
-  border: none;
-  cursor: pointer;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
-
-/* Badges de rol */
-.badge {
-  display: inline-block;
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
-.badge-administrador {
-  background: #e0e7ff;
-  color: #3730a3;
-}
-.badge-gerente {
-  background: #fef3c7;
-  color: #92400e;
-}
-.badge-asesor {
-  background: #dcfce7;
-  color: #166534;
-}
-
-/* Estado activo/inactivo */
-.estado-activo {
-  color: var(--clintec-success);
-  font-weight: 600;
-  font-size: 0.85rem;
-}
-.estado-inactivo {
-  color: var(--clintec-text-muted);
-  font-size: 0.85rem;
-}
-@import 'tailwindcss';

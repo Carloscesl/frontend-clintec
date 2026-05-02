@@ -11,7 +11,7 @@ export interface RegisterRequest {
 
 export interface TokenResponse {
   id: number;
-  nombreUser: string;
+  username: string;
   email: string;
   token: string;
   roles: string[];

@@ -1,6 +1,6 @@
 export interface UsuarioResponse {
   id: number;
-  nombreUser: string;
+  nombre: string;
   email: string;
   rol: Rol;
   activo: boolean;

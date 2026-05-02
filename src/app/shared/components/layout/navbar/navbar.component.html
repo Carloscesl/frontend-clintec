@@ -1,0 +1,34 @@
+<header class="navbar">
+  <div class="navbar-left">
+    <h2 class="navbar-title">Clintec CRM</h2>
+  </div>
+
+  <div class="navbar-right">
+    <!-- Badge de rol -->
+    <span class="rol-badge badge-{{ rol().toLowerCase() }}">
+      {{ rol() }}
+    </span>
+
+    <!-- Avatar + nombre -->
+    <div class="usuario-info">
+      <div class="avatar">{{ iniciales() }}</div>
+      <span class="usuario-nombre">{{ usuario()?.username }}</span>
+    </div>
+
+    <!-- Cerrar sesión -->
+    <button class="btn-logout" (click)="cerrarSesion()" title="Cerrar sesión">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+        />
+      </svg>
+    </button>
+  </div>
+</header>
