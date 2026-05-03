@@ -1,65 +1,83 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <h2>{{ modoEdicion() ? 'Editar' : 'Nuevo' }} Usuario</h2>
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>{{ modoEdicion() ? 'Editar usuario' : 'Nuevo usuario' }}</h1>
+      <p class="page-subtitle">
+        {{
+          modoEdicion()
+            ? 'Modifica los datos del usuario'
+            : 'Completa el formulario para crear un usuario'
+        }}
+      </p>
+    </div>
+  </div>
 
-  @if (error()) {
-    <div class="error">{{ error() }}</div>
-  }
+  <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
+    @if (error()) {
+      <div class="estado-error">{{ error() }}</div>
+    }
 
-  <!-- Nombre -->
-  <div class="campo">
-    <label>Nombre de usuario</label>
-    <input formControlName="nombre" type="text" />
-    @if (f['nombre'].touched) {
-      @if (f['nombre'].hasError('required')) {
-        <span class="err">El nombre es requerido</span>
+    <!-- Nombre -->
+    <div class="cl-campo">
+      <label>Nombre de usuario</label>
+      <input formControlName="nombre" type="text" placeholder="Ej: Carlos Mendoza" />
+      @if (f['nombre'].touched) {
+        @if (f['nombre'].hasError('required')) {
+          <span class="cl-error">El nombre es requerido</span>
+        }
+        @if (f['nombre'].hasError('minlength')) {
+          <span class="cl-error">Mínimo 3 caracteres</span>
+        }
       }
-      @if (f['nombre'].hasError('minlength')) {
-        <span class="err">Mínimo 3 caracteres</span>
+    </div>
+
+    <!-- Email -->
+    <div class="cl-campo">
+      <label>Email</label>
+      <input formControlName="email" type="email" placeholder="correo@ejemplo.com" />
+      @if (f['email'].touched && f['email'].hasError('email')) {
+        <span class="cl-error">Ingresa un email válido</span>
       }
-    }
-  </div>
+    </div>
 
-  <!-- Email -->
-  <div class="campo">
-    <label>Email</label>
-    <input formControlName="email" type="email" />
-    @if (f['email'].touched && f['email'].hasError('email')) {
-      <span class="err">Email inválido</span>
-    }
-  </div>
-
-  <!-- Password — solo requerido en creación -->
-  <div class="campo">
-    <label>
-      Contraseña
-      @if (modoEdicion()) {
-        <span class="hint">(dejar vacío para no cambiar)</span>
+    <!-- Password -->
+    <div class="cl-campo">
+      <label>
+        Contraseña
+        @if (modoEdicion()) {
+          <span class="campo-hint">— dejar vacío para no cambiar</span>
+        }
+      </label>
+      <input formControlName="password" type="password" placeholder="••••••••" />
+      @if (!modoEdicion() && f['password'].touched && f['password'].hasError('required')) {
+        <span class="cl-error">La contraseña es requerida</span>
       }
-    </label>
-    <input formControlName="password" type="password" />
-    @if (!modoEdicion() && f['password'].touched && f['password'].hasError('required')) {
-      <span class="err">La contraseña es requerida</span>
-    }
-  </div>
+    </div>
 
-  <!-- Rol -->
-  <div class="campo">
-    <label>Rol</label>
-    <select formControlName="rol">
-      <option value="">Selecciona un rol</option>
-      <option value="ADMINISTRADOR">Administrador</option>
-      <option value="ASESOR">Asesor</option>
-      <option value="GERENTE">Gerente</option>
-    </select>
-    @if (f['rol'].touched && f['rol'].hasError('required')) {
-      <span class="err">El rol es requerido</span>
-    }
-  </div>
+    <!-- Rol -->
+    <div class="cl-campo">
+      <label>Rol</label>
+      <select formControlName="rol">
+        <option value="">Selecciona un rol</option>
+        <option value="ADMINISTRADOR">Administrador</option>
+        <option value="ASESOR">Asesor</option>
+        <option value="GERENTE">Gerente</option>
+      </select>
+      @if (f['rol'].touched && f['rol'].hasError('required')) {
+        <span class="cl-error">El rol es requerido</span>
+      }
+    </div>
 
-  <div class="acciones">
-    <button type="button" (click)="cancelar()">Cancelar</button>
-    <button type="submit" [disabled]="guardando()">
-      {{ guardando() ? 'Guardando...' : modoEdicion() ? 'Actualizar' : 'Crear' }}
-    </button>
-  </div>
-</form>
+    <div class="cl-form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn-primary" [disabled]="guardando()">
+        @if (guardando()) {
+          <span class="spinner-sm"></span>
+          Guardando...
+        } @else {
+          {{ modoEdicion() ? 'Actualizar usuario' : 'Crear usuario' }}
+        }
+      </button>
+    </div>
+  </form>
+</div>

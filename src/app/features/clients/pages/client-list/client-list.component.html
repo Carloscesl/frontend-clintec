@@ -1,0 +1,55 @@
+<div class="page">
+  <div class="page-header">
+    <h2>Clientes</h2>
+    @if (puedeCrear) {
+      <button class="btn-primary" (click)="irACrear()">+ Nuevo cliente</button>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="loading">Cargando clientes...</div>
+  }
+
+  @if (error()) {
+    <div class="error">
+      {{ error() }}
+      <button (click)="cargar()">Reintentar</button>
+    </div>
+  }
+
+  @if (!loading() && !error()) {
+    @if (clientes().length === 0) {
+      <div class="empty">No hay clientes registrados.</div>
+    } @else {
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Empresa</th>
+            <th>Fecha registro</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of clientes(); track c.id) {
+            <tr>
+              <td>{{ c.nombreCliente }}</td>
+              <td>{{ c.email }}</td>
+              <td>{{ c.telefono }}</td>
+              <td>{{ c.empresa }}</td>
+              <td>{{ c.fechaRegistro | date: 'dd/MM/yyyy' }}</td>
+              <td class="acciones">
+                <button class="btn-ver" (click)="irADetalle(c.id)">Ver</button>
+                @if (puedeEditar) {
+                  <button class="btn-editar" (click)="irAEditar(c.id)">Editar</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</div>

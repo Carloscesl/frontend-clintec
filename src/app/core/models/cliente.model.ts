@@ -1,5 +1,5 @@
 export interface ClienteResponse {
-  idCliente: number;
+  id: number;
   nombreCliente: string;
   empresa: string;
   email: string;

@@ -18,8 +18,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('graficaEmbudo') graficaEmbudoRef!: ElementRef;
   @ViewChild('graficaEstado') graficaEstadoRef!: ElementRef;
 
-  private service = inject(DashboardService);
-  private authService = inject(AuthService);
+  private readonly service = inject(DashboardService);
+  private readonly authService = inject(AuthService);
 
   data = signal<AdminDashboard | null>(null);
   loading = signal(true);

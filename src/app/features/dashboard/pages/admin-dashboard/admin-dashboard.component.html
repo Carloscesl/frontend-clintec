@@ -1,69 +1,233 @@
 <div class="dashboard">
+  <!-- Header -->
   <div class="dash-header">
-    <div>
-      <h1>Panel Administrador</h1>
-      <p>Bienvenido, {{ usuario?.username }}</p>
+    <div class="dash-header-info">
+      <h1>Panel de Administración</h1>
+      <p>
+        Bienvenido de nuevo, <strong>{{ usuario?.username }}</strong>
+      </p>
     </div>
-    <button class="btn-refresh" (click)="cargar()">↻ Actualizar</button>
+    <button class="btn-refresh" (click)="cargar()" [disabled]="loading()">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+        />
+      </svg>
+      Actualizar
+    </button>
   </div>
 
+  <!-- Estado: cargando -->
   @if (loading()) {
-    <div class="loading">Cargando dashboard...</div>
+    <div class="dash-loading">
+      <div class="spinner"></div>
+      <span>Cargando datos...</span>
+    </div>
   }
 
+  <!-- Estado: error -->
   @if (error()) {
-    <div class="error">
-      {{ error() }}
+    <div class="dash-error">
+      <span>{{ error() }}</span>
       <button (click)="cargar()">Reintentar</button>
     </div>
   }
 
   @if (!loading() && data()) {
-    <!-- KPI Cards -->
+    <!-- KPIs -->
     <div class="kpi-grid">
-      <div class="kpi azul">
-        <div class="kpi-icon">👥</div>
-        <div class="kpi-num">{{ data()!.totalClientes }}</div>
-        <div class="kpi-lbl">Clientes</div>
-      </div>
-      <div class="kpi verde">
-        <div class="kpi-icon">✅</div>
-        <div class="kpi-num">{{ data()!.oportunidadesGanadas }}</div>
-        <div class="kpi-lbl">Oportunidades ganadas</div>
-      </div>
-      <div class="kpi amarillo">
-        <div class="kpi-icon">💼</div>
-        <div class="kpi-num">{{ data()!.oportunidadesActivas }}</div>
-        <div class="kpi-lbl">Oportunidades activas</div>
-      </div>
-      <div class="kpi morado">
-        <div class="kpi-icon">📈</div>
-        <div class="kpi-num">
-          {{ data()!.valorOportunidadesGanadas | currency: 'COP' : 'symbol' : '1.0-0' }}
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-blue">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
         </div>
-        <div class="kpi-lbl">Valor ganado</div>
+        <div class="kpi-body">
+          <span class="kpi-label">Clientes</span>
+          <span class="kpi-value">{{ data()!.totalClientes }}</span>
+        </div>
       </div>
-      <div class="kpi gris">
-        <div class="kpi-icon">🔑</div>
-        <div class="kpi-num">{{ data()!.totalUsuarios }}</div>
-        <div class="kpi-lbl">Usuarios</div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-green">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Oportunidades ganadas</span>
+          <span class="kpi-value">{{ data()!.oportunidadesGanadas }}</span>
+        </div>
       </div>
-      <div class="kpi rojo">
-        <div class="kpi-icon">🔔</div>
-        <div class="kpi-num">{{ data()!.alertasPendientes }}</div>
-        <div class="kpi-lbl">Alertas pendientes</div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-amber">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Oportunidades activas</span>
+          <span class="kpi-value">{{ data()!.oportunidadesActivas }}</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-purple">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 13v-1m0 0c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Valor ganado</span>
+          <span class="kpi-value kpi-value--sm">
+            {{ data()!.valorOportunidadesGanadas | currency: 'COP' : 'symbol' : '1.0-0' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-gray">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+            />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Usuarios</span>
+          <span class="kpi-value">{{ data()!.totalUsuarios }}</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-red">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+            />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Alertas pendientes</span>
+          <span class="kpi-value">{{ data()!.alertasPendientes }}</span>
+        </div>
       </div>
     </div>
 
     <!-- Gráficas -->
     <div class="charts-grid">
       <div class="chart-card">
-        <h3>Embudo de ventas por etapa</h3>
-        <canvas #graficaEmbudo></canvas>
+        <div class="chart-card-header">
+          <h3>Embudo de ventas</h3>
+          <span class="chart-subtitle">Oportunidades por etapa</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas #graficaEmbudo></canvas>
+        </div>
       </div>
+
       <div class="chart-card">
-        <h3>Oportunidades por estado</h3>
-        <canvas #graficaEstado></canvas>
+        <div class="chart-card-header">
+          <h3>Estado de oportunidades</h3>
+          <span class="chart-subtitle">Distribución actual</span>
+        </div>
+        <div class="chart-wrap chart-wrap--donut">
+          <canvas #graficaEstado></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen embudo (tabla rápida) -->
+    <div class="summary-card">
+      <div class="chart-card-header">
+        <h3>Detalle del embudo</h3>
+        <span class="chart-subtitle">Conteo por etapa</span>
+      </div>
+      <div class="funnel-list">
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #3b82f6"></span>
+          <span class="funnel-label">Prospección</span>
+          <span class="funnel-value">{{ data()!.enProspeccion }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #8b5cf6"></span>
+          <span class="funnel-label">Calificación</span>
+          <span class="funnel-value">{{ data()!.enCalificacion }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #f59e0b"></span>
+          <span class="funnel-label">Propuesta</span>
+          <span class="funnel-value">{{ data()!.enPropuesta }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #ec4899"></span>
+          <span class="funnel-label">Negociación</span>
+          <span class="funnel-value">{{ data()!.enNegociacion }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #10b981"></span>
+          <span class="funnel-label">Cierre ganado</span>
+          <span class="funnel-value">{{ data()!.enCierreGanado }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #ef4444"></span>
+          <span class="funnel-label">Cierre perdido</span>
+          <span class="funnel-value">{{ data()!.enCierrePerdido }}</span>
+        </div>
       </div>
     </div>
   }

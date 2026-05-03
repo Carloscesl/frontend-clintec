@@ -1,1 +1,207 @@
-<p>gerente-dashboard works!</p>
+<div class="dashboard">
+  <div class="dash-header">
+    <div class="dash-header-info">
+      <h1>Panel de Gerencia</h1>
+      <p>
+        Bienvenido, <strong>{{ usuario?.username }}</strong>
+      </p>
+    </div>
+    <button class="btn-refresh" (click)="cargar()" [disabled]="loading()">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+        />
+      </svg>
+      Actualizar
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="dash-loading">
+      <div class="spinner"></div>
+      <span>Cargando datos...</span>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="dash-error">
+      <span>{{ error() }}</span>
+      <button (click)="cargar()">Reintentar</button>
+    </div>
+  }
+
+  @if (!loading() && data()) {
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-blue">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Clientes</span>
+          <span class="kpi-value">{{ data()!.totalClientes }}</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-green">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Oportunidades ganadas</span>
+          <span class="kpi-value">{{ data()!.oportunidadesGanadas }}</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-amber">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Oportunidades activas</span>
+          <span class="kpi-value">{{ data()!.oportunidadesActivas }}</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-purple">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 13v-1m0 0c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Valor ganado</span>
+          <span class="kpi-value kpi-value--sm">
+            {{ data()!.valorOportunidadesGanadas | currency: 'COP' : 'symbol' : '1.0-0' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-gray">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Total ventas</span>
+          <span class="kpi-value">{{ data()!.totalVentas }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <h3>Embudo de ventas</h3>
+          <span class="chart-subtitle">Oportunidades por etapa</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas #graficaEmbudo></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-header">
+          <h3>Estado de oportunidades</h3>
+          <span class="chart-subtitle">Distribución actual</span>
+        </div>
+        <div class="chart-wrap chart-wrap--donut">
+          <canvas #graficaEstado></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="chart-card-header">
+        <h3>Detalle del embudo</h3>
+        <span class="chart-subtitle">Conteo por etapa</span>
+      </div>
+      <div class="funnel-list">
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #3b82f6"></span>
+          <span class="funnel-label">Prospección</span>
+          <span class="funnel-value">{{ data()!.enProspeccion }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #8b5cf6"></span>
+          <span class="funnel-label">Calificación</span>
+          <span class="funnel-value">{{ data()!.enCalificacion }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #f59e0b"></span>
+          <span class="funnel-label">Propuesta</span>
+          <span class="funnel-value">{{ data()!.enPropuesta }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #ec4899"></span>
+          <span class="funnel-label">Negociación</span>
+          <span class="funnel-value">{{ data()!.enNegociacion }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #10b981"></span>
+          <span class="funnel-label">Cierre ganado</span>
+          <span class="funnel-value">{{ data()!.enCierreGanado }}</span>
+        </div>
+        <div class="funnel-item">
+          <span class="funnel-dot" style="background: #ef4444"></span>
+          <span class="funnel-label">Cierre perdido</span>
+          <span class="funnel-value">{{ data()!.enCierrePerdido }}</span>
+        </div>
+      </div>
+    </div>
+  }
+</div>
