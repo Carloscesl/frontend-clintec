@@ -1,122 +1,331 @@
-/* ── Página completa centrada ─────────────────────────────── */
+/* =========================
+   RESET
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* =========================
+   PAGE
+========================= */
+
 .login-page {
-  min-height: 100vh;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  background: #020617;
+}
+
+/* =========================
+   LEFT PANEL
+========================= */
+
+.left-panel {
+  width: 50%;
+  background: linear-gradient(135deg, #00d4aa, #14b8d4);
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  position: relative;
+}
+
+.left-panel::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  bottom: -150px;
+  left: -100px;
+}
+
+.logo {
   display: flex;
   align-items: center;
+  gap: 14px;
+  font-size: 2rem;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.logo .bold {
+  color: black;
+}
+
+.logo-icon {
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 18px;
+  display: flex;
   justify-content: center;
-  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
-  padding: 20px;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  font-size: 1.4rem;
 }
 
-/* ── Tarjeta del formulario ──────────────────────────────── */
-.login-card {
-  background: white;
-  border-radius: 16px;
+.hero-content {
+  z-index: 2;
+}
+
+.hero-content h1 {
+  font-size: 4rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.hero-content h1 span {
+  color: #000;
+}
+
+.hero-content p {
+  width: 70%;
+  font-size: 1.4rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 50px;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.bottom-text {
+  z-index: 2;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* =========================
+   RIGHT PANEL
+========================= */
+
+.right-panel {
+  width: 50%;
+  background: #020617;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 40px;
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+
+.login-card {
   width: 100%;
-  max-width: 420px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 480px;
 }
 
-/* ── Header ──────────────────────────────────────────────── */
-.login-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.login-header h1 {
-  font-size: 28px;
-  font-weight: 800;
-  color: #1e293b;
-  margin: 0 0 8px;
+.login-header h2 {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 10px;
 }
 
 .login-header p {
-  color: #64748b;
-  font-size: 14px;
-  margin: 0;
+  color: #94a3b8;
+  margin-bottom: 40px;
+  font-size: 1rem;
 }
 
-/* ── Campos del formulario ───────────────────────────────── */
+/* =========================
+   FORM
+========================= */
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 20px;
+  gap: 10px;
 }
 
 .campo label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #374151;
-}
-
-.campo input {
-  padding: 12px 16px;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 15px;
-  outline: none;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-  color: #1e293b;
-}
-
-/* Cuando el input está enfocado */
-.campo input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
-}
-
-/* Cuando el input tiene error */
-.campo input.input-error {
-  border-color: #ef4444;
-}
-
-/* ── Textos de error ─────────────────────────────────────── */
-.error-texto {
-  font-size: 12px;
-  color: #ef4444;
-  font-weight: 500;
-}
-
-/* ── Error del backend ───────────────────────────────────── */
-.error-backend {
-  background: #fee2e2;
-  color: #991b1b;
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  margin-bottom: 16px;
-  text-align: center;
-}
-
-/* ── Botón ───────────────────────────────────────────────── */
-.btn-login {
-  width: 100%;
-  padding: 13px;
-  background: #3b82f6;
   color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label-row a {
+  color: #00d4aa;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.input-container {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+}
+
+input {
+  width: 100%;
+  height: 55px;
+  background: transparent;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 0 16px 0 50px;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.3s;
+}
+
+input::placeholder {
+  color: #64748b;
+}
+
+input:focus {
+  border-color: #00d4aa;
+  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.15);
+}
+
+.input-error {
+  border-color: #ef4444 !important;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn-login {
+  height: 55px;
   border: none;
-  border-radius: 8px;
-  font-size: 15px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #00d4aa, #14b8d4);
+  color: white;
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  transition:
-    background 0.2s,
-    transform 0.1s;
-  margin-top: 4px;
+  transition: 0.3s;
+  margin-top: 10px;
 }
 
-.btn-login:hover:not(:disabled) {
-  background: #2563eb;
-  transform: translateY(-1px);
+.btn-login:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
 }
 
 .btn-login:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
+}
+
+/* =========================
+   ERRORS
+========================= */
+
+.error-texto {
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+
+.error-backend {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+
+/* =========================
+   REGISTER
+========================= */
+
+.register-text {
+  text-align: center;
+  margin-top: 30px;
+  color: #94a3b8;
+}
+
+.register-text a {
+  color: #00d4aa;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+  .left-panel {
+    display: none;
+  }
+
+  .right-panel {
+    width: 100%;
+  }
+
+  .login-card {
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .right-panel {
+    padding: 25px;
+  }
+
+  .login-header h2 {
+    font-size: 2rem;
+  }
+
+  .btn-login {
+    font-size: 1rem;
+  }
 }

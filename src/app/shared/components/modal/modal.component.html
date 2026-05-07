@@ -1,0 +1,30 @@
+@if (visible$ | async) {
+  <div
+    class="modal-alert"
+    [ngClass]="{
+      success: (type$ | async) === 'success',
+      error: (type$ | async) === 'error',
+      warning: (type$ | async) === 'warning',
+    }"
+  >
+    <div class="modal-content">
+      <span class="icon">
+        @if ((type$ | async) === 'success') {
+          ✔
+        }
+        @if ((type$ | async) === 'error') {
+          ✖
+        }
+        @if ((type$ | async) === 'warning') {
+          ⚠
+        }
+      </span>
+
+      <span class="message">
+        {{ message$ | async }}
+      </span>
+
+      <button (click)="close()">✕</button>
+    </div>
+  </div>
+}

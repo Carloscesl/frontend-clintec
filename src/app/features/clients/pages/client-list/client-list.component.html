@@ -1,55 +1,172 @@
-<div class="page">
+<div class="page-container">
+  <!-- HEADER -->
   <div class="page-header">
-    <h2>Clientes</h2>
+    <div>
+      <h1>Clientes</h1>
+
+      <p class="page-subtitle">Gestión de clientes registrados</p>
+    </div>
+
     @if (puedeCrear) {
-      <button class="btn-primary" (click)="irACrear()">+ Nuevo cliente</button>
+      <button class="btn-primary" (click)="irACrear()">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+
+        Nuevo cliente
+      </button>
     }
   </div>
 
+  <!-- LOADING -->
   @if (loading()) {
-    <div class="loading">Cargando clientes...</div>
+    <div class="estado-loading">
+      <div class="spinner"></div>
+
+      <span>Cargando clientes...</span>
+    </div>
   }
 
+  <!-- ERROR -->
   @if (error()) {
-    <div class="error">
-      {{ error() }}
+    <div class="estado-error">
+      <span>{{ error() }}</span>
+
       <button (click)="cargar()">Reintentar</button>
     </div>
   }
 
+  <!-- TABLE -->
   @if (!loading() && !error()) {
     @if (clientes().length === 0) {
-      <div class="empty">No hay clientes registrados.</div>
+      <div class="table-wrapper">
+        <div class="empty-state">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+
+            <circle cx="9" cy="7" r="4" />
+
+            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+
+            <path d="M16 3.13a4 4 0 010 7.75" />
+          </svg>
+
+          <span> No hay clientes registrados </span>
+        </div>
+      </div>
     } @else {
-      <table class="tabla">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Teléfono</th>
-            <th>Empresa</th>
-            <th>Fecha registro</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (c of clientes(); track c.id) {
+      <div class="table-wrapper">
+        <table class="cl-table">
+          <thead>
             <tr>
-              <td>{{ c.nombreCliente }}</td>
-              <td>{{ c.email }}</td>
-              <td>{{ c.telefono }}</td>
-              <td>{{ c.empresa }}</td>
-              <td>{{ c.fechaRegistro | date: 'dd/MM/yyyy' }}</td>
-              <td class="acciones">
-                <button class="btn-ver" (click)="irADetalle(c.id)">Ver</button>
-                @if (puedeEditar) {
-                  <button class="btn-editar" (click)="irAEditar(c.id)">Editar</button>
-                }
-              </td>
+              <th>Cliente</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Empresa</th>
+              <th>Registro</th>
+              <th>Acciones</th>
             </tr>
-          }
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            @for (c of clientes(); track c.id) {
+              <tr>
+                <!-- CLIENTE -->
+                <td>
+                  <div class="usuario-cell">
+                    <div class="avatar-sm">
+                      {{ c.nombreCliente.slice(0, 2).toUpperCase() }}
+                    </div>
+
+                    <span class="usuario-nombre">
+                      {{ c.nombreCliente }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- EMAIL -->
+                <td class="text-muted">
+                  {{ c.email }}
+                </td>
+
+                <!-- TELEFONO -->
+                <td>
+                  {{ c.telefono }}
+                </td>
+
+                <!-- EMPRESA -->
+                <td>
+                  <span class="badge badge-info">
+                    {{ c.empresa }}
+                  </span>
+                </td>
+
+                <!-- FECHA -->
+                <td class="text-muted">
+                  {{ c.fechaRegistro | date: 'dd/MM/yyyy' }}
+                </td>
+
+                <!-- ACTIONS -->
+                <td>
+                  <div class="acciones-cell">
+                    <!-- VER -->
+                    <button class="btn-icon btn-icon--success" (click)="irADetalle(c.id)">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.75"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+
+                      Ver
+                    </button>
+
+                    <!-- EDITAR -->
+                    @if (puedeEditar) {
+                      <button class="btn-icon btn-icon--edit" (click)="irAEditar(c.id)">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.75"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                          />
+                        </svg>
+
+                        Editar
+                      </button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     }
   }
 </div>

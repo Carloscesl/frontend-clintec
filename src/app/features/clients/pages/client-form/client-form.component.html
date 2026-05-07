@@ -1,61 +1,114 @@
-<div class="page">
+<div class="page-container">
+  <!-- HEADER -->
   <div class="page-header">
-    <h2>{{ modoEdicion() ? 'Editar' : 'Nuevo' }} Cliente</h2>
+    <div>
+      <h1>
+        {{ modoEdicion() ? 'Editar cliente' : 'Nuevo cliente' }}
+      </h1>
+
+      <p class="page-subtitle">
+        {{
+          modoEdicion()
+            ? 'Modifica la información del cliente'
+            : 'Completa el formulario para registrar un cliente'
+        }}
+      </p>
+    </div>
   </div>
 
+  <!-- ERROR -->
   @if (error()) {
-    <div class="error">{{ error() }}</div>
+    <div class="estado-error">
+      {{ error() }}
+    </div>
   }
 
-  <form [formGroup]="form" (ngSubmit)="submit()" class="form-card">
-    <div class="campo">
-      <label>Nombre completo *</label>
+  <!-- FORM -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
+    <!-- NOMBRE -->
+    <div class="cl-campo">
+      <label> Nombre completo * </label>
+
       <input formControlName="nombreCliente" type="text" placeholder="Nombre del cliente" />
+
       @if (f['nombreCliente'].touched) {
         @if (f['nombreCliente'].hasError('required')) {
-          <span class="err">El nombre es requerido</span>
+          <span class="cl-error"> El nombre es requerido </span>
         }
+
         @if (f['nombreCliente'].hasError('minlength')) {
-          <span class="err">Mínimo 2 caracteres</span>
+          <span class="cl-error"> Mínimo 2 caracteres </span>
         }
       }
     </div>
 
-    <div class="campo">
-      <label>Email *</label>
+    <!-- EMAIL -->
+    <div class="cl-campo">
+      <label> Email * </label>
+
       <input formControlName="email" type="email" placeholder="correo@ejemplo.com" />
+
       @if (f['email'].touched) {
         @if (f['email'].hasError('required')) {
-          <span class="err">El email es requerido</span>
+          <span class="cl-error"> El email es requerido </span>
         }
+
         @if (f['email'].hasError('email')) {
-          <span class="err">Email inválido</span>
+          <span class="cl-error"> Email inválido </span>
         }
       }
     </div>
 
-    <div class="campo">
-      <label>Teléfono *</label>
+    <!-- TELEFONO -->
+    <div class="cl-campo">
+      <label> Teléfono * </label>
+
       <input formControlName="telefono" type="text" placeholder="300 000 0000" />
+
       @if (f['telefono'].touched && f['telefono'].hasError('required')) {
-        <span class="err">El teléfono es requerido</span>
+        <span class="cl-error"> El teléfono es requerido </span>
       }
     </div>
 
-    <div class="campo">
-      <label>Empresa</label>
+    <!-- EMPRESA -->
+    <div class="cl-campo">
+      <label> Empresa </label>
+
       <input formControlName="empresa" type="text" placeholder="Nombre de la empresa" />
     </div>
 
-    <div class="campo">
-      <label>Dirección</label>
+    <!-- DIRECCION -->
+    <div class="cl-campo">
+      <label> Dirección </label>
+
       <input formControlName="direccion" type="text" placeholder="Dirección del cliente" />
     </div>
 
-    <div class="acciones">
+    <!-- ACTIONS -->
+    <div class="cl-form-actions">
+      <!-- CANCEL -->
       <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
+
+      <!-- SUBMIT -->
       <button type="submit" class="btn-primary" [disabled]="guardando()">
-        {{ guardando() ? 'Guardando...' : modoEdicion() ? 'Actualizar' : 'Crear' }}
+        @if (guardando()) {
+          <span class="spinner-sm"></span>
+
+          Guardando...
+        } @else {
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+
+          {{ modoEdicion() ? 'Actualizar cliente' : 'Crear cliente' }}
+        }
       </button>
     </div>
   </form>

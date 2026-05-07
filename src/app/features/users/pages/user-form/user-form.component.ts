@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '../../../../core/services/usuario.service';
 import { Rol } from '../../../../core/models/usuario.model';
+import { ModalService } from '../../../../shared/services/modal.service';
 
 @Component({
   selector: 'app-user-form',
@@ -17,6 +18,7 @@ export class UserFormComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly usuarioService = inject(UsuarioService);
+  private readonly modalService = inject(ModalService);
 
   modoEdicion = signal(false);
   usuarioId = signal<number | null>(null);
@@ -78,7 +80,10 @@ export class UserFormComponent implements OnInit {
           ...(val.password ? { password: val.password } : {}),
         })
         .subscribe({
-          next: () => this.router.navigate(['/users']),
+          next: () => {
+            this.router.navigate(['/users']);
+            this.modalService.show('Usuario actualizado exitosamente', 'success');
+          },
           error: (err) => {
             this.error.set(err.error?.message ?? 'Error al actualizar');
             this.guardando.set(false);
@@ -94,7 +99,11 @@ export class UserFormComponent implements OnInit {
           rol: val.rol as Rol,
         })
         .subscribe({
-          next: () => this.router.navigate(['/users']),
+          next: () => {
+            this.router.navigate(['/users']);
+            this.modalService.show('Usuario creado exitosamente', 'success');
+          },
+
           error: (err) => {
             this.error.set(err.error?.message ?? 'Error al crear usuario');
             this.guardando.set(false);

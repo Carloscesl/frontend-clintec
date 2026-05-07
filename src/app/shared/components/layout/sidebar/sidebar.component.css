@@ -1,116 +1,177 @@
-.sidebar {
-  width: var(--cl-sidebar-width);
-  background: var(--cl-sidebar-bg);
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  transition: width var(--cl-transition);
-  overflow: hidden;
-  flex-shrink: 0;
-  border-right: 1px solid var(--cl-sidebar-border);
+:host {
+  display: block;
 }
+
+.sidebar {
+  width: 260px;
+
+  height: 100%;
+
+  background: var(--bg-sidebar);
+
+  border-right: 1px solid var(--border-color);
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  transition: var(--transition);
+
+  flex-shrink: 0;
+}
+
+/* COLLAPSED */
 
 .sidebar.collapsed {
-  width: var(--cl-sidebar-collapsed);
+  width: 88px;
 }
 
+/* =========================================
+   LOGO
+========================================= */
+
 .sidebar-logo {
+  height: 86px;
+
   display: flex;
+
   align-items: center;
-  gap: 10px;
-  padding: 1.25rem 1rem;
-  border-bottom: 1px solid var(--cl-sidebar-border);
-  min-height: 64px;
+
+  padding: 0 24px;
+
+  gap: 14px;
+
+  border-bottom: 1px solid var(--border-color);
 }
 
 .logo-icon {
-  width: 32px;
-  height: 32px;
-  background: var(--cl-accent);
-  border-radius: 8px;
+  min-width: 44px;
+
+  height: 44px;
+
+  border-radius: var(--radius-md);
+
+  background: linear-gradient(135deg, var(--primary), #14b8d4);
+
   display: flex;
-  align-items: center;
+
   justify-content: center;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #fff;
-  flex-shrink: 0;
+
+  align-items: center;
+
+  color: white;
+
+  font-weight: 800;
+
+  font-size: 1.2rem;
 }
 
 .logo-text {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
+  font-size: 1.7rem;
+
+  font-weight: 700;
+
+  color: var(--text-primary);
 }
+
+/* =========================================
+   NAV
+========================================= */
 
 .sidebar-nav {
   flex: 1;
-  padding: 0.75rem 0.625rem;
+
+  padding: 24px 14px;
+
   display: flex;
+
   flex-direction: column;
-  gap: 2px;
-  overflow-y: auto;
-  overflow-x: hidden;
+
+  gap: 8px;
 }
 
-.sidebar-nav::-webkit-scrollbar {
-  width: 4px;
-}
-.sidebar-nav::-webkit-scrollbar-thumb {
-  background: var(--cl-sidebar-border);
-  border-radius: 4px;
-}
+/* =========================================
+   ITEM
+========================================= */
 
 .nav-item {
+  height: 54px;
+
+  border-radius: var(--radius-md);
+
   display: flex;
+
   align-items: center;
-  gap: 10px;
-  padding: 0.625rem 0.75rem;
-  border-radius: 8px;
-  color: var(--cl-sidebar-text);
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition:
-    background var(--cl-transition),
-    color var(--cl-transition);
-  white-space: nowrap;
-  cursor: pointer;
+
+  gap: 14px;
+
+  padding: 0 16px;
+
+  color: var(--text-secondary);
+
   text-decoration: none;
-  width: 100%;
-  text-align: left;
+
+  border: 1px solid transparent;
+
+  transition: var(--transition);
+
+  background: transparent;
+
+  cursor: pointer;
 }
 
 .nav-item:hover {
-  background: var(--cl-sidebar-hover);
-  color: #e5e7eb;
+  background: rgba(255, 255, 255, 0.03);
+
+  color: var(--text-primary);
 }
 
 .nav-item.active {
-  background: var(--cl-sidebar-active-soft);
-  color: #60a5fa;
-}
+  background: rgba(0, 212, 170, 0.12);
 
-.nav-item.active .nav-icon {
-  stroke: #60a5fa;
+  color: var(--primary);
+
+  border-color: rgba(0, 212, 170, 0.15);
 }
 
 .nav-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  stroke: currentColor;
+  width: 22px;
+
+  height: 22px;
+
+  min-width: 22px;
 }
 
 .nav-label {
-  white-space: nowrap;
-  overflow: hidden;
+  font-size: 1rem;
+
+  font-weight: 600;
 }
 
+/* =========================================
+   FOOTER
+========================================= */
+
 .sidebar-footer {
-  padding: 0.625rem;
-  border-top: 1px solid var(--cl-sidebar-border);
+  padding: 18px 14px;
+
+  border-top: 1px solid var(--border-color);
+}
+
+/* =========================================
+   COLLAPSED
+========================================= */
+
+.sidebar.collapsed .nav-item {
+  justify-content: center;
+
+  padding: 0;
+}
+
+.sidebar.collapsed .sidebar-logo {
+  justify-content: center;
+
+  padding: 0;
 }

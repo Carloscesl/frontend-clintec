@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { ModalService } from '../../../../shared/services/modal.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent {
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
     private readonly router: Router,
+    private readonly modalService: ModalService,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -50,7 +52,10 @@ export class LoginComponent {
       },
       error: (err) => {
         this.cargando = false;
-        this.error = err.error?.message || 'Error al iniciar sesión';
+        this.modalService.show(
+          'Error al iniciar sesión: ' + (err.error?.message || 'Error desconocido'),
+          'error',
+        );
       },
     });
   }

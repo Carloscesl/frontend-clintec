@@ -1,19 +1,29 @@
 .layout-wrapper {
   display: flex;
+
   height: 100vh;
+
   overflow: hidden;
-  background: var(--cl-bg);
+
+  background: var(--bg-main);
 }
 
 .layout-main {
   flex: 1;
+
   display: flex;
+
   flex-direction: column;
+
   overflow: hidden;
+
   min-width: 0;
 }
 
 .layout-content {
   flex: 1;
+
   overflow-y: auto;
+
+  background: var(--bg-main);
 }

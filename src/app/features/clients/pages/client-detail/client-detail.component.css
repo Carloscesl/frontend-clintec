@@ -1,70 +1,101 @@
-.page {
-  padding: 24px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.page-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 20px;
-}
-.page-header h2 {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.btn-back {
-  padding: 6px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
-  font-size: 13px;
-  color: #374151;
-}
-.btn-back:hover {
-  background: #f9fafb;
-}
+/* =========================================
+   DETAIL CARD
+========================================= */
 
 .detail-card {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  background: linear-gradient(180deg, var(--bg-navbar) 0%, var(--bg-sidebar) 100%);
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 24px;
+
   overflow: hidden;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
+
+/* =========================================
+   ROW
+========================================= */
 
 .detail-row {
   display: flex;
-  padding: 14px 20px;
-  border-bottom: 1px solid #f3f4f6;
-  font-size: 13px;
+
+  gap: 20px;
+
+  padding: 22px 26px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+  transition: var(--transition);
 }
+
+.detail-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
 .detail-row:last-child {
   border-bottom: none;
 }
 
+/* =========================================
+   LABEL
+========================================= */
+
 .detail-label {
-  width: 160px;
-  font-weight: 500;
-  color: #6b7280;
+  width: 180px;
+
   flex-shrink: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.85rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
 }
+
+/* =========================================
+   VALUE
+========================================= */
 
 .detail-value {
-  color: #111827;
+  color: var(--text-primary);
+
+  font-size: 0.95rem;
+
+  font-weight: 500;
+
+  word-break: break-word;
 }
 
-.loading {
-  text-align: center;
-  padding: 40px;
-  color: #6b7280;
+/* =========================================
+   BUTTON SECONDARY
+========================================= */
+
+.btn-secondary svg {
+  width: 16px;
+
+  height: 16px;
 }
 
-.error {
-  background: #fef2f2;
-  color: #dc2626;
-  padding: 10px 14px;
-  border-radius: 8px;
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .detail-row {
+    flex-direction: column;
+
+    gap: 8px;
+
+    padding: 18px;
+  }
+
+  .detail-label {
+    width: 100%;
+  }
 }

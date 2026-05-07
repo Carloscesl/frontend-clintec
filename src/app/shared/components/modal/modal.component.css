@@ -1,0 +1,50 @@
+.modal-alert {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 9999;
+  min-width: 320px;
+  border-radius: 12px;
+  padding: 16px;
+  animation: slideIn 0.3s ease;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-content button {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.success {
+  background: #10b981;
+}
+
+.error {
+  background: #ef4444;
+}
+
+.warning {
+  background: #f59e0b;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
