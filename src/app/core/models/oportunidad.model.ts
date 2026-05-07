@@ -21,6 +21,11 @@ export interface OportunidadRequest {
   fechaCierreEstimada: string;
 }
 
+export interface LookupItem {
+  id: number;
+  nombre: string;
+}
+
 export type EtapaOportunidad =
   | 'PROSPECCIÓN'
   | 'CALIFICACIÓN'

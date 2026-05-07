@@ -1,0 +1,174 @@
+<div class="page-container">
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h1>Oportunidades</h1>
+
+      <p class="page-subtitle">Gestión y seguimiento de oportunidades comerciales</p>
+    </div>
+
+    <button class="btn-primary" (click)="irAcrear()">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+
+      Nueva oportunidad
+    </button>
+  </div>
+
+  <!-- LOADING GENERAL -->
+  @if (loading()) {
+    <div class="estado-loading">
+      <div class="spinner"></div>
+      <span>Cargando oportunidades...</span>
+    </div>
+  }
+
+  <!-- ERROR -->
+  @if (error()) {
+    <div class="estado-error">
+      <span>{{ error() }}</span>
+
+      <button (click)="cargarTodo()">Reintentar</button>
+    </div>
+  }
+
+  <!-- CONTENIDO -->
+  @if (!loading() && !error()) {
+    <div class="asesores-grid">
+      @for (asesor of dataAsesores(); track asesor.id) {
+        <div class="asesor-card">
+          <!-- HEADER CARD -->
+          <div class="asesor-header">
+            <div class="asesor-avatar">
+              {{ asesor.nombre.slice(0, 2).toUpperCase() }}
+            </div>
+
+            <div class="asesor-info">
+              <h3>{{ asesor.nombre }}</h3>
+
+              <span>
+                {{ asesor.email }}
+              </span>
+            </div>
+          </div>
+
+          <!-- STATS -->
+          <div class="asesor-stats">
+            <div class="stat-item">
+              <span class="stat-label">Oportunidades</span>
+
+              <span class="stat-value">
+                {{ asesor.oportunidades.length }}
+              </span>
+            </div>
+          </div>
+
+          <!-- LOADING INTERNO -->
+          @if (asesor.cargandoOps) {
+            <div class="mini-loading">
+              <div class="spinner-sm"></div>
+
+              <span>Cargando...</span>
+            </div>
+          }
+
+          <!-- EMPTY -->
+          @if (!asesor.cargandoOps && asesor.oportunidades.length === 0) {
+            <div class="empty-state">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 12l2 2 4-4m5-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+
+              <span>No tiene oportunidades asignadas</span>
+            </div>
+          }
+
+          <!-- LISTA -->
+          @if (!asesor.cargandoOps && asesor.oportunidades.length > 0) {
+            <div class="op-list">
+              @for (op of asesor.oportunidades; track op.idOportunidad) {
+                <div class="op-card">
+                  <!-- TOP -->
+                  <div class="op-top">
+                    <div class="op-badge">
+                      {{ op.etapa }}
+                    </div>
+
+                    <div
+                      class="op-status"
+                      [class.ganada]="op.estado === 'GANADA'"
+                      [class.perdida]="op.estado === 'PERDIDA'"
+                    >
+                      {{ op.estado }}
+                    </div>
+                  </div>
+
+                  <!-- BODY -->
+                  <div class="op-body">
+                    <h4>
+                      {{ op.descripcion }}
+                    </h4>
+
+                    <div class="op-meta">
+                      <span>
+                        {{ op.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
+                      </span>
+
+                      <span>
+                        {{ op.fechaCierreEstimada | date: 'dd/MM/yyyy' }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- FOOTER -->
+                  <div class="op-footer">
+                    <div class="probabilidad">
+                      <span>Probabilidad</span>
+
+                      <strong> {{ op.probabilidad }}% </strong>
+                    </div>
+
+                    <button
+                      class="btn-icon btn-icon--edit"
+                      (click)="irAeditar(op.idOportunidad); $event.stopPropagation()"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
+
+                      Editar
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -18,8 +18,12 @@ export class OportunidadService {
     return this.http.get<OportunidadResponse[]>(this.URL);
   }
 
+  listarPorAsesor(idAsesor: number): Observable<OportunidadResponse[]> {
+    return this.http.get<OportunidadResponse[]>(`${this.URL}/idasesor/${idAsesor}`);
+  }
+
   buscarPorId(id: number): Observable<OportunidadResponse> {
-    return this.http.get<OportunidadResponse>(`${this.URL}/${id}`);
+    return this.http.get<OportunidadResponse>(`${this.URL}/id/${id}`);
   }
 
   buscarPorAsesor(id: number): Observable<OportunidadResponse[]> {

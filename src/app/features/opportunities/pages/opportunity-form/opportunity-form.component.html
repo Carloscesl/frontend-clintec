@@ -1,0 +1,143 @@
+<div class="page-container">
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h1>
+        {{ modoEdicion() ? 'Editar oportunidad' : 'Nueva oportunidad' }}
+      </h1>
+
+      <p class="page-subtitle">
+        {{
+          modoEdicion()
+            ? 'Actualiza la información de la oportunidad'
+            : 'Completa el formulario para registrar una oportunidad'
+        }}
+      </p>
+    </div>
+  </div>
+
+  <!-- ERROR -->
+  @if (error()) {
+    <div class="estado-error">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- FORM -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
+    <!-- CLIENTE -->
+    <div class="cl-campo">
+      <label> Cliente * </label>
+
+      <select formControlName="clienteId">
+        <option value="0">Selecciona un cliente</option>
+
+        @for (cliente of ListaClientes(); track cliente.id) {
+          <option [value]="cliente.id">
+            {{ cliente.nombre }}
+          </option>
+        }
+      </select>
+
+      @if (f['clienteId'].touched && f['clienteId'].invalid) {
+        <span class="cl-error"> Debes seleccionar un cliente </span>
+      }
+    </div>
+
+    <!-- ASESOR -->
+    <div class="cl-campo">
+      <label> Asesor * </label>
+
+      <select formControlName="asesorId">
+        <option value="0">Selecciona un asesor</option>
+
+        @for (asesor of ListaUsuarios(); track asesor.id) {
+          <option [value]="asesor.id">
+            {{ asesor.nombre }}
+          </option>
+        }
+      </select>
+
+      @if (f['asesorId'].touched && f['asesorId'].invalid) {
+        <span class="cl-error"> Debes seleccionar un asesor </span>
+      }
+    </div>
+
+    <!-- DESCRIPCION -->
+    <div class="cl-campo">
+      <label> Descripción * </label>
+
+      <textarea
+        formControlName="descripcion"
+        rows="5"
+        placeholder="Describe la oportunidad..."
+      ></textarea>
+
+      @if (f['descripcion'].touched) {
+        @if (f['descripcion'].hasError('required')) {
+          <span class="cl-error"> La descripción es requerida </span>
+        }
+
+        @if (f['descripcion'].hasError('minlength')) {
+          <span class="cl-error"> Mínimo 10 caracteres </span>
+        }
+      }
+    </div>
+
+    <!-- VALOR -->
+    <div class="cl-campo">
+      <label> Valor estimado * </label>
+
+      <input formControlName="valorEstimado" type="number" placeholder="Ej: 5000000" />
+
+      @if (f['valorEstimado'].touched) {
+        @if (f['valorEstimado'].hasError('required')) {
+          <span class="cl-error"> El valor es requerido </span>
+        }
+
+        @if (f['valorEstimado'].hasError('min')) {
+          <span class="cl-error"> El valor debe ser mayor o igual a 0 </span>
+        }
+      }
+    </div>
+
+    <!-- FECHA -->
+    <div class="cl-campo">
+      <label> Fecha estimada de cierre * </label>
+
+      <input formControlName="fechaCierreEstimada" type="date" />
+
+      @if (f['fechaCierreEstimada'].touched && f['fechaCierreEstimada'].hasError('required')) {
+        <span class="cl-error"> La fecha es requerida </span>
+      }
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="cl-form-actions">
+      <!-- CANCELAR -->
+      <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
+
+      <!-- SUBMIT -->
+      <button type="submit" class="btn-primary" [disabled]="guardando()">
+        @if (guardando()) {
+          <span class="spinner-sm"></span>
+
+          Guardando...
+        } @else {
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+
+          {{ modoEdicion() ? 'Actualizar oportunidad' : 'Crear oportunidad' }}
+        }
+      </button>
+    </div>
+  </form>
+</div>

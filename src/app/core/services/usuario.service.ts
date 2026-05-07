@@ -19,6 +19,12 @@ export class UsuarioService {
     return this.http.get<UsuarioResponse[]>(this.URL);
   }
 
+  listarPorRol(rol: Rol): Observable<UsuarioResponse[]> {
+    return this.http.get<UsuarioResponse[]>(`${this.URL}/filtrar`, {
+      params: { rol },
+    });
+  }
+
   buscarPorId(id: number): Observable<UsuarioResponse> {
     return this.http.get<UsuarioResponse>(`${this.URL}/id/${id}`);
   }
