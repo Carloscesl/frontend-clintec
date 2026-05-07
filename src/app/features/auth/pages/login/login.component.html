@@ -12,10 +12,11 @@
           type="email"
           formControlName="email"
           placeholder="correo@ejemplo.com"
+          data-testid="email-input"
           [class.input-error]="campo('email')?.invalid && campo('email')?.touched"
         />
         @if (campo('email')?.invalid && campo('email')?.touched) {
-          <span class="error-texto">
+          <span class="error-texto" data-testid="email-error">
             @if (campo('email')?.errors?.['required']) {
               El email es obligatorio
             }
@@ -32,10 +33,11 @@
           type="password"
           formControlName="password"
           placeholder="••••••••"
+          data-testid="password-input"
           [class.input-error]="campo('password')?.invalid && campo('password')?.touched"
         />
         @if (campo('password')?.invalid && campo('password')?.touched) {
-          <span class="error-texto">
+          <span class="error-texto" data-testid="password-error">
             @if (campo('password')?.errors?.['required']) {
               La contraseña es obligatoria
             }
@@ -46,11 +48,13 @@
         }
       </div>
       @if (error) {
-        <div class="error-backend">
+        <div class="error-backend" data-testid="error-backend">
           {{ error }}
         </div>
       }
-      <button type="submit" class="btn-login" [disabled]="cargando">Iniciar Sesión</button>
+      <button type="submit" class="btn-login" data-testid="submit-button" [disabled]="cargando">
+        Iniciar Sesión
+      </button>
     </form>
   </div>
 </div>
