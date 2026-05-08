@@ -42,8 +42,8 @@ export class OportunidadService {
     return this.http.put<OportunidadResponse>(`${this.URL}/${id}`, dto);
   }
 
-  cambiarEtapa(id: number, etapa: EtapaOportunidad): Observable<OportunidadResponse> {
-    return this.http.patch<OportunidadResponse>(`${this.URL}/${id}/etapa?etapa=${etapa}`, {});
+  cambiarEtapa(id: number, etapa: EtapaOportunidad) {
+    return this.http.patch(`${this.URL}/${id}/etapa?etapa=${etapa}`, {});
   }
 
   ajustarProbabilidad(id: number, probabilidad: number): Observable<OportunidadResponse> {

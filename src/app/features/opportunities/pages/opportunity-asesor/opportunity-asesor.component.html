@@ -1,0 +1,98 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Oportunidades</h1>
+      <p class="page-subtitle">Pipeline de ventas por etapa</p>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="estado-loading">
+      <div class="spinner"></div>
+      <span>Cargando oportunidades...</span>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="estado-error">
+      <span>{{ error() }}</span>
+      <button (click)="cargar()">Reintentar</button>
+    </div>
+  }
+
+  @if (!loading() && !error()) {
+    <div class="kanban-board">
+      @for (col of columnas; track col.etapa) {
+        <div class="kanban-col">
+          <div class="col-header">
+            <div class="col-header-left">
+              <span class="col-dot" [style.background]="col.color"></span>
+              <span class="col-title">{{ col.label }}</span>
+            </div>
+            <span class="col-count">{{ col.items.length }}</span>
+          </div>
+
+          <!--
+            ✅ cdkDropList → convierte este div en una zona donde se pueden soltar cards
+            [id]           → identificador único de esta lista
+            [cdkDropListData] → los datos de esta lista (col.items)
+            [cdkDropListConnectedTo] → con qué otras listas está conectada
+            (cdkDropListDropped) → evento que se dispara al soltar
+          -->
+          <div
+            class="col-cards"
+            cdkDropList
+            [id]="col.etapa"
+            [cdkDropListData]="col.items"
+            [cdkDropListConnectedTo]="connectedLists"
+            (cdkDropListDropped)="onDrop($event, col)"
+          >
+            @for (op of col.items; track op.idOportunidad) {
+              <!--
+                ✅ cdkDrag → convierte este div en un elemento arrastrable
+                [cdkDragData] → datos del item que se arrastra
+              -->
+              <div
+                class="kanban-card"
+                cdkDrag
+                [cdkDragData]="op"
+                (click)="irAeditar(op.idOportunidad)"
+              >
+                <!--
+                  ✅ cdkDragPlaceholder → el espacio vacío que se muestra
+                  mientras arrastras la card
+                -->
+                <div class="drag-placeholder" *cdkDragPlaceholder></div>
+
+                <div class="usuario-cell">
+                  <div class="avatar-sm">
+                    {{ getIniciales(getClienteNombre(op.clienteId)) }}
+                  </div>
+                  <span class="usuario-nombre">
+                    {{ getClienteNombre(op.clienteId) }}
+                  </span>
+                </div>
+
+                <div class="card-info">
+                  <span class="badge badge-info">
+                    {{ getClienteEmpresa(op.clienteId) }}
+                  </span>
+                </div>
+
+                <div class="text-muted">Asesor: {{ nombreAsesor() }}</div>
+
+                <div class="card-valor">
+                  $ {{ op.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
+                </div>
+
+                <div class="text-muted">{{ op.descripcion }}</div>
+              </div>
+            } @empty {
+              <div class="empty-state">Sin oportunidades</div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -7,8 +7,8 @@ export const OPPORTUNITIES_ROUTES: Routes = [
     canActivate: [roleGuard],
     data: { roles: ['ADMINISTRADOR', 'GERENTE', 'ASESOR'] },
     loadComponent: () =>
-      import('./pages/opportunity-main/opportunity-main.component').then(
-        (m) => m.OpportunityMainComponent,
+      import('./pages/opportunity/opportunity-shell.component').then(
+        (m) => m.OpportunityShellComponent,
       ),
   },
   {
@@ -23,7 +23,7 @@ export const OPPORTUNITIES_ROUTES: Routes = [
   {
     path: 'opportunities/editar/:id',
     canActivate: [roleGuard],
-    data: { roles: ['ADMINISTRADOR', 'GERENTE'] },
+    data: { roles: ['ADMINISTRADOR', 'GERENTE', 'ASESOR'] },
     loadComponent: () =>
       import('./pages/opportunity-form/opportunity-form.component').then(
         (m) => m.OpportunityFormComponent,

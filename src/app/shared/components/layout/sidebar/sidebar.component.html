@@ -11,11 +11,11 @@
   <nav class="sidebar-nav">
     @for (item of itemsVisibles; track item.path) {
       <a
-        [routerLink]="item.path"
+        [routerLink]="getPathItem(item)"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
         class="nav-item"
-        [title]="collapsed() ? item.label : ''"
+        [title]="collapsed() ? getLabelItem(item) : ''"
       >
         <svg
           class="nav-icon"
@@ -29,7 +29,7 @@
           <path [attr.d]="item.icon" />
         </svg>
         @if (!collapsed()) {
-          <span class="nav-label">{{ item.label }}</span>
+          <span class="nav-label">{{ getLabelItem(item) }}</span>
         }
       </a>
     }

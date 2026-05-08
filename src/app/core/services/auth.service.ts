@@ -31,6 +31,10 @@ export class AuthService {
     const user = localStorage.getItem('clintec_user');
     return user ? JSON.parse(user) : null;
   }
+  obtenerUsuarioId(): number | null {
+    const user = this.obtenerUsuario();
+    return user?.id ?? null;
+  }
 
   obtenerRol(): string | null {
     const user = this.obtenerUsuario();

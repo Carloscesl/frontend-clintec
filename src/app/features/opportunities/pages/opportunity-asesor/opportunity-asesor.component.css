@@ -1,0 +1,178 @@
+.kanban-board {
+  display: flex;
+  gap: 18px;
+  padding: 20px;
+  overflow-x: auto;
+  align-items: flex-start;
+}
+
+/* ───────────────────────────────
+   COLUMNAS
+─────────────────────────────── */
+.kanban-col {
+  min-width: 300px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 140px);
+}
+
+/* HEADER COLUMNA */
+.col-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.col-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.col-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.col-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.col-count {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* ───────────────────────────────
+   ZONA DRAG
+─────────────────────────────── */
+.col-cards {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  min-height: 200px;
+}
+
+/* ───────────────────────────────
+   CARD
+─────────────────────────────── */
+.kanban-card {
+  background: linear-gradient(180deg, var(--bg-navbar), var(--bg-sidebar));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  cursor: grab;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kanban-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
+.kanban-card:active {
+  cursor: grabbing;
+}
+
+/* ───────────────────────────────
+   USER
+─────────────────────────────── */
+.usuario-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-sm {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.usuario-nombre {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* ───────────────────────────────
+   BADGE EMPRESA
+─────────────────────────────── */
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+.badge-info {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--info);
+}
+
+/* ───────────────────────────────
+   TEXTO
+─────────────────────────────── */
+.text-muted {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* ───────────────────────────────
+   VALOR
+─────────────────────────────── */
+.card-valor {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--success);
+}
+
+/* ───────────────────────────────
+   EMPTY STATE
+─────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* ───────────────────────────────
+   DRAG & DROP FX (CDK)
+─────────────────────────────── */
+.cdk-drag-preview {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  border-radius: var(--radius-md);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.2;
+  border: 2px dashed var(--primary);
+}
+
+.cdk-drop-list-dragging .kanban-card {
+  transition: transform 0.2s ease;
+}

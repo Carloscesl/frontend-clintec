@@ -39,13 +39,13 @@
     <div class="estado-error">
       <span>{{ error() }}</span>
 
-      <button (click)="cargar()">Reintentar</button>
+      <button (click)="cargarDatos()">Reintentar</button>
     </div>
   }
 
   <!-- TABLE -->
   @if (!loading() && !error()) {
-    @if (clientes().length === 0) {
+    @if (clientesFiltrados().length === 0) {
       <div class="table-wrapper">
         <div class="empty-state">
           <svg
@@ -83,7 +83,7 @@
           </thead>
 
           <tbody>
-            @for (c of clientes(); track c.id) {
+            @for (c of clientesFiltrados(); track c.id) {
               <tr>
                 <!-- CLIENTE -->
                 <td>
