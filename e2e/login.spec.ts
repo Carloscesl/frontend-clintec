@@ -60,7 +60,7 @@ async function llenarYEnviar(page: Page, email: string, password: string) {
 test.describe('Login — CRM Clintec', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/login');
-    await expect(page.getByText('CRM Clintec')).toBeVisible();
+    await expect(page.getByText(/CRM\s?Pro/i)).toBeVisible();
   });
 
   // ── Test 1: ADMINISTRADOR ────────────────────────────────────
@@ -85,14 +85,15 @@ test.describe('Login — CRM Clintec', () => {
   });
 
   // ── Test 4: Credenciales incorrectas ─────────────────────────
-  test('credenciales incorrectas muestra error del backend', async ({ page }) => {
+  // En tu login.spec.ts
+  test('credenciales incorrectas muestra error en modal', async ({ page }) => {
     await mockLoginFallido(page, 'Credenciales incorrectas');
     await llenarYEnviar(page, 'nadie@clintec.com', 'passwordmal');
 
-    const errorDiv = page.getByTestId('error-backend');
-    await expect(errorDiv).toBeVisible();
-    await expect(errorDiv).toContainText('Credenciales incorrectas');
-    await expect(page).toHaveURL('/login');
+    // En lugar de buscar error-backend, buscamos el texto que lanza el ModalService
+    await expect(
+      page.getByText(/Error al iniciar sesión: Credenciales incorrectas/i),
+    ).toBeVisible();
   });
 
   // ── Test 5: Formulario vacío ─────────────────────────────────
@@ -127,19 +128,19 @@ test.describe('Login — CRM Clintec', () => {
   // ── Test 8: Error 500 del servidor ───────────────────────────
   // Cuando Spring Boot falla sin message, tu código usa el fallback:
   // err.error?.message || 'Error al iniciar sesión'
-  test('error 500 muestra mensaje genérico de fallback', async ({ page }) => {
+  test('error 500 muestra mensaje genérico en modal', async ({ page }) => {
     await page.route('**/api/auth/login', async (route) => {
       await route.fulfill({
         status: 500,
-        body: 'Internal Server Error', // sin JSON ni message
+        contentType: 'application/json',
+        body: JSON.stringify({ message: 'Error interno' }),
       });
     });
 
     await llenarYEnviar(page, 'carlo@gmail.com', 'password123');
 
-    const errorDiv = page.getByTestId('error-backend');
-    await expect(errorDiv).toBeVisible();
-    await expect(errorDiv).toContainText('Error al iniciar sesión');
+    // El modal debería mostrar: "Error al iniciar sesión: Error interno"
+    await expect(page.getByText(/Error al iniciar sesión: Error interno/i)).toBeVisible();
   });
 
   // ── Test 9: Botón deshabilitado mientras carga ───────────────

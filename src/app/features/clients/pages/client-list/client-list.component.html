@@ -2,13 +2,13 @@
   <!-- HEADER -->
   <div class="page-header">
     <div>
-      <h1>Clientes</h1>
+      <h1 data-testid="clients-title">Clientes</h1>
 
       <p class="page-subtitle">Gestión de clientes registrados</p>
     </div>
 
     @if (puedeCrear) {
-      <button class="btn-primary" (click)="irACrear()">
+      <button class="btn-primary" data-testid="new-client-btn" (click)="irACrear()">
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -27,7 +27,7 @@
 
   <!-- LOADING -->
   @if (loading()) {
-    <div class="estado-loading">
+    <div class="estado-loading" data-testid="clients-loading">
       <div class="spinner"></div>
 
       <span>Cargando clientes...</span>
@@ -36,10 +36,12 @@
 
   <!-- ERROR -->
   @if (error()) {
-    <div class="estado-error">
+    <div class="estado-error" data-testid="clients-error">
       <span>{{ error() }}</span>
 
-      <button (click)="cargarDatos()">Reintentar</button>
+      <button type="button" data-testid="retry-clients-btn" (click)="cargarDatos()">
+        Reintentar
+      </button>
     </div>
   }
 
@@ -47,7 +49,7 @@
   @if (!loading() && !error()) {
     @if (clientesFiltrados().length === 0) {
       <div class="table-wrapper">
-        <div class="empty-state">
+        <div class="empty-state" data-testid="clients-empty">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -57,20 +59,17 @@
             stroke-linejoin="round"
           >
             <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-
             <circle cx="9" cy="7" r="4" />
-
             <path d="M23 21v-2a4 4 0 00-3-3.87" />
-
             <path d="M16 3.13a4 4 0 010 7.75" />
           </svg>
 
-          <span> No hay clientes registrados </span>
+          <span>No hay clientes registrados</span>
         </div>
       </div>
     } @else {
       <div class="table-wrapper">
-        <table class="cl-table">
+        <table class="cl-table" data-testid="clients-table">
           <thead>
             <tr>
               <th>Cliente</th>
@@ -84,7 +83,7 @@
 
           <tbody>
             @for (c of clientesFiltrados(); track c.id) {
-              <tr>
+              <tr [attr.data-testid]="'client-row-' + c.id">
                 <!-- CLIENTE -->
                 <td>
                   <div class="usuario-cell">
@@ -124,7 +123,11 @@
                 <td>
                   <div class="acciones-cell">
                     <!-- VER -->
-                    <button class="btn-icon btn-icon--success" (click)="irADetalle(c.id)">
+                    <button
+                      class="btn-icon btn-icon--success"
+                      [attr.data-testid]="'view-client-' + c.id"
+                      (click)="irADetalle(c.id)"
+                    >
                       <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -134,7 +137,6 @@
                         stroke-linejoin="round"
                       >
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-
                         <circle cx="12" cy="12" r="3" />
                       </svg>
 
@@ -143,7 +145,11 @@
 
                     <!-- EDITAR -->
                     @if (puedeEditar) {
-                      <button class="btn-icon btn-icon--edit" (click)="irAEditar(c.id)">
+                      <button
+                        class="btn-icon btn-icon--edit"
+                        [attr.data-testid]="'edit-client-' + c.id"
+                        (click)="irAEditar(c.id)"
+                      >
                         <svg
                           viewBox="0 0 24 24"
                           fill="none"

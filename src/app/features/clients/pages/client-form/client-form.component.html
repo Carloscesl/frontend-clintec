@@ -1,12 +1,12 @@
-<div class="page-container">
+<div class="page-container" data-testid="client-form-page">
   <!-- HEADER -->
   <div class="page-header">
     <div>
-      <h1>
+      <h1 data-testid="client-form-title">
         {{ modoEdicion() ? 'Editar cliente' : 'Nuevo cliente' }}
       </h1>
 
-      <p class="page-subtitle">
+      <p class="page-subtitle" data-testid="client-form-subtitle">
         {{
           modoEdicion()
             ? 'Modifica la información del cliente'
@@ -18,82 +18,115 @@
 
   <!-- ERROR -->
   @if (error()) {
-    <div class="estado-error">
+    <div class="estado-error" data-testid="client-form-error">
       {{ error() }}
     </div>
   }
 
   <!-- FORM -->
-  <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form" data-testid="client-form">
     <!-- NOMBRE -->
     <div class="cl-campo">
-      <label> Nombre completo * </label>
+      <label for="nombreCliente">Nombre completo *</label>
 
-      <input formControlName="nombreCliente" type="text" placeholder="Nombre del cliente" />
+      <input
+        id="nombreCliente"
+        formControlName="nombreCliente"
+        type="text"
+        placeholder="Nombre del cliente"
+        data-testid="input-nombre"
+      />
 
       @if (f['nombreCliente'].touched) {
         @if (f['nombreCliente'].hasError('required')) {
-          <span class="cl-error"> El nombre es requerido </span>
+          <span class="cl-error" data-testid="error-nombre-required"> El nombre es requerido </span>
         }
 
         @if (f['nombreCliente'].hasError('minlength')) {
-          <span class="cl-error"> Mínimo 2 caracteres </span>
+          <span class="cl-error" data-testid="error-nombre-min"> Mínimo 2 caracteres </span>
         }
       }
     </div>
 
     <!-- EMAIL -->
     <div class="cl-campo">
-      <label> Email * </label>
+      <label for="email">Email *</label>
 
-      <input formControlName="email" type="email" placeholder="correo@ejemplo.com" />
+      <input
+        id="email"
+        formControlName="email"
+        type="email"
+        placeholder="correo@ejemplo.com"
+        data-testid="input-email"
+      />
 
       @if (f['email'].touched) {
         @if (f['email'].hasError('required')) {
-          <span class="cl-error"> El email es requerido </span>
+          <span class="cl-error" data-testid="error-email-required"> El email es requerido </span>
         }
 
         @if (f['email'].hasError('email')) {
-          <span class="cl-error"> Email inválido </span>
+          <span class="cl-error" data-testid="error-email-invalid"> Email inválido </span>
         }
       }
     </div>
 
     <!-- TELEFONO -->
     <div class="cl-campo">
-      <label> Teléfono * </label>
+      <label for="telefono">Teléfono *</label>
 
-      <input formControlName="telefono" type="text" placeholder="300 000 0000" />
+      <input
+        id="telefono"
+        formControlName="telefono"
+        type="text"
+        placeholder="300 000 0000"
+        data-testid="input-telefono"
+      />
 
       @if (f['telefono'].touched && f['telefono'].hasError('required')) {
-        <span class="cl-error"> El teléfono es requerido </span>
+        <span class="cl-error" data-testid="error-telefono-required">
+          El teléfono es requerido
+        </span>
       }
     </div>
 
     <!-- EMPRESA -->
     <div class="cl-campo">
-      <label> Empresa </label>
+      <label for="empresa">Empresa</label>
 
-      <input formControlName="empresa" type="text" placeholder="Nombre de la empresa" />
+      <input
+        id="empresa"
+        formControlName="empresa"
+        type="text"
+        placeholder="Nombre de la empresa"
+        data-testid="input-empresa"
+      />
     </div>
 
     <!-- DIRECCION -->
     <div class="cl-campo">
-      <label> Dirección </label>
+      <label for="direccion">Dirección</label>
 
-      <input formControlName="direccion" type="text" placeholder="Dirección del cliente" />
+      <input
+        id="direccion"
+        formControlName="direccion"
+        type="text"
+        placeholder="Dirección del cliente"
+        data-testid="input-direccion"
+      />
     </div>
 
     <!-- ACTIONS -->
     <div class="cl-form-actions">
       <!-- CANCEL -->
-      <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
+      <button type="button" class="btn-secondary" (click)="cancelar()" data-testid="btn-cancelar">
+        Cancelar
+      </button>
 
       <!-- SUBMIT -->
-      <button type="submit" class="btn-primary" [disabled]="guardando()">
+      <button type="submit" class="btn-primary" [disabled]="guardando()" data-testid="btn-guardar">
         @if (guardando()) {
           <span class="spinner-sm"></span>
-
           Guardando...
         } @else {
           <svg

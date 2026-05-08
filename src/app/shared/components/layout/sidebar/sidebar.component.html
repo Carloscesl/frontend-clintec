@@ -16,6 +16,7 @@
         [routerLinkActiveOptions]="{ exact: true }"
         class="nav-item"
         [title]="collapsed() ? getLabelItem(item) : ''"
+        [attr.data-testid]="'menu-' + item.path.replace('/', '')"
       >
         <svg
           class="nav-icon"
