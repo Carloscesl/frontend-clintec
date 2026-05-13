@@ -1,0 +1,150 @@
+<!-- OVERLAY -->
+<div class="modal-overlay" (click)="cerrar.emit()">
+  <!-- PANEL -->
+  <div class="modal-panel" (click)="$event.stopPropagation()">
+    <!-- HEADER -->
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-title">Ajustar probabilidad</h3>
+
+        <p class="modal-subtitle">
+          Etapa:
+          <strong>{{ etapa }}</strong>
+          — Rango válido:
+          {{ rango.min }}% – {{ rango.max }}%
+        </p>
+      </div>
+
+      <button type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
+    </div>
+
+    <!-- DISPLAY -->
+    <div class="prob-display">
+      <!-- NUMERO -->
+      <span class="prob-numero" [style.color]="getColor(valorActual)"> {{ valorActual }}% </span>
+
+      <!-- BARRA -->
+      <div class="prob-barra-wrap">
+        <div class="prob-barra-fondo"></div>
+
+        <div
+          class="prob-barra-fill"
+          [style.width.%]="valorActual"
+          [style.background]="getColor(valorActual)"
+        ></div>
+
+        <!-- MIN -->
+        <div
+          class="prob-marker prob-marker--min"
+          [style.left.%]="rango.min"
+          [title]="'Mínimo permitido: ' + rango.min + '%'"
+        ></div>
+
+        <!-- MAX -->
+        <div
+          class="prob-marker prob-marker--max"
+          [style.left.%]="rango.max"
+          [title]="'Máximo permitido: ' + rango.max + '%'"
+        ></div>
+      </div>
+
+      <!-- LABELS -->
+      <div class="prob-labels">
+        <span>0%</span>
+        <span>50%</span>
+        <span>100%</span>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grupo">
+        <label for="probabilidad"> Probabilidad de cierre </label>
+
+        <!-- RANGE -->
+        <input
+          id="probabilidad"
+          type="range"
+          class="prob-slider"
+          formControlName="probabilidad"
+          [min]="rango.min"
+          [max]="rango.max"
+          step="1"
+          [style.accent-color]="getColor(valorActual)"
+        />
+
+        <!-- NUMBER -->
+        <div class="input-num-wrap">
+          <input
+            type="number"
+            class="input-num"
+            formControlName="probabilidad"
+            [min]="rango.min"
+            [max]="rango.max"
+          />
+
+          <span class="input-num-suffix">%</span>
+        </div>
+
+        <!-- ERRORES -->
+        @if (f['probabilidad'].touched || f['probabilidad'].dirty) {
+          @if (f['probabilidad'].hasError('min')) {
+            <span class="campo-error"> El mínimo para {{ etapa }} es {{ rango.min }}% </span>
+          }
+
+          @if (f['probabilidad'].hasError('max')) {
+            <span class="campo-error"> El máximo para {{ etapa }} es {{ rango.max }}% </span>
+          }
+
+          @if (f['probabilidad'].hasError('required')) {
+            <span class="campo-error"> Debe ingresar una probabilidad válida </span>
+          }
+        }
+      </div>
+
+      <!-- ERROR BACKEND -->
+      @if (error()) {
+        <div class="estado-error" style="margin-bottom: 16px">
+          <span>{{ error() }}</span>
+        </div>
+      }
+
+      <!-- ACTIONS -->
+      <div class="modal-actions">
+        <!-- RESET -->
+        <button
+          type="button"
+          class="btn-reset"
+          (click)="resetearDefault()"
+          [title]="'Valor sugerido: ' + rango.default + '%'"
+        >
+          ↺ Default ({{ rango.default }}%)
+        </button>
+
+        <!-- BOTONES -->
+        <div style="display: flex; gap: 10px; flex-wrap: wrap">
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="cerrar.emit()"
+            style="height: 44px; padding: 0 24px; border-radius: 12px"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="form.invalid || guardando()"
+            style="height: 44px; padding: 0 24px; border-radius: 12px"
+          >
+            @if (guardando()) {
+              Guardando...
+            } @else {
+              Guardar cambios
+            }
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -6,6 +6,7 @@
     </div>
   </div>
 
+  <!-- LOADING -->
   @if (loading()) {
     <div class="estado-loading">
       <div class="spinner"></div>
@@ -13,6 +14,7 @@
     </div>
   }
 
+  <!-- ERROR -->
   @if (error()) {
     <div class="estado-error">
       <span>{{ error() }}</span>
@@ -20,25 +22,24 @@
     </div>
   }
 
+  <!-- CONTENIDO -->
   @if (!loading() && !error()) {
     <div class="kanban-board">
       @for (col of columnas; track col.etapa) {
         <div class="kanban-col">
+          <!-- HEADER COLUMNA -->
           <div class="col-header">
             <div class="col-header-left">
               <span class="col-dot" [style.background]="col.color"></span>
               <span class="col-title">{{ col.label }}</span>
             </div>
-            <span class="col-count">{{ col.items.length }}</span>
+
+            <span class="col-count">
+              {{ col.items.length }}
+            </span>
           </div>
 
-          <!--
-            ✅ cdkDropList → convierte este div en una zona donde se pueden soltar cards
-            [id]           → identificador único de esta lista
-            [cdkDropListData] → los datos de esta lista (col.items)
-            [cdkDropListConnectedTo] → con qué otras listas está conectada
-            (cdkDropListDropped) → evento que se dispara al soltar
-          -->
+          <!-- DROP ZONE -->
           <div
             class="col-cards"
             cdkDropList
@@ -48,44 +49,77 @@
             (cdkDropListDropped)="onDrop($event, col)"
           >
             @for (op of col.items; track op.idOportunidad) {
-              <!--
-                ✅ cdkDrag → convierte este div en un elemento arrastrable
-                [cdkDragData] → datos del item que se arrastra
-              -->
+              <!-- CARD -->
               <div
                 class="kanban-card"
                 cdkDrag
                 [cdkDragData]="op"
-                (click)="irAeditar(op.idOportunidad)"
+                (click)="abrirModalProbabilidad(op, $event)"
               >
-                <!--
-                  ✅ cdkDragPlaceholder → el espacio vacío que se muestra
-                  mientras arrastras la card
-                -->
                 <div class="drag-placeholder" *cdkDragPlaceholder></div>
 
+                <!-- CLIENTE -->
                 <div class="usuario-cell">
                   <div class="avatar-sm">
                     {{ getIniciales(getClienteNombre(op.clienteId)) }}
                   </div>
+
                   <span class="usuario-nombre">
                     {{ getClienteNombre(op.clienteId) }}
                   </span>
                 </div>
 
+                <!-- EMPRESA -->
                 <div class="card-info">
                   <span class="badge badge-info">
                     {{ getClienteEmpresa(op.clienteId) }}
                   </span>
                 </div>
 
-                <div class="text-muted">Asesor: {{ nombreAsesor() }}</div>
-
-                <div class="card-valor">
-                  $ {{ op.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
+                <!-- DESCRIPCION -->
+                <div class="text-muted">
+                  {{ op.descripcion }}
                 </div>
 
-                <div class="text-muted">{{ op.descripcion }}</div>
+                <!-- VALOR -->
+                <div class="card-valor">
+                  {{ op.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
+                </div>
+
+                <!-- PROBABILIDAD -->
+                <div class="card-progress">
+                  <div class="progress-top">
+                    <span>Probabilidad </span>
+                    <strong>{{ op.probabilidad }}%</strong>
+                  </div>
+
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      [style.width.%]="op.probabilidad"
+                      [style.background]="col.color"
+                    ></div>
+                  </div>
+                </div>
+                <button
+                  class="btn-icon btn-icon--edit"
+                  (click)="irAeditar(op.idOportunidad); $event.stopPropagation()"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+
+                  Editar
+                </button>
               </div>
             } @empty {
               <div class="empty-state">Sin oportunidades</div>
@@ -94,5 +128,16 @@
         </div>
       }
     </div>
+  }
+
+  <!-- MODAL -->
+  @if (modalAbierto() && opSeleccionada()) {
+    <app-modal-probabilidad
+      [oportunidadId]="opSeleccionada()!.idOportunidad"
+      [etapa]="opSeleccionada()!.etapa"
+      [probabilidadActual]="opSeleccionada()!.probabilidad"
+      (cerrar)="modalAbierto.set(false)"
+      (guardado)="onProbabilidadGuardada($event)"
+    />
   }
 </div>

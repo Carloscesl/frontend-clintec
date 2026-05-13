@@ -1,6 +1,38 @@
 :host {
   display: block;
+
+  /* FUENTE GLOBAL DEL COMPONENTE */
+  font-family: 'Inter', sans-serif;
 }
+
+/* =========================================
+   RESET FUENTE TOTAL
+========================================= */
+
+*,
+*::before,
+*::after,
+button,
+input,
+select,
+textarea,
+span,
+div,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+svg,
+path {
+  font-family: inherit;
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
 
 .navbar {
   height: 86px;
@@ -10,14 +42,14 @@
   border-bottom: 1px solid var(--border-color);
 
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 
   padding: 0 32px;
 
   flex-shrink: 0;
+
+  font-family: inherit;
 }
 
 /* =========================================
@@ -25,11 +57,15 @@
 ========================================= */
 
 .navbar-title {
+  font-family: inherit;
+
   font-size: 2rem;
 
   font-weight: 700;
 
   color: var(--text-primary);
+
+  letter-spacing: -0.02em;
 }
 
 /* =========================================
@@ -42,6 +78,8 @@
   align-items: center;
 
   gap: 18px;
+
+  font-family: inherit;
 }
 
 /* =========================================
@@ -62,11 +100,12 @@
   padding: 8px 14px;
 
   border-radius: var(--radius-md);
+
+  font-family: inherit;
 }
 
 .avatar {
   width: 42px;
-
   height: 42px;
 
   border-radius: 50%;
@@ -74,18 +113,50 @@
   background: linear-gradient(135deg, var(--primary), #14b8d4);
 
   display: flex;
-
   justify-content: center;
-
   align-items: center;
 
   color: white;
 
+  font-family: inherit;
+
+  font-size: 0.95rem;
   font-weight: 700;
 }
 
 .usuario-nombre {
+  font-family: inherit;
+
   color: var(--text-primary);
+
+  font-size: 0.95rem;
+
+  font-weight: 600;
+
+  line-height: 1;
+}
+
+/* =========================================
+   ROL
+========================================= */
+
+.rol-badge {
+  font-family: inherit;
+
+  font-size: 0.88rem;
+
+  font-weight: 600;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.btn-logout,
+.theme-btn {
+  font-family: inherit;
+
+  font-size: 0.92rem;
 
   font-weight: 600;
 }
@@ -96,7 +167,6 @@
 
 .btn-logout {
   width: 48px;
-
   height: 48px;
 
   border-radius: var(--radius-md);
@@ -108,9 +178,7 @@
   color: var(--text-secondary);
 
   display: flex;
-
   justify-content: center;
-
   align-items: center;
 
   cursor: pointer;
@@ -123,6 +191,10 @@
 
   border-color: rgba(239, 68, 68, 0.2);
 }
+
+/* =========================================
+   THEME BUTTON
+========================================= */
 
 .theme-btn {
   height: 48px;
@@ -140,8 +212,6 @@
   cursor: pointer;
 
   transition: var(--transition);
-
-  font-weight: 600;
 }
 
 .theme-btn:hover {

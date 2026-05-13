@@ -29,4 +29,13 @@ export const OPPORTUNITIES_ROUTES: Routes = [
         (m) => m.OpportunityFormComponent,
       ),
   },
+  {
+    path: 'opportunities/probabilidad/:id',
+    canActivate: [roleGuard],
+    data: { roles: ['ADMINISTRADOR', 'GERENTE', 'ASESOR'] },
+    loadComponent: () =>
+      import('./pages/modal-probabilidad/modal-probabilidad.component').then(
+        (m) => m.ModalProbabilidadComponent,
+      ),
+  },
 ];

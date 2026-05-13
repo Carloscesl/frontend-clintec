@@ -1,5 +1,6 @@
 @import './styles/table.css';
 @import './styles/form.css';
+@import './styles/modal.css';
 
 * {
   margin: 0;
@@ -99,48 +100,4 @@ body {
   --success: #059669;
 
   --info: #2563eb;
-}
-
-/* =========================================
-   TABLE
-========================================= */
-
-.cl-table {
-  width: 100%;
-
-  border-collapse: collapse;
-}
-
-.cl-table thead {
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.cl-table th {
-  text-align: left;
-
-  padding: 18px;
-
-  color: var(--text-secondary);
-
-  font-size: 0.85rem;
-
-  font-weight: 600;
-
-  border-bottom: 1px solid var(--border-color);
-}
-
-.cl-table td {
-  padding: 18px;
-
-  border-bottom: 1px solid var(--border-color);
-
-  color: var(--text-primary);
-}
-
-.cl-table tbody tr {
-  transition: var(--transition);
-}
-
-.cl-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.02);
 }

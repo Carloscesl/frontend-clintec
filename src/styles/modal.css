@@ -1,0 +1,356 @@
+/* =========================================
+   MODAL OVERLAY
+========================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  background: rgba(2, 8, 23, 0.72);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  animation: fadeIn 0.25s ease;
+}
+
+/* =========================================
+   MODAL PANEL
+========================================= */
+
+.modal-panel {
+  width: 100%;
+  max-width: 620px;
+
+  background: linear-gradient(180deg, var(--bg-navbar) 0%, var(--bg-sidebar) 100%);
+
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+
+  padding: 26px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+
+  animation: scaleIn 0.25s ease;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+
+  margin-bottom: 24px;
+}
+
+.modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.modal-subtitle {
+  margin-top: 6px;
+
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.btn-close {
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+
+  cursor: pointer;
+  transition: var(--transition);
+
+  font-size: 1rem;
+}
+
+.btn-close:hover {
+  color: var(--text-primary);
+  border-color: var(--primary);
+  background: rgba(0, 212, 170, 0.08);
+}
+
+/* =========================================
+   DISPLAY PROBABILIDAD
+========================================= */
+
+.prob-display {
+  padding: 22px;
+  border-radius: 20px;
+
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.025);
+
+  margin-bottom: 24px;
+}
+
+.prob-numero {
+  display: block;
+
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+
+  margin-bottom: 18px;
+}
+
+/* =========================================
+   BARRA
+========================================= */
+
+.prob-barra-wrap {
+  position: relative;
+
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+
+  margin-bottom: 10px;
+}
+
+.prob-barra-fondo {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.prob-barra-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  border-radius: inherit;
+  transition: width 0.25s ease;
+}
+
+/* =========================================
+   MARCADORES
+========================================= */
+
+.prob-marker {
+  position: absolute;
+  top: 50%;
+
+  width: 3px;
+  height: 18px;
+
+  transform: translate(-50%, -50%);
+
+  background: white;
+  border-radius: 999px;
+
+  opacity: 0.9;
+}
+
+.prob-marker--min {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.prob-marker--max {
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15);
+}
+
+/* =========================================
+   LABELS
+========================================= */
+
+.prob-labels {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  margin-bottom: 18px;
+}
+
+.form-grupo label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* =========================================
+   RANGE
+========================================= */
+
+.prob-slider {
+  width: 100%;
+  cursor: pointer;
+  height: 8px;
+}
+
+/* =========================================
+   INPUT NUM
+========================================= */
+
+.input-num-wrap {
+  position: relative;
+  max-width: 180px;
+}
+
+.input-num {
+  width: 100%;
+  height: 50px;
+
+  padding: 0 44px 0 16px;
+
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+
+  outline: none;
+  transition: var(--transition);
+
+  font-size: 1rem;
+}
+
+.input-num:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.12);
+}
+
+.input-num-suffix {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* =========================================
+   ERROR
+========================================= */
+
+.campo-error {
+  font-size: 0.82rem;
+  color: var(--danger);
+}
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 24px;
+}
+
+.modal-actions .btn-secondary,
+.modal-actions .btn-primary {
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 12px;
+}
+
+.btn-reset {
+  height: 44px;
+  padding: 0 18px;
+
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+
+  cursor: pointer;
+  font-weight: 600;
+
+  transition: var(--transition);
+}
+
+.btn-reset:hover {
+  border-color: var(--primary);
+  background: rgba(0, 212, 170, 0.08);
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 640px) {
+  .modal-panel {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-reset,
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+
+  .input-num-wrap {
+    max-width: 100%;
+  }
+}

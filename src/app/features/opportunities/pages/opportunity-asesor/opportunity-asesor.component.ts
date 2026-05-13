@@ -4,13 +4,11 @@ import { Router } from '@angular/router';
 
 import { OportunidadService } from '../../../../core/services/oportunidad.service';
 import { ClienteService } from '../../../../core/services/cliente.service';
-import { UsuarioService } from '../../../../core/services/usuario.service';
 import { AuthService } from '../../../../core/services/auth.service';
 
 import { EtapaOportunidad, OportunidadResponse } from '../../../../core/models/oportunidad.model';
 
 import { ClienteResponse } from '../../../../core/models/cliente.model';
-import { UsuarioResponse } from '../../../../core/models/usuario.model';
 
 import {
   CdkDragDrop,
@@ -18,6 +16,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { ModalProbabilidadComponent } from '../modal-probabilidad/modal-probabilidad.component';
 
 interface KanbanColumn {
   etapa: EtapaOportunidad;
@@ -30,7 +29,7 @@ interface KanbanColumn {
 @Component({
   selector: 'app-opportunity-asesor',
   standalone: true,
-  imports: [CommonModule, DragDropModule],
+  imports: [CommonModule, DragDropModule, ModalProbabilidadComponent],
   templateUrl: './opportunity-asesor.component.html',
   styleUrls: ['./opportunity-asesor.component.css'],
 })
@@ -53,14 +52,14 @@ export class OpportunityAsesorComponent implements OnInit {
   // ── KANBAN CONFIG ────────────────────────────────────────
   columnas: KanbanColumn[] = [
     {
-      etapa: 'PROSPECCIÓN',
+      etapa: 'PROSPECCION',
       label: 'Prospección',
       color: '#3B82F6',
       colorRgb: '59,130,246',
       items: [],
     },
     {
-      etapa: 'CALIFICACIÓN',
+      etapa: 'CALIFICACION',
       label: 'Calificación',
       color: '#A855F7',
       colorRgb: '168,85,247',
@@ -68,7 +67,7 @@ export class OpportunityAsesorComponent implements OnInit {
     },
     { etapa: 'PROPUESTA', label: 'Propuesta', color: '#06B6D4', colorRgb: '6,182,212', items: [] },
     {
-      etapa: 'NEGOCIACIÓN',
+      etapa: 'NEGOCIACION',
       label: 'Negociación',
       color: '#F59E0B',
       colorRgb: '245,158,11',
@@ -201,5 +200,28 @@ export class OpportunityAsesorComponent implements OnInit {
 
   irAeditar(id: number): void {
     this.router.navigate(['/opportunities/editar', id]);
+  }
+
+  modalAbierto = signal(false);
+  opSeleccionada = signal<OportunidadResponse | null>(null);
+
+  abrirModalProbabilidad(op: OportunidadResponse, event: Event): void {
+    event.stopPropagation();
+    this.opSeleccionada.set(op);
+    this.modalAbierto.set(true);
+  }
+
+  onProbabilidadGuardada(nuevaProb: number): void {
+    this.oportunidades.update((lista) =>
+      lista.map((o) =>
+        o.idOportunidad === this.opSeleccionada()?.idOportunidad
+          ? { ...o, probabilidad: nuevaProb }
+          : o,
+      ),
+    );
+    this.reconstruirKanban();
+
+    this.modalAbierto.set(false);
+    this.opSeleccionada.set(null);
   }
 }
