@@ -1,0 +1,188 @@
+:host {
+  display: block;
+}
+
+/* =========================================
+   MODAL SIZE
+========================================= */
+
+.modal-panel {
+  max-width: 760px;
+}
+
+/* =========================================
+   STATES
+========================================= */
+
+.estado-loading,
+.estado-error {
+  min-height: 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* =========================================
+   TOP CARD
+========================================= */
+
+.detail-top-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 20px;
+
+  margin-bottom: 22px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.tipo-icon {
+  width: 64px;
+  height: 64px;
+
+  border-radius: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.7rem;
+  font-weight: 700;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  flex-shrink: 0;
+}
+
+.top-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.top-info h4 {
+  font-size: 1.08rem;
+  font-weight: 700;
+
+  color: var(--text-primary);
+}
+
+.top-info p {
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  color: var(--text-primary);
+}
+
+.top-info span {
+  font-size: 0.84rem;
+
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   GRID
+========================================= */
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+
+  margin-bottom: 24px;
+}
+
+.detail-item {
+  padding: 18px;
+
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-item.full {
+  grid-column: 1 / -1;
+}
+
+.detail-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  color: var(--text-secondary);
+
+  text-transform: uppercase;
+}
+
+.detail-item strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  color: var(--text-primary);
+}
+
+/* =========================================
+   NOTE
+========================================= */
+
+.nota-box {
+  font-size: 0.92rem;
+  line-height: 1.6;
+
+  color: var(--text-primary);
+
+  white-space: pre-line;
+}
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-item.full {
+    grid-column: auto;
+  }
+
+  .detail-top-card {
+    align-items: flex-start;
+  }
+
+  .tipo-icon {
+    width: 56px;
+    height: 56px;
+
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal-actions .btn-primary {
+    width: 100%;
+  }
+}

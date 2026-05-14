@@ -1,0 +1,115 @@
+<!-- Overlay -->
+<div class="modal-overlay" (click)="cerrar.emit()">
+  <!-- Panel -->
+  <div class="modal-panel" (click)="$event.stopPropagation()">
+    <!-- HEADER -->
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-title">Detalle de interacción</h3>
+        <p class="modal-subtitle">Información completa del registro</p>
+      </div>
+      <button type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
+    </div>
+
+    <!-- LOADING -->
+    @if (loading()) {
+      <div class="estado-loading">
+        <div class="spinner"></div>
+        <span>Cargando interacción...</span>
+      </div>
+    }
+
+    <!-- ERROR -->
+    @if (error()) {
+      <div class="estado-error">
+        <span>{{ error() }}</span>
+      </div>
+    }
+
+    <!-- CONTENT -->
+    @if (!loading() && !error() && interaccion(); as i) {
+      <!-- TOP CARD -->
+      <div class="detail-top-card">
+        <div
+          class="tipo-icon"
+          [style.background]="getTipoConfig(i.tipo).bg"
+          [style.color]="getTipoConfig(i.tipo).color"
+        >
+          {{ getTipoConfig(i.tipo).icon }}
+        </div>
+
+        <div class="top-info">
+          <h4>{{ i.tipo }}</h4>
+          @if (clienteNombre()) {
+            <p>{{ clienteNombre() }}</p>
+          } @else {
+            <p class="text-muted">Cargando cliente...</p>
+          }
+          @if (clienteEmpresa()) {
+            <span>{{ clienteEmpresa() }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Fecha</span>
+          <strong>{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Tipo</span>
+          <strong>
+            <span
+              class="badge"
+              [style.background]="getTipoConfig(i.tipo).bg"
+              [style.color]="getTipoConfig(i.tipo).color"
+            >
+              {{ getTipoConfig(i.tipo).icon }} {{ i.tipo }}
+            </span>
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Cliente</span>
+          <strong>
+            @if (clienteNombre()) {
+              {{ clienteNombre() }}
+            } @else {
+              <span class="text-muted">Cargando...</span>
+            }
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Empresa</span>
+          <strong>
+            @if (clienteEmpresa()) {
+              {{ clienteEmpresa() }}
+            } @else {
+              <span class="text-muted">Sin empresa</span>
+            }
+          </strong>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">ID Interacción</span>
+          <strong>#{{ i.id }}</strong>
+        </div>
+
+        <div class="detail-item full">
+          <span class="detail-label">Nota</span>
+          <p class="nota-box">
+            {{ i.nota || 'Sin observaciones registradas.' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="modal-actions">
+        <button type="button" class="btn-primary" (click)="cerrar.emit()">Cerrar</button>
+      </div>
+    }
+  </div>
+</div>

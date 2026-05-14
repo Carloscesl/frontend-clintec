@@ -6,7 +6,11 @@ import { OportunidadService } from '../../../../core/services/oportunidad.servic
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { AuthService } from '../../../../core/services/auth.service';
 
-import { EtapaOportunidad, OportunidadResponse } from '../../../../core/models/oportunidad.model';
+import {
+  EtapaOportunidad,
+  OportunidadResponse,
+  STAGE_RANGES,
+} from '../../../../core/models/oportunidad.model';
 
 import { ClienteResponse } from '../../../../core/models/cliente.model';
 
@@ -165,10 +169,17 @@ export class OpportunityAsesorComponent implements OnInit {
     );
 
     const updated = this.oportunidades().map((op) =>
-      op.idOportunidad === oportunidad.idOportunidad ? { ...op, etapa: columnaDestino.etapa } : op,
+      op.idOportunidad === oportunidad.idOportunidad
+        ? {
+            ...op,
+            etapa: columnaDestino.etapa,
+            probabilidad: STAGE_RANGES[columnaDestino.etapa].default,
+          }
+        : op,
     );
 
     this.oportunidades.set(updated);
+    this.reconstruirKanban();
 
     this.cambiarEtapa(oportunidad, columnaDestino.etapa);
   }

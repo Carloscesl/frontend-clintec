@@ -1,0 +1,118 @@
+<!-- Side Panel Overlay -->
+<div class="side-panel-overlay" (click)="cerrar.emit()">
+  <!-- Side Panel -->
+  <div class="side-panel" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="side-panel-header">
+      <div>
+        <h3 class="side-panel-title">Nueva Interacción</h3>
+        <p class="side-panel-subtitle">Registra una nueva interacción con el cliente</p>
+      </div>
+      <button type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
+    </div>
+
+    <!-- Content -->
+    <div class="side-panel-content">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <!-- Cliente -->
+        <div class="form-group">
+          <label>Cliente *</label>
+          <select
+            formControlName="clienteId"
+            (change)="onClienteChange(+$any($event.target).value)"
+            [class.invalid]="f['clienteId'].invalid && f['clienteId'].touched"
+          >
+            <option value="">Seleccionar cliente</option>
+            @for (c of clientesFiltrados(); track c.id) {
+              <option [value]="c.id">{{ c.nombreCliente }} - {{ c.empresa }}</option>
+            }
+          </select>
+          @if (f['clienteId'].invalid && f['clienteId'].touched) {
+            <span class="error-text">El cliente es requerido</span>
+          }
+        </div>
+
+        <!-- Oportunidad -->
+        <div class="form-group">
+          <label>Oportunidad *</label>
+          <select
+            formControlName="oportunidadId"
+            [class.invalid]="f['oportunidadId'].invalid && f['oportunidadId'].touched"
+          >
+            <option value="">Seleccionar oportunidad</option>
+            @for (op of oportunidades(); track op.idOportunidad) {
+              <option [value]="op.idOportunidad">{{ op.descripcion }}</option>
+            }
+          </select>
+          @if (f['oportunidadId'].invalid && f['oportunidadId'].touched) {
+            <span class="error-text">La oportunidad es requerida</span>
+          }
+        </div>
+
+        <!-- Tipo -->
+        <div class="form-group">
+          <label>Tipo de interacción *</label>
+          <div class="tipo-grid">
+            @for (t of tipos; track t.valor) {
+              <button
+                type="button"
+                class="tipo-btn"
+                [class.active]="f['tipo'].value === t.valor"
+                (click)="f['tipo'].setValue(t.valor)"
+              >
+                <span class="tipo-icon">{{ t.icon }}</span>
+                <span class="tipo-label">{{ t.label }}</span>
+              </button>
+            }
+          </div>
+          @if (f['tipo'].invalid && f['tipo'].touched) {
+            <span class="error-text">El tipo es requerido</span>
+          }
+        </div>
+
+        <!-- Nota -->
+        <div class="form-group">
+          <label>Nota *</label>
+          <textarea
+            formControlName="nota"
+            rows="5"
+            placeholder="Describe los detalles de la interacción..."
+            [class.invalid]="f['nota'].invalid && f['nota'].touched"
+          ></textarea>
+          @if (f['nota'].invalid && f['nota'].touched) {
+            <span class="error-text">
+              @if (f['nota'].hasError('required')) {
+                La nota es requerida
+              }
+              @if (f['nota'].hasError('minlength')) {
+                Mínimo 5 caracteres
+              }
+            </span>
+          }
+        </div>
+
+        <!-- Error general -->
+        @if (error()) {
+          <div class="alert-error">
+            {{ error() }}
+          </div>
+        }
+      </form>
+    </div>
+
+    <!-- Footer con acciones -->
+    <div class="side-panel-footer">
+      <button type="button" class="btn-secondary" (click)="cancelar()" [disabled]="guardando()">
+        Cancelar
+      </button>
+      <button type="button" class="btn-primary" (click)="submit()" [disabled]="guardando()">
+        @if (guardando()) {
+          <span class="spinner-sm"></span>
+          Guardando...
+        } @else {
+          Crear interacción
+        }
+      </button>
+    </div>
+  </div>
+</div>

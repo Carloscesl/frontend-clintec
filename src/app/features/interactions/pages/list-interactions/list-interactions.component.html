@@ -1,0 +1,114 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>{{ esAsesor ? 'Mis Interacciones' : 'Interacciones' }}</h1>
+      <p class="page-subtitle">
+        {{ interaccionesFiltradas().length }} registro{{
+          interaccionesFiltradas().length !== 1 ? 's' : ''
+        }}
+      </p>
+    </div>
+    @if (esAsesor) {
+      <button class="btn-primary" (click)="irACrear()">+ Nueva interacción</button>
+    }
+  </div>
+
+  <!-- Filtros por tipo -->
+  <div class="filtros">
+    @for (t of tipos; track t.valor) {
+      <button
+        class="filtro-btn"
+        [class.active]="filtroTipo() === t.valor"
+        (click)="filtroTipo.set(t.valor)"
+      >
+        <span>{{ t.icon }}</span>
+        <span>{{ t.label }}</span>
+      </button>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="estado-loading">
+      <div class="spinner"></div>
+      <span>Cargando interacciones...</span>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="estado-error">
+      <span>{{ error() }}</span>
+      <button (click)="cargar()">Reintentar</button>
+    </div>
+  }
+
+  @if (!loading() && !error()) {
+    @if (interaccionesFiltradas().length === 0) {
+      <div class="empty-state">
+        <span>No hay interacciones registradas</span>
+      </div>
+    } @else {
+      <!-- Timeline -->
+      <div class="timeline">
+        @for (interaccion of interaccionesFiltradas(); track interaccion.id) {
+          <div class="timeline-item" (click)="irADetalle(interaccion.id)">
+            <!-- Línea vertical + icono tipo -->
+            <div
+              class="timeline-icon"
+              [style.background]="getTipoConfig(interaccion.tipo).bg"
+              [style.border-color]="getTipoConfig(interaccion.tipo).color"
+            >
+              {{ getTipoConfig(interaccion.tipo).icon }}
+            </div>
+            <div class="timeline-line"></div>
+
+            <!-- Card -->
+            <div class="timeline-card">
+              <div class="card-top">
+                <div class="usuario-cell">
+                  <div class="avatar-sm">
+                    {{ getClienteNombre(interaccion.clienteId).charAt(0) }}
+                  </div>
+                  <div>
+                    <span class="usuario-nombre">
+                      {{ getClienteNombre(interaccion.clienteId) }}
+                    </span>
+                    <span class="text-muted" style="display: block; font-size: 0.78rem">
+                      {{ getClienteEmpresa(interaccion.clienteId) }}
+                    </span>
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span
+                    class="badge"
+                    [style.background]="getTipoConfig(interaccion.tipo).bg"
+                    [style.color]="getTipoConfig(interaccion.tipo).color"
+                  >
+                    <span class="badge-dot"></span>
+                    {{ interaccion.tipo }}
+                  </span>
+                  <span class="card-fecha text-muted">
+                    {{ interaccion.fecha | date: 'dd/MM/yyyy HH:mm' }}
+                  </span>
+                </div>
+              </div>
+
+              @if (interaccion.nota) {
+                <p class="card-nota">{{ interaccion.nota }}</p>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
+
+<!-- Modal de detalle -->
+@if (modalAbierto() && interaccionSeleccionada(); as id) {
+  <app-interaction-detail-modal [interaccionId]="id" (cerrar)="cerrarModal()" />
+}
+
+<!-- Panel de creación -->
+@if (panelCrearAbierto()) {
+  <app-interaction-form (cerrar)="cerrarPanelCrear()" (guardado)="onInteraccionCreada()" />
+}
