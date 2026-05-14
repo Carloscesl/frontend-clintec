@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { ClienteResponse } from '../../../../core/models/cliente.model';
 import { InteractionDetailModalComponent } from '../interaction-detail-modal/interaction-detail-modal.component';
 import { InteractionFormComponent } from '../interaction-form/interaction-form.component';
+import { UsuarioResponse } from '../../../../core/models/usuario.model';
+import { UsuarioService } from '../../../../core/services/usuario.service';
 
 @Component({
   selector: 'app-list-interactions',
@@ -18,12 +20,14 @@ import { InteractionFormComponent } from '../interaction-form/interaction-form.c
 export class ListInteractionsComponent implements OnInit {
   private readonly interaccionService = inject(InteraccionService);
   private readonly authService = inject(AuthService);
+  private readonly usuariosService = inject(UsuarioService);
   private readonly clienteService = inject(ClienteService);
 
   error = signal<string | null>(null);
   loading = signal(true);
   interacciones = signal<InteraccionResponse[]>([]);
   clientes = signal<ClienteResponse[]>([]);
+  usuarios = signal<UsuarioResponse[]>([]);
 
   filtroTipo = signal<TipoInteraccion | 'TODOS'>('TODOS');
 
@@ -36,8 +40,8 @@ export class ListInteractionsComponent implements OnInit {
 
   clienteMap = new Map<number, ClienteResponse>();
 
-  private rol = this.authService.obtenerRol() ?? '';
-  private usuarioId = this.authService.obtenerUsuarioId();
+  private readonly rol = this.authService.obtenerRol() ?? '';
+  private readonly usuarioId = this.authService.obtenerUsuarioId();
   esAsesor = this.rol === 'ASESOR';
 
   interaccionesFiltradas = computed(() => {
@@ -59,6 +63,9 @@ export class ListInteractionsComponent implements OnInit {
   ngOnInit(): void {
     this.cargarClientes();
     this.cargar();
+    if (!this.esAsesor) {
+      this.cargarUsuarios();
+    }
   }
 
   cargar(): void {
@@ -90,6 +97,14 @@ export class ListInteractionsComponent implements OnInit {
       next: (data) => {
         this.clientes.set(data);
         this.clienteMap = new Map(data.map((c) => [c.id, c]));
+      },
+    });
+  }
+
+  cargarUsuarios(): void {
+    this.usuariosService.listar().subscribe({
+      next: (data) => {
+        this.usuarios.set(data);
       },
     });
   }

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { InteraccionService } from '../../../../core/services/interaccion.service';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { InteraccionResponse, TipoInteraccion } from '../../../../core/models/interaccion.model';
+import { AuthService } from '../../../../core/services/auth.service';
+import { UsuarioService } from '../../../../core/services/usuario.service';
 
 @Component({
   selector: 'app-interaction-detail-modal',
@@ -18,12 +20,18 @@ export class InteractionDetailModalComponent implements OnInit {
   // Output: evento para cerrar el modal
   cerrar = output<void>();
 
-  private service = inject(InteraccionService);
-  private clienteServ = inject(ClienteService);
+  private readonly authService = inject(AuthService);
+
+  private readonly service = inject(InteraccionService);
+  private readonly clienteServ = inject(ClienteService);
+  private readonly usuarioService = inject(UsuarioService);
+  private readonly rol = this.authService.obtenerRol() ?? '';
+  noEsAsesor = this.rol !== 'ASESOR';
 
   interaccion = signal<InteraccionResponse | null>(null);
   clienteNombre = signal('');
   clienteEmpresa = signal('');
+  usuarioNombre = signal('');
   loading = signal(true);
   error = signal<string | null>(null);
 
@@ -41,10 +49,27 @@ export class InteractionDetailModalComponent implements OnInit {
         this.interaccion.set(data);
         this.loading.set(false);
         this.cargarCliente(data.clienteId);
+        this.cargarUsuario(data.usuarioId);
       },
       error: () => {
         this.error.set('No se encontró la interacción');
         this.loading.set(false);
+      },
+    });
+  }
+
+  cargarUsuario(id: number): void {
+    if (this.rol === 'ASESOR') {
+      const usuarioLogueado = this.authService.obtenerUsuario();
+      this.usuarioNombre.set(usuarioLogueado?.username ?? 'Mi Usuario');
+      return;
+    }
+    this.usuarioService.buscarPorId(id).subscribe({
+      next: (u) => {
+        this.usuarioNombre.set(u.nombre || 'Sin nombre');
+      },
+      error: () => {
+        this.usuarioNombre.set('Usuario desconocido');
       },
     });
   }

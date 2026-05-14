@@ -1,0 +1,118 @@
+<!-- OVERLAY -->
+<div class="modal-overlay" (click)="cerrar.emit()">
+  <!-- PANEL -->
+  <div class="modal-panel" (click)="$event.stopPropagation()">
+    <!-- HEADER -->
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title">Detalle de alerta</h2>
+        <p class="modal-subtitle">Información completa de la alerta seleccionada</p>
+      </div>
+
+      <button class="btn-close" (click)="cerrar.emit()">✕</button>
+    </div>
+
+    <!-- LOADING -->
+    @if (loading()) {
+      <div class="estado-loading">
+        <div class="spinner"></div>
+        <span>Cargando alerta...</span>
+      </div>
+    }
+
+    <!-- ERROR -->
+    @if (error() && !loading()) {
+      <div class="estado-error">
+        <span class="error-icon">⚠️</span>
+        <span>{{ error() }}</span>
+
+        <button class="btn-primary" (click)="cargar(alertaId())">Reintentar</button>
+      </div>
+    }
+
+    <!-- CONTENT -->
+    @if (!loading() && !error() && alerta()) {
+      <!-- TOP CARD -->
+      <div class="alerta-top">
+        <div
+          class="alerta-icon"
+          [style.background]="getTipoConfig(alerta()!.tipo).bg"
+          [style.color]="getTipoConfig(alerta()!.tipo).color"
+        >
+          {{ getTipoConfig(alerta()!.tipo).icon }}
+        </div>
+
+        <div class="alerta-info">
+          <span class="alerta-tipo">
+            {{ alerta()!.tipo }}
+          </span>
+
+          <span class="alerta-fecha">
+            fecha de Creacion:
+            {{ alerta()!.fecha | date: 'dd/MM/yyyy HH:mm' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="detail-grid">
+        <div class="detail-card full">
+          <span class="detail-label">Descripción</span>
+          <p class="detail-text">
+            {{ alerta()!.descripcion }}
+          </p>
+        </div>
+
+        <div class="detail-card">
+          <span class="detail-label">Cliente</span>
+          <span class="detail-value">{{ clienteNombre() }}</span>
+        </div>
+
+        <div class="detail-card">
+          <span class="detail-label">Usuario</span>
+          <span class="detail-value">{{ usuarioNombre() }}</span>
+        </div>
+
+        <div class="detail-card">
+          <span class="detail-label">Estado</span>
+
+          <span
+            class="badge-estado"
+            [ngClass]="{
+              pendiente: alerta()!.estado === 'PENDIENTE',
+              vista: alerta()!.estado === 'VISTA',
+              resuelta: alerta()!.estado === 'RESUELTA',
+              vencida: alerta()!.estado === 'VENCIDA',
+            }"
+          >
+            {{ alerta()!.estado }}
+          </span>
+        </div>
+
+        <div class="detail-card">
+          <span class="detail-label">ID</span>
+          <span class="detail-value">#{{ alerta()!.id }}</span>
+        </div>
+
+        <div class="detail-card">
+          <span class="detail-label">Ultima Actualizacion</span>
+          <span class="detail-value">{{
+            alerta()!.fechaActualizacion | date: 'dd/MM/yyyy HH:mm'
+          }}</span>
+        </div>
+
+        <div class="detail-card">
+          <span class="detail-label">Fecha de Vencimiento</span>
+          <span class="detail-value">{{
+            alerta()!.fechaVencimiento | date: 'dd/MM/yyyy HH:mm'
+          }}</span>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="cerrar.emit()">Cerrar</button>
+      </div>
+    }
+  </div>
+</div>

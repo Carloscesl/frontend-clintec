@@ -14,12 +14,20 @@ export class AlertaService {
     return this.http.get<AlertaResponse[]>(this.URL);
   }
 
+  buscarPorId(id: number): Observable<AlertaResponse> {
+    return this.http.get<AlertaResponse>(`${this.URL}/id/${id}`);
+  }
+
   pendientes(): Observable<AlertaResponse[]> {
     return this.http.get<AlertaResponse[]>(`${this.URL}/pendientes`);
   }
 
   porCliente(clienteId: number): Observable<AlertaResponse[]> {
     return this.http.get<AlertaResponse[]>(`${this.URL}/cliente/${clienteId}`);
+  }
+
+  porUsuario(usuarioId: number): Observable<AlertaResponse[]> {
+    return this.http.get<AlertaResponse[]>(`${this.URL}/usuario/${usuarioId}`);
   }
 
   marcarVista(id: number): Observable<AlertaResponse> {

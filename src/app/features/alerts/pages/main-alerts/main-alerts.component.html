@@ -1,0 +1,171 @@
+<div class="page-container">
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h1>{{ esAsesor ? 'Mis Alertas' : 'Alertas' }}</h1>
+      <p class="page-subtitle">
+        {{ alertasFiltradas().length }} alerta{{ alertasFiltradas().length !== 1 ? 's' : '' }}
+        @if (filtroTipo() !== 'TODOS' || filtroEstado() !== 'TODOS') {
+          <span class="filtro-info"
+            >de {{ alertas().length }} total{{ alertas().length !== 1 ? 'es' : '' }}</span
+          >
+        }
+      </p>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filtros">
+    <div class="filtros-grupo">
+      <span class="filtros-label">Tipo:</span>
+      @for (t of tipos; track t.valor) {
+        <button
+          class="filtro-btn"
+          [class.active]="filtroTipo() === t.valor"
+          (click)="filtroTipo.set(t.valor)"
+        >
+          <span class="filtro-icon">{{ t.icon }}</span>
+          <span>{{ t.label }}</span>
+        </button>
+      }
+    </div>
+
+    <div class="filtros-grupo">
+      <span class="filtros-label">Estado:</span>
+      @for (e of estados; track e.valor) {
+        <button
+          class="filtro-btn filtro-estado"
+          [class.active]="filtroEstado() === e.valor"
+          (click)="filtroEstado.set(e.valor)"
+        >
+          <span>{{ e.label }}</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  @if (loading()) {
+    <div class="estado-loading">
+      <div class="spinner"></div>
+      <span>Cargando alertas...</span>
+    </div>
+  }
+
+  <!-- ERROR -->
+  @if (error() && !loading()) {
+    <div class="estado-error">
+      <span class="error-icon">⚠️</span>
+      <span class="error-message">{{ error() }}</span>
+      <button class="btn-primary" (click)="cargarAlertas()">Reintentar</button>
+    </div>
+  }
+
+  <!-- CONTENT -->
+  @if (!loading() && !error()) {
+    @if (alertasFiltradas().length === 0) {
+      <div class="empty-state">
+        <span class="empty-icon">🔍</span>
+        <span class="empty-message">
+          @if (alertas().length === 0) {
+            No hay alertas disponibles
+          } @else {
+            No se encontraron alertas con los filtros seleccionados
+          }
+        </span>
+        @if (alertas().length > 0) {
+          <button
+            class="btn-secondary"
+            (click)="filtroTipo.set('TODOS'); filtroEstado.set('TODOS')"
+          >
+            Limpiar filtros
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="alerts-grid">
+        @for (alerta of alertasFiltradas(); track alerta.id) {
+          <div
+            class="alert-card"
+            [class.alert-pendiente]="alerta.estado === 'PENDIENTE'"
+            [class.alert-vista]="alerta.estado === 'VISTA'"
+            [class.alert-resuelta]="alerta.estado === 'RESUELTA'"
+            [class.alert-vencida]="alerta.estado === 'VENCIDA'"
+          >
+            <!-- TOP -->
+            <div class="alert-top">
+              <div
+                class="alert-icon"
+                [style.background]="getTipoConfig(alerta.tipo).bg"
+                [style.color]="getTipoConfig(alerta.tipo).color"
+              >
+                {{ getTipoConfig(alerta.tipo).icon }}
+              </div>
+
+              <div class="alert-main">
+                <span class="alert-title">
+                  {{ alerta.tipo }}
+                </span>
+
+                <span class="alert-date">
+                  Fecha de Creacion:
+                  {{ alerta.fecha | date: 'dd/MM/yyyy HH:mm' }}
+                </span>
+              </div>
+
+              <div class="alert-badges">
+                @if (alerta.estado === 'PENDIENTE') {
+                  <span class="badge-estado pendiente">Pendiente</span>
+                } @else if (alerta.estado === 'VISTA') {
+                  <span class="badge-estado vista">Vista</span>
+                } @else if (alerta.estado === 'RESUELTA') {
+                  <span class="badge-estado resuelta">Resuelta</span>
+                } @else if (alerta.estado === 'VENCIDA') {
+                  <span class="badge-estado vencida">Vencida</span>
+                }
+              </div>
+            </div>
+
+            <!-- BODY -->
+            <div class="alert-body">
+              <p class="alert-msg">
+                {{ alerta.descripcion }}
+              </p>
+
+              <div class="alert-meta">
+                <span class="badge badge-cliente">
+                  <span class="badge-label">Cliente:</span>
+                  {{ getClienteNombre(alerta.clienteId) }}
+                </span>
+
+                <span class="badge badge-usuario">
+                  <span class="badge-label">Usuario:</span>
+                  {{ getUsuarioNombre(alerta.usuarioId) }}
+                </span>
+              </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="alert-actions">
+              @if (alerta.estado === 'PENDIENTE') {
+                <button class="btn-secondary" (click)="marcarVista(alerta.id)">
+                  Marcar como vista
+                </button>
+              }
+
+              @if (alerta.estado !== 'RESUELTA') {
+                <button class="btn-primary" (click)="resolver(alerta.id)">Resolver</button>
+              }
+
+              <button class="btn-outline" (click)="irADetalle(alerta.id)">Ver detalle</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
+
+@if (modalAbierto() && alertaSeleccionada(); as id) {
+  <app-detail-modal-alerts [alertaId]="id" (cerrar)="cerrarModal()" />
+}

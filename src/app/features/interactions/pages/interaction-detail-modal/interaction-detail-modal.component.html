@@ -98,6 +98,19 @@
           <strong>#{{ i.id }}</strong>
         </div>
 
+        @if (noEsAsesor) {
+          <div class="detail-item">
+            <span class="detail-label">Nombre Usuario</span>
+            <strong>
+              @if (usuarioNombre()) {
+                {{ usuarioNombre() }}
+              } @else {
+                <span class="text-muted">Sin usuario</span>
+              }
+            </strong>
+          </div>
+        }
+
         <div class="detail-item full">
           <span class="detail-label">Nota</span>
           <p class="nota-box">
