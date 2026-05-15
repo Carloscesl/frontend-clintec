@@ -3,7 +3,7 @@ export interface VentaResponse {
   idOportunidad: number;
   idAsesor: number;
   valorVenta: number;
-  metodoPago: MetodoPago;
+  paymentMethod: MetodoPago;
   notas: string;
   fechaVenta: string;
   fechaActualizacion: string;
@@ -13,7 +13,7 @@ export interface VentaRequest {
   idOportunidad: number;
   idAsesor: number;
   valorVenta: number;
-  metodoPago: MetodoPago;
+  paymentMethod: MetodoPago;
   notas: string;
 }
 
