@@ -11,11 +11,14 @@ import { OportunidadService } from '../../../../core/services/oportunidad.servic
 // Modelos
 import { ClienteResponse } from '../../../../core/models/cliente.model';
 import { OportunidadResponse } from '../../../../core/models/oportunidad.model';
+import { QualificationClient } from '../../../../core/models/calificacion.model';
+import { CalificacionService } from '../../../../core/services/calificacion.service';
+import { QualificationBadgeComponent } from '../../../qualifications/pages/qualification-badge/qualification-badge.component';
 
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, QualificationBadgeComponent],
   templateUrl: './client-list.component.html',
   styleUrl: './client-list.component.css',
 })
@@ -24,9 +27,11 @@ export class ClientListComponent implements OnInit {
   private readonly oportunidadService = inject(OportunidadService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly qualificationSvc = inject(CalificacionService);
 
   private readonly clientes = signal<ClienteResponse[]>([]);
   private readonly oportunidades = signal<OportunidadResponse[]>([]);
+  private readonly calificaciones = signal<Map<number, QualificationClient>>(new Map());
 
   loading = signal(true);
   error = signal<string | null>(null);
@@ -63,10 +68,13 @@ export class ClientListComponent implements OnInit {
     forkJoin({
       clientes: this.clienteService.listar(),
       oportunidades: this.oportunidadService.listar(),
+      calificaciones: this.qualificationSvc.findAll(),
     }).subscribe({
-      next: ({ clientes, oportunidades }) => {
+      next: ({ clientes, oportunidades, calificaciones }) => {
         this.clientes.set(clientes);
         this.oportunidades.set(oportunidades);
+        const map = new Map(calificaciones.map((q) => [q.clienteId, q]));
+        this.calificaciones.set(map);
         this.loading.set(false);
       },
       error: (err) => {
@@ -74,6 +82,10 @@ export class ClientListComponent implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  getCalificacion(clienteId: number): QualificationClient | undefined {
+    return this.calificaciones().get(clienteId);
   }
 
   // --- Métodos de navegación ---

@@ -101,6 +101,11 @@
                     ></div>
                   </div>
                 </div>
+
+                @if (getCalificacion(op.clienteId); as q) {
+                  <app-qualification-badge [nivel]="q.clasificacion" />
+                }
+
                 <button
                   class="btn-icon btn-icon--edit"
                   (click)="irAeditar(op.idOportunidad); $event.stopPropagation()"

@@ -1,0 +1,44 @@
+.q-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  height: 34px;
+
+  padding: 0 14px;
+
+  border-radius: 999px;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+
+  backdrop-filter: blur(10px);
+
+  transition: var(--transition);
+
+  white-space: nowrap;
+}
+
+/* ICON */
+.q-badge__icon {
+  font-size: 0.9rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* LABEL */
+.q-badge__label {
+  line-height: 1;
+}
+
+/* HOVER */
+.q-badge:hover {
+  transform: translateY(-1px);
+
+  border-color: rgba(255, 255, 255, 0.12);
+}

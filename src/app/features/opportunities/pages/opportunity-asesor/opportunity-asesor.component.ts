@@ -21,6 +21,9 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { ModalProbabilidadComponent } from '../modal-probabilidad/modal-probabilidad.component';
+import { QualificationClient } from '../../../../core/models/calificacion.model';
+import { CalificacionService } from '../../../../core/services/calificacion.service';
+import { QualificationBadgeComponent } from '../../../qualifications/pages/qualification-badge/qualification-badge.component';
 
 interface KanbanColumn {
   etapa: EtapaOportunidad;
@@ -33,7 +36,7 @@ interface KanbanColumn {
 @Component({
   selector: 'app-opportunity-asesor',
   standalone: true,
-  imports: [CommonModule, DragDropModule, ModalProbabilidadComponent],
+  imports: [CommonModule, DragDropModule, ModalProbabilidadComponent, QualificationBadgeComponent],
   templateUrl: './opportunity-asesor.component.html',
   styleUrls: ['./opportunity-asesor.component.css'],
 })
@@ -42,6 +45,8 @@ export class OpportunityAsesorComponent implements OnInit {
   private readonly clienteService = inject(ClienteService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly qualificationSvc = inject(CalificacionService);
+  private readonly calificaciones = signal<Map<number, QualificationClient>>(new Map());
 
   oportunidades = signal<OportunidadResponse[]>([]);
   clientes = signal<ClienteResponse[]>([]);
@@ -101,6 +106,7 @@ export class OpportunityAsesorComponent implements OnInit {
     this.nombreAsesor.set(this.authService.obtenerUsuario()?.username || 'Asesor');
     this.cargar();
     this.cargarClientes();
+    this.cargarCalificaciones();
   }
 
   // ── LOAD OPORTUNIDADES ──────────────────────────────────
@@ -152,6 +158,13 @@ export class OpportunityAsesorComponent implements OnInit {
     });
   }
 
+  cargarCalificaciones(): void {
+    this.qualificationSvc.findAll().subscribe((data) => {
+      const map = new Map(data.map((q) => [q.clienteId, q]));
+      this.calificaciones.set(map);
+    });
+  }
+
   // ── DRAG & DROP ─────────────────────────────────────────
   onDrop(event: CdkDragDrop<OportunidadResponse[]>, columnaDestino: KanbanColumn): void {
     if (event.previousContainer === event.container) {
@@ -199,6 +212,10 @@ export class OpportunityAsesorComponent implements OnInit {
 
   getClienteEmpresa(id: number): string {
     return this.clienteMap.get(id)?.empresa ?? '';
+  }
+
+  getCalificacion(clienteId: number): QualificationClient | undefined {
+    return this.calificaciones().get(clienteId);
   }
 
   getIniciales(nombre: string): string {
