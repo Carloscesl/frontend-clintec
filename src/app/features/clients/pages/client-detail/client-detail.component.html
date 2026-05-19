@@ -29,7 +29,6 @@
   @if (loading()) {
     <div class="estado-loading" data-testid="detail-loading">
       <div class="spinner"></div>
-
       <span>Cargando cliente...</span>
     </div>
   }
@@ -83,6 +82,20 @@
           {{ cliente()!.direccion || '—' }}
         </span>
       </div>
+
+      <!-- CALIFICACIÓN -->
+      @if (clienteId()) {
+        <div class="detail-row detail-row--widget">
+          <span class="detail-label">Calificación</span>
+
+          <div class="detail-widget">
+            <app-qualification-widget
+              [clienteId]="clienteId()!"
+              [puedeEditar]="puedeEditarCalificacion"
+            />
+          </div>
+        </div>
+      }
 
       <div class="detail-row">
         <span class="detail-label">Fecha registro</span>

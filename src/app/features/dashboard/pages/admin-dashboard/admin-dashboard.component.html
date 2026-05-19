@@ -1,11 +1,12 @@
-<div class="dashboard" data-testid="admin-dashboard">
-  <!-- Header -->
-  <div class="dash-header">
-    <div class="dash-header-info">
+<div class="page-container" data-testid="admin-dashboard">
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
       <h1 data-testid="dashboard-title">Panel de Administración</h1>
 
-      <p data-testid="dashboard-welcome">
+      <p class="page-subtitle" data-testid="dashboard-welcome">
         Bienvenido de nuevo,
+
         <strong data-testid="dashboard-username">
           {{ usuario?.username }}
         </strong>
@@ -13,7 +14,7 @@
     </div>
 
     <button
-      class="btn-refresh"
+      class="btn-secondary"
       data-testid="refresh-dashboard"
       (click)="cargar()"
       [disabled]="loading()"
@@ -35,176 +36,210 @@
     </button>
   </div>
 
-  <!-- Estado: cargando -->
+  <!-- LOADING -->
   @if (loading()) {
-    <div class="dash-loading" data-testid="dashboard-loading">
+    <div class="estado-loading" data-testid="dashboard-loading">
       <div class="spinner"></div>
+
       <span>Cargando datos...</span>
     </div>
   }
 
-  <!-- Estado: error -->
+  <!-- ERROR -->
   @if (error()) {
-    <div class="dash-error" data-testid="dashboard-error">
+    <div class="estado-error" data-testid="dashboard-error">
       <span>{{ error() }}</span>
 
-      <button data-testid="retry-dashboard" (click)="cargar()">Reintentar</button>
+      <button class="btn-primary" data-testid="retry-dashboard" (click)="cargar()">
+        Reintentar
+      </button>
     </div>
   }
 
+  <!-- CONTENT -->
   @if (!loading() && data()) {
-    <!-- KPIs -->
-    <div class="kpi-grid" data-testid="dashboard-kpis">
-      <div class="kpi-card" data-testid="kpi-clientes">
-        <div class="kpi-icon-wrap kpi-blue">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
+    <!-- KPI GRID -->
+    <div class="dashboard-grid">
+      <div class="kpi-grid" data-testid="dashboard-kpis">
+        <!-- CLIENTES -->
+        <div class="dashboard-card kpi-card" data-testid="kpi-clientes">
+          <div class="kpi-icon-wrap kpi-blue">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          </div>
+
+          <div class="kpi-body">
+            <span class="kpi-label">Clientes</span>
+
+            <span class="kpi-value" data-testid="value-clientes">
+              {{ data()!.totalClientes }}
+            </span>
+          </div>
         </div>
 
-        <div class="kpi-body">
-          <span class="kpi-label">Clientes</span>
-          <span class="kpi-value" data-testid="value-clientes">
-            {{ data()!.totalClientes }}
-          </span>
-        </div>
-      </div>
+        <!-- GANADAS -->
+        <div class="dashboard-card kpi-card" data-testid="kpi-ganadas">
+          <div class="kpi-icon-wrap kpi-green">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
 
-      <div class="kpi-card" data-testid="kpi-ganadas">
-        <div class="kpi-icon-wrap kpi-green">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
+          <div class="kpi-body">
+            <span class="kpi-label">Oportunidades ganadas</span>
 
-        <div class="kpi-body">
-          <span class="kpi-label">Oportunidades ganadas</span>
-          <span class="kpi-value">
-            {{ data()!.oportunidadesGanadas }}
-          </span>
-        </div>
-      </div>
-
-      <div class="kpi-card" data-testid="kpi-activas">
-        <div class="kpi-icon-wrap kpi-amber">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-          </svg>
+            <span class="kpi-value">
+              {{ data()!.oportunidadesGanadas }}
+            </span>
+          </div>
         </div>
 
-        <div class="kpi-body">
-          <span class="kpi-label">Oportunidades activas</span>
-          <span class="kpi-value">
-            {{ data()!.oportunidadesActivas }}
-          </span>
-        </div>
-      </div>
+        <!-- ACTIVAS -->
+        <div class="dashboard-card kpi-card" data-testid="kpi-activas">
+          <div class="kpi-icon-wrap kpi-amber">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
 
-      <div class="kpi-card" data-testid="kpi-valor">
-        <div class="kpi-icon-wrap kpi-purple">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 13v-1m0 0c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
+          <div class="kpi-body">
+            <span class="kpi-label">Oportunidades activas</span>
 
-        <div class="kpi-body">
-          <span class="kpi-label">Valor ganado</span>
-
-          <span class="kpi-value kpi-value--sm">
-            {{ data()!.valorOportunidadesGanadas | currency: 'COP' : 'symbol' : '1.0-0' }}
-          </span>
-        </div>
-      </div>
-
-      <div class="kpi-card" data-testid="kpi-usuarios">
-        <div class="kpi-icon-wrap kpi-gray">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-            />
-          </svg>
+            <span class="kpi-value">
+              {{ data()!.oportunidadesActivas }}
+            </span>
+          </div>
         </div>
 
-        <div class="kpi-body">
-          <span class="kpi-label">Usuarios</span>
+        <!-- VALOR -->
+        <div class="dashboard-card kpi-card" data-testid="kpi-valor">
+          <div class="kpi-icon-wrap kpi-purple">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 13v-1m0 0c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
 
-          <span class="kpi-value" data-testid="value-usuarios">
-            {{ data()!.totalUsuarios }}
-          </span>
+          <div class="kpi-body">
+            <span class="kpi-label">Valor ganado</span>
+
+            <span class="kpi-value kpi-value--sm">
+              {{ data()!.valorOportunidadesGanadas | currency: 'COP' : 'symbol' : '1.0-0' }}
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div class="kpi-card" data-testid="kpi-alertas">
-        <div class="kpi-icon-wrap kpi-red">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-            />
-          </svg>
+        <!-- USUARIOS -->
+        <div class="dashboard-card kpi-card" data-testid="kpi-usuarios">
+          <div class="kpi-icon-wrap kpi-gray">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          </div>
+
+          <div class="kpi-body">
+            <span class="kpi-label">Usuarios</span>
+
+            <span class="kpi-value" data-testid="value-usuarios">
+              {{ data()!.totalUsuarios }}
+            </span>
+          </div>
         </div>
 
-        <div class="kpi-body">
-          <span class="kpi-label">Alertas pendientes</span>
+        <!-- ALERTAS -->
+        <div class="dashboard-card kpi-card" data-testid="kpi-alertas">
+          <div class="kpi-icon-wrap kpi-red">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              />
+            </svg>
+          </div>
 
-          <span class="kpi-value">
-            {{ data()!.alertasPendientes }}
-          </span>
+          <div class="kpi-body">
+            <span class="kpi-label">Alertas pendientes</span>
+
+            <span class="kpi-value">
+              {{ data()!.alertasPendientes }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- GRAFICAS -->
+    <!-- CHARTS -->
     <div class="charts-grid" data-testid="dashboard-charts">
-      <div class="chart-card" data-testid="chart-embudo">
+      <!-- DISTRIBUCION -->
+      <div class="dashboard-card chart-card">
         <div class="chart-card-header">
-          <h3>Embudo de ventas</h3>
-          <span class="chart-subtitle">Oportunidades por etapa</span>
+          <div>
+            <h3>Distribución de cartera</h3>
+
+            <span class="chart-subtitle"> Clasificación de clientes </span>
+          </div>
+        </div>
+
+        <div class="chart-wrap chart-wrap--donut">
+          <canvas #graficaDistribucion></canvas>
+        </div>
+      </div>
+
+      <!-- EMBUDO -->
+      <div class="dashboard-card chart-card" data-testid="chart-embudo">
+        <div class="chart-card-header">
+          <div>
+            <h3>Embudo de ventas</h3>
+
+            <span class="chart-subtitle"> Oportunidades por etapa </span>
+          </div>
         </div>
 
         <div class="chart-wrap">
@@ -212,10 +247,14 @@
         </div>
       </div>
 
-      <div class="chart-card" data-testid="chart-estado">
+      <!-- ESTADO -->
+      <div class="dashboard-card chart-card" data-testid="chart-estado">
         <div class="chart-card-header">
-          <h3>Estado de oportunidades</h3>
-          <span class="chart-subtitle">Distribución actual</span>
+          <div>
+            <h3>Estado de oportunidades</h3>
+
+            <span class="chart-subtitle"> Distribución actual </span>
+          </div>
         </div>
 
         <div class="chart-wrap chart-wrap--donut">
@@ -224,42 +263,81 @@
       </div>
     </div>
 
-    <!-- RESUMEN -->
-    <div class="summary-card" data-testid="dashboard-summary">
+    <!-- SUMMARY -->
+    <div class="dashboard-card summary-card" data-testid="dashboard-summary">
       <div class="chart-card-header">
-        <h3>Detalle del embudo</h3>
-        <span class="chart-subtitle">Conteo por etapa</span>
+        <div>
+          <h3>Detalle del embudo</h3>
+
+          <span class="chart-subtitle"> Conteo por etapa </span>
+        </div>
       </div>
 
       <div class="funnel-list">
         <div class="funnel-item" data-testid="funnel-prospeccion">
-          <span class="funnel-label">Prospección</span>
-          <span class="funnel-value">{{ data()!.enProspeccion }}</span>
+          <div class="funnel-left">
+            <span class="funnel-dot" style="background: #3b82f6"></span>
+            <span class="funnel-label">Prospección</span>
+          </div>
+
+          <span class="funnel-value">
+            {{ data()!.enProspeccion }}
+          </span>
         </div>
 
         <div class="funnel-item" data-testid="funnel-calificacion">
-          <span class="funnel-label">Calificación</span>
-          <span class="funnel-value">{{ data()!.enCalificacion }}</span>
+          <div class="funnel-left">
+            <span class="funnel-dot" style="background: #8b5cf6"></span>
+            <span class="funnel-label">Calificación</span>
+          </div>
+
+          <span class="funnel-value">
+            {{ data()!.enCalificacion }}
+          </span>
         </div>
 
         <div class="funnel-item" data-testid="funnel-propuesta">
-          <span class="funnel-label">Propuesta</span>
-          <span class="funnel-value">{{ data()!.enPropuesta }}</span>
+          <div class="funnel-left">
+            <span class="funnel-dot" style="background: #f59e0b"></span>
+            <span class="funnel-label">Propuesta</span>
+          </div>
+
+          <span class="funnel-value">
+            {{ data()!.enPropuesta }}
+          </span>
         </div>
 
         <div class="funnel-item" data-testid="funnel-negociacion">
-          <span class="funnel-label">Negociación</span>
-          <span class="funnel-value">{{ data()!.enNegociacion }}</span>
+          <div class="funnel-left">
+            <span class="funnel-dot" style="background: #ec4899"></span>
+            <span class="funnel-label">Negociación</span>
+          </div>
+
+          <span class="funnel-value">
+            {{ data()!.enNegociacion }}
+          </span>
         </div>
 
         <div class="funnel-item" data-testid="funnel-ganado">
-          <span class="funnel-label">Cierre ganado</span>
-          <span class="funnel-value">{{ data()!.enCierreGanado }}</span>
+          <div class="funnel-left">
+            <span class="funnel-dot" style="background: #10b981"></span>
+            <span class="funnel-label">Cierre ganado</span>
+          </div>
+
+          <span class="funnel-value">
+            {{ data()!.enCierreGanado }}
+          </span>
         </div>
 
         <div class="funnel-item" data-testid="funnel-perdido">
-          <span class="funnel-label">Cierre perdido</span>
-          <span class="funnel-value">{{ data()!.enCierrePerdido }}</span>
+          <div class="funnel-left">
+            <span class="funnel-dot" style="background: #ef4444"></span>
+            <span class="funnel-label">Cierre perdido</span>
+          </div>
+
+          <span class="funnel-value">
+            {{ data()!.enCierrePerdido }}
+          </span>
         </div>
       </div>
     </div>

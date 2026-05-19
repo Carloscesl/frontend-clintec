@@ -1,0 +1,417 @@
+:host {
+  display: block;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =========================================
+   CARD
+========================================= */
+
+.qw {
+  display: flex;
+  flex-direction: column;
+
+  gap: 24px;
+
+  padding: 24px;
+
+  border-radius: var(--radius-lg);
+
+  border: 1px solid var(--border-color);
+
+  background: var(--bg-card);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.qw__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+}
+
+.qw__title {
+  font-size: 1.1rem;
+
+  font-weight: 700;
+
+  color: var(--text-primary);
+
+  letter-spacing: -0.02em;
+}
+
+/* =========================================
+   EDIT BUTTON
+========================================= */
+
+.qw__edit-btn {
+  height: 40px;
+
+  padding: 0 16px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--border-color);
+
+  background: rgba(255, 255, 255, 0.03);
+
+  color: var(--text-primary);
+
+  cursor: pointer;
+
+  transition: var(--transition);
+
+  font-size: 0.84rem;
+  font-weight: 600;
+
+  font-family: inherit;
+}
+
+.qw__edit-btn:hover {
+  border-color: var(--primary);
+
+  color: var(--primary);
+
+  background: rgba(0, 212, 170, 0.08);
+}
+
+/* =========================================
+   SCORE
+========================================= */
+
+.qw__score {
+  display: flex;
+  align-items: center;
+
+  gap: 24px;
+
+  padding: 20px;
+
+  border-radius: 22px;
+
+  border: 1px solid var(--border-color);
+
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.qw__score::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background: var(--accent);
+
+  opacity: 0.05;
+
+  pointer-events: none;
+}
+
+/* =========================================
+   SCORE CIRCLE
+========================================= */
+
+.qw__score-circle {
+  width: 120px;
+  height: 120px;
+
+  border-radius: 50%;
+
+  border: 6px solid var(--accent);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  box-shadow:
+    inset 0 0 30px rgba(255, 255, 255, 0.03),
+    0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.qw__score-num {
+  font-size: 2rem;
+
+  font-weight: 800;
+
+  color: var(--text-primary);
+
+  line-height: 1;
+}
+
+.qw__score-max {
+  margin-top: 2px;
+
+  font-size: 0.82rem;
+
+  color: var(--text-secondary);
+
+  font-weight: 600;
+}
+
+/* =========================================
+   SCORE INFO
+========================================= */
+
+.qw__score-info {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+
+  min-width: 0;
+}
+
+.qw__score-fecha {
+  font-size: 0.82rem;
+
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   EDITOR
+========================================= */
+
+.qw__editor {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  border: 1px solid var(--border-color);
+
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.qw__editor-label {
+  font-size: 0.9rem;
+
+  font-weight: 600;
+
+  color: var(--text-primary);
+}
+
+.qw__editor-row {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+}
+
+/* =========================================
+   SLIDER
+========================================= */
+
+.qw__slider {
+  flex: 1;
+
+  height: 8px;
+
+  cursor: pointer;
+
+  accent-color: var(--primary);
+}
+
+.qw__slider-val {
+  min-width: 42px;
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  text-align: right;
+}
+
+/* =========================================
+   SAVE BUTTON
+========================================= */
+
+.qw__save-btn {
+  height: 46px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: var(--primary);
+
+  color: #fff;
+
+  cursor: pointer;
+
+  transition: var(--transition);
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  font-family: inherit;
+}
+
+.qw__save-btn:hover {
+  background: var(--primary-hover);
+
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   HISTORIAL
+========================================= */
+
+.qw__historial {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.qw__historial-title {
+  font-size: 0.92rem;
+
+  font-weight: 700;
+
+  color: var(--text-primary);
+}
+
+.qw__historial-list {
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 0;
+  margin: 0;
+}
+
+.qw__historial-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  border-radius: 16px;
+
+  border: 1px solid var(--border-color);
+
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.qw__historial-motivo {
+  flex: 1;
+
+  font-size: 0.86rem;
+
+  color: var(--text-primary);
+
+  font-weight: 600;
+}
+
+.qw__historial-delta {
+  min-width: 48px;
+
+  text-align: center;
+
+  font-size: 0.86rem;
+
+  font-weight: 700;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+}
+
+.qw__historial-delta.positivo {
+  color: var(--success);
+
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.qw__historial-delta.negativo {
+  color: var(--danger);
+
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.qw__historial-fecha {
+  font-size: 0.8rem;
+
+  color: var(--text-secondary);
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.qw__empty {
+  padding: 30px;
+
+  text-align: center;
+
+  border-radius: 18px;
+
+  border: 1px dashed var(--border-color);
+
+  color: var(--text-secondary);
+
+  font-size: 0.92rem;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .qw {
+    padding: 18px;
+  }
+
+  .qw__score {
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .qw__score-info {
+    width: 100%;
+  }
+
+  .qw__score-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .qw__score-num {
+    font-size: 1.7rem;
+  }
+
+  .qw__historial-item {
+    flex-wrap: wrap;
+  }
+}

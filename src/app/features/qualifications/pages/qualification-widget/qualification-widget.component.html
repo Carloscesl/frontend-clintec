@@ -1,0 +1,74 @@
+<!-- qualification-widget.component.html -->
+<div class="qw">
+  <div class="qw__header">
+    <h3 class="qw__title">Calificación</h3>
+    @if (puedeEditar && calificacion()) {
+      <button class="qw__edit-btn" (click)="editando.set(!editando())">
+        {{ editando() ? 'Cancelar' : 'Ajustar' }}
+      </button>
+    }
+  </div>
+
+  @if (calificacion(); as q) {
+    <!-- Puntaje principal -->
+    <div class="qw__score" [style.--accent]="config[q.clasificacion].color">
+      <div class="qw__score-circle">
+        <span class="qw__score-num">{{ q.puntaje }}</span>
+        <span class="qw__score-max">/100</span>
+      </div>
+      <div class="qw__score-info">
+        <app-qualification-badge [nivel]="q.clasificacion" />
+        <app-qualification-progress-bar [puntaje]="q.puntaje" [nivel]="q.clasificacion" />
+        <span class="qw__score-fecha">
+          Actualizado {{ q.ultimaActualizacion | date: 'dd MMM yyyy' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Editor inline -->
+    @if (editando()) {
+      <div class="qw__editor">
+        <label class="qw__editor-label">Nuevo puntaje (0–100)</label>
+        <div class="qw__editor-row">
+          <input
+            type="range"
+            min="0"
+            max="100"
+            [value]="nuevoPuntaje()"
+            (input)="nuevoPuntaje.set(+$any($event.target).value)"
+            class="qw__slider"
+          />
+          <span class="qw__slider-val" [style.color]="config[q.clasificacion].color">
+            {{ nuevoPuntaje() }}
+          </span>
+        </div>
+        <button class="qw__save-btn" (click)="guardar()">Guardar cambio</button>
+      </div>
+    }
+
+    <!-- Historial -->
+    @if (historial().length > 0) {
+      <div class="qw__historial">
+        <p class="qw__historial-title">Últimos cambios</p>
+        <ul class="qw__historial-list">
+          @for (h of historial(); track h.id) {
+            <li class="qw__historial-item">
+              <span class="qw__historial-motivo">{{ motivoLabel(h.motivo) }}</span>
+              <span
+                class="qw__historial-delta"
+                [class.positivo]="h.puntajeNuevo > h.puntajeAnterior"
+                [class.negativo]="h.puntajeNuevo < h.puntajeAnterior"
+              >
+                {{ h.puntajeNuevo > h.puntajeAnterior ? '+' : ''
+                }}{{ h.puntajeNuevo - h.puntajeAnterior }}
+              </span>
+              <span class="qw__historial-fecha">{{ h.fecha | date: 'dd MMM' }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  } @else {
+    <div class="qw__empty">Sin calificación registrada</div>
+  }
+</div>

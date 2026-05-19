@@ -1,0 +1,29 @@
+<!-- qualification-priority-panel.component.html -->
+<div class="qpp">
+  <div class="qpp__header">
+    <span class="qpp__title">🎯 Clientes prioritarios hoy</span>
+    <span class="qpp__sub">Enfócate en estos primero</span>
+  </div>
+
+  <div class="qpp__list">
+    @for (c of top5(); track c.clienteId; let i = $index) {
+      <div class="qpp__item" [style.--accent]="config[c.clasificacion].color">
+        <span class="qpp__rank">#{{ i + 1 }}</span>
+        <div class="qpp__avatar" [style.background]="config[c.clasificacion].color">
+          {{ iniciales(c.clienteNombre) }}
+        </div>
+        <div class="qpp__info">
+          <span class="qpp__nombre">{{ c.clienteNombre ?? 'Cliente #' + c.clienteId }}</span>
+          <app-qualification-badge [nivel]="c.clasificacion" />
+        </div>
+        <div class="qpp__puntaje" [style.color]="config[c.clasificacion].color">
+          {{ c.puntaje }}<span class="qpp__pts">pts</span>
+        </div>
+      </div>
+    }
+
+    @if (top5().length === 0) {
+      <div class="qpp__empty">Sin clientes registrados aún</div>
+    }
+  </div>
+</div>

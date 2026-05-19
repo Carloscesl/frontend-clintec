@@ -1,0 +1,252 @@
+/* =========================================
+   PANEL
+========================================= */
+
+.qpp {
+  background: var(--bg-card);
+
+  border: 1px solid var(--border-color);
+
+  border-radius: var(--radius-lg);
+
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 22px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.qpp__header {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.qpp__title {
+  font-size: 1.05rem;
+
+  font-weight: 700;
+
+  color: var(--text-primary);
+
+  letter-spacing: -0.02em;
+}
+
+.qpp__sub {
+  font-size: 0.88rem;
+
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   LIST
+========================================= */
+
+.qpp__list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+/* =========================================
+   ITEM
+========================================= */
+
+.qpp__item {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 16px;
+
+  border-radius: var(--radius-md);
+
+  border: 1px solid var(--border-color);
+
+  background: rgba(255, 255, 255, 0.02);
+
+  transition: var(--transition);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.qpp__item::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 4px;
+  height: 100%;
+
+  background: var(--accent);
+}
+
+.qpp__item:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 255, 255, 0.08);
+
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* =========================================
+   RANK
+========================================= */
+
+.qpp__rank {
+  min-width: 36px;
+  height: 36px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid var(--border-color);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.82rem;
+
+  font-weight: 700;
+
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   AVATAR
+========================================= */
+
+.qpp__avatar {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 0.92rem;
+
+  font-weight: 700;
+
+  flex-shrink: 0;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================
+   INFO
+========================================= */
+
+.qpp__info {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  min-width: 0;
+}
+
+.qpp__nombre {
+  font-size: 0.95rem;
+
+  font-weight: 600;
+
+  color: var(--text-primary);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================
+   SCORE
+========================================= */
+
+.qpp__puntaje {
+  display: flex;
+  align-items: baseline;
+
+  gap: 4px;
+
+  font-size: 1.2rem;
+
+  font-weight: 800;
+
+  letter-spacing: -0.03em;
+
+  flex-shrink: 0;
+}
+
+.qpp__pts {
+  font-size: 0.75rem;
+
+  font-weight: 600;
+
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.qpp__empty {
+  padding: 30px 20px;
+
+  text-align: center;
+
+  border-radius: var(--radius-md);
+
+  border: 1px dashed var(--border-color);
+
+  color: var(--text-secondary);
+
+  font-size: 0.92rem;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .qpp {
+    padding: 18px;
+  }
+
+  .qpp__item {
+    padding: 14px;
+  }
+
+  .qpp__avatar {
+    width: 42px;
+    height: 42px;
+
+    font-size: 0.85rem;
+  }
+
+  .qpp__puntaje {
+    font-size: 1rem;
+  }
+}

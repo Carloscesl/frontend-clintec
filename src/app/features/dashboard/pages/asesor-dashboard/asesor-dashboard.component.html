@@ -1,12 +1,15 @@
-<div class="dashboard">
-  <div class="dash-header">
-    <div class="dash-header-info">
+<div class="page-container">
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
       <h1>Mi Panel</h1>
-      <p>
+
+      <p class="page-subtitle">
         Bienvenido, <strong>{{ usuario?.username }}</strong>
       </p>
     </div>
-    <button class="btn-refresh" (click)="cargar()" [disabled]="loading()">
+
+    <button class="btn-secondary" (click)="cargar()" [disabled]="loading()">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -19,194 +22,268 @@
           d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
         />
       </svg>
+
       Actualizar
     </button>
   </div>
 
+  <!-- LOADING -->
   @if (loading()) {
-    <div class="dash-loading">
+    <div class="estado-loading">
       <div class="spinner"></div>
       <span>Cargando datos...</span>
     </div>
   }
 
+  <!-- ERROR -->
   @if (error()) {
-    <div class="dash-error">
+    <div class="estado-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+
+      <button class="btn-primary" (click)="cargar()">Reintentar</button>
     </div>
   }
 
+  <!-- CONTENT -->
   @if (!loading() && data()) {
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap kpi-blue">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-          </svg>
+    <!-- KPI GRID -->
+    <div class="dashboard-grid">
+      <!-- KPIS -->
+      <div class="kpi-grid">
+        <!-- OPORTUNIDADES -->
+        <div class="dashboard-card kpi-card">
+          <div class="kpi-icon-wrap kpi-blue">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
+
+          <div class="kpi-body">
+            <span class="kpi-label">Mis oportunidades</span>
+            <span class="kpi-value">{{ data()!.misOportunidades }}</span>
+          </div>
         </div>
-        <div class="kpi-body">
-          <span class="kpi-label">Mis oportunidades</span>
-          <span class="kpi-value">{{ data()!.misOportunidades }}</span>
+
+        <!-- ACTIVAS -->
+        <div class="dashboard-card kpi-card">
+          <div class="kpi-icon-wrap kpi-amber">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+
+          <div class="kpi-body">
+            <span class="kpi-label">Activas</span>
+            <span class="kpi-value">{{ data()!.misOportunidadesActivas }}</span>
+          </div>
+        </div>
+
+        <!-- GANADAS -->
+        <div class="dashboard-card kpi-card">
+          <div class="kpi-icon-wrap kpi-green">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+
+          <div class="kpi-body">
+            <span class="kpi-label">Ganadas</span>
+            <span class="kpi-value">{{ data()!.misOportunidadesGanadas }}</span>
+          </div>
+        </div>
+
+        <!-- PERDIDAS -->
+        <div class="dashboard-card kpi-card">
+          <div class="kpi-icon-wrap kpi-red">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+
+          <div class="kpi-body">
+            <span class="kpi-label">Perdidas</span>
+            <span class="kpi-value">{{ data()!.misOportunidadesPerdidas }}</span>
+          </div>
+        </div>
+
+        <!-- VALOR -->
+        <div class="dashboard-card kpi-card">
+          <div class="kpi-icon-wrap kpi-purple">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 13v-1m0 0c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+
+          <div class="kpi-body">
+            <span class="kpi-label">Mi valor ganado</span>
+
+            <span class="kpi-value kpi-value--sm">
+              {{ data()!.miValorGanado | currency: 'COP' : 'symbol' : '1.0-0' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- ALERTAS -->
+        <div class="dashboard-card kpi-card">
+          <div class="kpi-icon-wrap kpi-red">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              />
+            </svg>
+          </div>
+
+          <div class="kpi-body">
+            <span class="kpi-label">Mis alertas pendientes</span>
+
+            <span class="kpi-value">
+              {{ data()!.misAlertasPendientes }}
+            </span>
+          </div>
         </div>
       </div>
 
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap kpi-amber">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-label">Activas</span>
-          <span class="kpi-value">{{ data()!.misOportunidadesActivas }}</span>
-        </div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap kpi-green">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-label">Ganadas</span>
-          <span class="kpi-value">{{ data()!.misOportunidadesGanadas }}</span>
-        </div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap kpi-red">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-label">Perdidas</span>
-          <span class="kpi-value">{{ data()!.misOportunidadesPerdidas }}</span>
-        </div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap kpi-purple">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 13v-1m0 0c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-label">Mi valor ganado</span>
-          <span class="kpi-value kpi-value--sm">
-            {{ data()!.miValorGanado | currency: 'COP' : 'symbol' : '1.0-0' }}
-          </span>
-        </div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap kpi-red">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-            />
-          </svg>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-label">Mis alertas pendientes</span>
-          <span class="kpi-value">{{ data()!.misAlertasPendientes }}</span>
-        </div>
+      <!-- PRIORIDADES -->
+      <div class="dashboard-side">
+        <app-qualification-priority-panel />
       </div>
     </div>
 
-    <!-- Solo embudo — el asesor no necesita dona de estados globales -->
-    <div class="charts-grid charts-grid--single">
-      <div class="chart-card">
+    <!-- CHARTS -->
+    <div class="charts-grid">
+      <!-- CHART -->
+      <div class="dashboard-card chart-card">
         <div class="chart-card-header">
-          <h3>Mi embudo de ventas</h3>
-          <span class="chart-subtitle">Mis oportunidades por etapa</span>
+          <div>
+            <h3>Mi embudo de ventas</h3>
+            <span class="chart-subtitle"> Mis oportunidades por etapa </span>
+          </div>
         </div>
+
         <div class="chart-wrap">
           <canvas #graficaEmbudo></canvas>
         </div>
       </div>
 
-      <div class="summary-card">
+      <!-- RESUMEN -->
+      <div class="dashboard-card summary-card">
         <div class="chart-card-header">
-          <h3>Detalle del embudo</h3>
-          <span class="chart-subtitle">Conteo por etapa</span>
+          <div>
+            <h3>Detalle del embudo</h3>
+
+            <span class="chart-subtitle"> Conteo por etapa </span>
+          </div>
         </div>
+
         <div class="funnel-list">
           <div class="funnel-item">
-            <span class="funnel-dot" style="background: #3b82f6"></span>
-            <span class="funnel-label">Prospección</span>
-            <span class="funnel-value">{{ data()!.enProspeccion }}</span>
+            <div class="funnel-left">
+              <span class="funnel-dot" style="background: #3b82f6"></span>
+              <span class="funnel-label">Prospección</span>
+            </div>
+
+            <span class="funnel-value">
+              {{ data()!.enProspeccion }}
+            </span>
           </div>
+
           <div class="funnel-item">
-            <span class="funnel-dot" style="background: #8b5cf6"></span>
-            <span class="funnel-label">Calificación</span>
-            <span class="funnel-value">{{ data()!.enCalificacion }}</span>
+            <div class="funnel-left">
+              <span class="funnel-dot" style="background: #8b5cf6"></span>
+              <span class="funnel-label">Calificación</span>
+            </div>
+
+            <span class="funnel-value">
+              {{ data()!.enCalificacion }}
+            </span>
           </div>
+
           <div class="funnel-item">
-            <span class="funnel-dot" style="background: #f59e0b"></span>
-            <span class="funnel-label">Propuesta</span>
-            <span class="funnel-value">{{ data()!.enPropuesta }}</span>
+            <div class="funnel-left">
+              <span class="funnel-dot" style="background: #f59e0b"></span>
+              <span class="funnel-label">Propuesta</span>
+            </div>
+
+            <span class="funnel-value">
+              {{ data()!.enPropuesta }}
+            </span>
           </div>
+
           <div class="funnel-item">
-            <span class="funnel-dot" style="background: #ec4899"></span>
-            <span class="funnel-label">Negociación</span>
-            <span class="funnel-value">{{ data()!.enNegociacion }}</span>
+            <div class="funnel-left">
+              <span class="funnel-dot" style="background: #ec4899"></span>
+              <span class="funnel-label">Negociación</span>
+            </div>
+
+            <span class="funnel-value">
+              {{ data()!.enNegociacion }}
+            </span>
           </div>
+
           <div class="funnel-item">
-            <span class="funnel-dot" style="background: #10b981"></span>
-            <span class="funnel-label">Cierre ganado</span>
-            <span class="funnel-value">{{ data()!.enCierreGanado }}</span>
+            <div class="funnel-left">
+              <span class="funnel-dot" style="background: #10b981"></span>
+              <span class="funnel-label">Cierre ganado</span>
+            </div>
+
+            <span class="funnel-value">
+              {{ data()!.enCierreGanado }}
+            </span>
           </div>
+
           <div class="funnel-item">
-            <span class="funnel-dot" style="background: #ef4444"></span>
-            <span class="funnel-label">Cierre perdido</span>
-            <span class="funnel-value">{{ data()!.enCierrePerdido }}</span>
+            <div class="funnel-left">
+              <span class="funnel-dot" style="background: #ef4444"></span>
+              <span class="funnel-label">Cierre perdido</span>
+            </div>
+
+            <span class="funnel-value">
+              {{ data()!.enCierrePerdido }}
+            </span>
           </div>
         </div>
       </div>

@@ -1,9 +1,12 @@
 import { Component, OnInit, OnDestroy, inject, signal, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
+import { forkJoin } from 'rxjs';
 import { DashboardService } from '../../../../core/services/dashboard.service';
 import { AdminDashboard } from '../../../../core/models/dashboard.model';
 import { AuthService } from '../../../../core/services/auth.service';
+import { CalificacionService } from '../../../../core/services/calificacion.service';
+import { QualificationDistribucion } from '../../../../core/models/calificacion.model';
 
 Chart.register(...registerables);
 
@@ -17,9 +20,11 @@ Chart.register(...registerables);
 export class AdminDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('graficaEmbudo') graficaEmbudoRef!: ElementRef;
   @ViewChild('graficaEstado') graficaEstadoRef!: ElementRef;
+  @ViewChild('graficaDistribucion') graficaDistribucionRef!: ElementRef;
 
   private readonly service = inject(DashboardService);
   private readonly authService = inject(AuthService);
+  private readonly qualificationSvc = inject(CalificacionService);
 
   data = signal<AdminDashboard | null>(null);
   loading = signal(true);
@@ -28,6 +33,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
   private chartEmbudo: Chart | null = null;
   private chartEstado: Chart | null = null;
+  private chartDistribucion: Chart | null = null;
 
   ngOnInit(): void {
     this.cargar();
@@ -36,11 +42,15 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   cargar(): void {
     this.loading.set(true);
     this.error.set(null);
-    this.service.getAdmin().subscribe({
-      next: (d) => {
-        this.data.set(d);
+
+    forkJoin({
+      dashboard: this.service.getAdmin(),
+      distribucion: this.qualificationSvc.distribucion(),
+    }).subscribe({
+      next: ({ dashboard, distribucion }) => {
+        this.data.set(dashboard);
         this.loading.set(false);
-        setTimeout(() => this.dibujarGraficas(), 100);
+        setTimeout(() => this.dibujarGraficas(distribucion), 100); // ✅ pasa el parámetro
       },
       error: () => {
         this.error.set('Error al cargar el dashboard');
@@ -49,15 +59,15 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  dibujarGraficas(): void {
+  // ✅ Firma corregida — recibe distribucion como parámetro
+  dibujarGraficas(distribucion?: QualificationDistribucion): void {
     if (!this.data()) return;
     const d = this.data()!;
 
-    // Destruye anteriores
     if (this.chartEmbudo) this.chartEmbudo.destroy();
     if (this.chartEstado) this.chartEstado.destroy();
 
-    // Gráfica 1 — Embudo por Stage (barras horizontales)
+    // Gráfica 1 — Embudo
     if (this.graficaEmbudoRef) {
       this.chartEmbudo = new Chart(this.graficaEmbudoRef.nativeElement, {
         type: 'bar',
@@ -88,12 +98,10 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
           ],
         },
         options: {
-          indexAxis: 'y', // barras horizontales — muestra el embudo
+          indexAxis: 'y',
           responsive: true,
           plugins: { legend: { display: false } },
-          scales: {
-            x: { beginAtZero: true, ticks: { stepSize: 1 } },
-          },
+          scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } },
         },
       });
     }
@@ -118,10 +126,41 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         },
       });
     }
+
+    // Gráfica 3 — Distribución de cartera
+    if (this.chartDistribucion) this.chartDistribucion.destroy();
+    if (this.graficaDistribucionRef && distribucion) {
+      const dist = distribucion.distribucion;
+      this.chartDistribucion = new Chart(this.graficaDistribucionRef.nativeElement, {
+        type: 'doughnut',
+        data: {
+          labels: ['❄️ Frío', '🌤️ Tibio', '🔥 Caliente', '👑 VIP'],
+          datasets: [
+            {
+              data: [
+                dist['FRIO'] ?? 0,
+                dist['TIBIO'] ?? 0,
+                dist['CALIENTE'] ?? 0,
+                dist['VIP'] ?? 0,
+              ],
+              backgroundColor: ['#60a5fa', '#fb923c', '#f97316', '#a855f7'],
+              borderWidth: 0,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } },
+        },
+      });
+    }
   }
 
+  // ✅ Destruye las 3 gráficas
   ngOnDestroy(): void {
     if (this.chartEmbudo) this.chartEmbudo.destroy();
     if (this.chartEstado) this.chartEstado.destroy();
+    if (this.chartDistribucion) this.chartDistribucion.destroy();
   }
 }

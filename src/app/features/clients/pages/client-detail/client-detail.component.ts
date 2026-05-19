@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { ClienteResponse } from '../../../../core/models/cliente.model';
+import { QualificationWidgetComponent } from '../../../qualifications/pages/qualification-widget/qualification-widget.component';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, QualificationWidgetComponent],
   templateUrl: './client-detail.component.html',
   styleUrl: './client-detail.component.css',
 })
@@ -15,14 +17,20 @@ export class ClientDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly clienteService = inject(ClienteService);
+  private readonly authService = inject(AuthService);
 
   cliente = signal<ClienteResponse | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
+  clienteId = signal<number | null>(null);
+
+  private readonly rol = this.authService.obtenerUsuario()?.roles?.[0] ?? '';
+  puedeEditarCalificacion = ['ADMINISTRADOR', 'GERENTE'].includes(this.rol);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.clienteId.set(Number(id));
       this.cargar(Number(id));
     }
   }

@@ -372,3 +372,150 @@
     width: 100%;
   }
 }
+
+/* =========================================
+   FILTROS CARD
+========================================= */
+
+.filtros-card {
+  background: linear-gradient(180deg, var(--bg-card), rgba(255, 255, 255, 0.015));
+  border: 1px solid var(--border-color);
+  border-radius: 22px;
+  padding: 22px;
+  margin-bottom: 28px;
+}
+
+.filtros-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-icon-wrap {
+  width: 78px;
+  height: 78px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+
+.empty-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+/* =========================================
+   ERROR STATE
+========================================= */
+
+.estado-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.estado-error-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.error-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+/* =========================================
+   ALERT TOP
+========================================= */
+
+.alert-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* =========================================
+   META INFO
+========================================= */
+
+.meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.meta-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.meta-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* =========================================
+   ALERT ACTIONS
+========================================= */
+
+.alert-actions {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alert-actions-left,
+.alert-actions-right {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* =========================================
+   RESPONSIVE EXTRA
+========================================= */
+
+@media (max-width: 768px) {
+  .alert-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .estado-error {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .estado-error-info {
+    text-align: center;
+  }
+
+  .alert-actions-left,
+  .alert-actions-right {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .alert-actions-left button,
+  .alert-actions-right button {
+    width: 100%;
+  }
+}

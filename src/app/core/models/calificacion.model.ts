@@ -4,6 +4,10 @@ export interface QualificationClient {
   puntaje: number;
   clasificacion: QualificationLevel;
   ultimaActualizacion: string;
+
+  clienteNombre?: string;
+  clienteEmpresa?: string;
+  clienteIniciales?: string;
 }
 
 export interface QualificationHistory {

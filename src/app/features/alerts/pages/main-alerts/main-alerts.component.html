@@ -3,44 +3,57 @@
   <div class="page-header">
     <div>
       <h1>{{ esAsesor ? 'Mis Alertas' : 'Alertas' }}</h1>
+
       <p class="page-subtitle">
-        {{ alertasFiltradas().length }} alerta{{ alertasFiltradas().length !== 1 ? 's' : '' }}
+        {{ alertasFiltradas().length }}
+        alerta{{ alertasFiltradas().length !== 1 ? 's' : '' }}
+
         @if (filtroTipo() !== 'TODOS' || filtroEstado() !== 'TODOS') {
-          <span class="filtro-info"
-            >de {{ alertas().length }} total{{ alertas().length !== 1 ? 'es' : '' }}</span
-          >
+          <span class="filtro-info">
+            de {{ alertas().length }} total{{ alertas().length !== 1 ? 'es' : '' }}
+          </span>
         }
       </p>
     </div>
   </div>
 
   <!-- FILTROS -->
-  <div class="filtros">
-    <div class="filtros-grupo">
-      <span class="filtros-label">Tipo:</span>
-      @for (t of tipos; track t.valor) {
-        <button
-          class="filtro-btn"
-          [class.active]="filtroTipo() === t.valor"
-          (click)="filtroTipo.set(t.valor)"
-        >
-          <span class="filtro-icon">{{ t.icon }}</span>
-          <span>{{ t.label }}</span>
-        </button>
-      }
-    </div>
+  <div class="filtros-card">
+    <div class="filtros">
+      <!-- TIPO -->
+      <div class="filtros-grupo">
+        <span class="filtros-label">Tipo</span>
 
-    <div class="filtros-grupo">
-      <span class="filtros-label">Estado:</span>
-      @for (e of estados; track e.valor) {
-        <button
-          class="filtro-btn filtro-estado"
-          [class.active]="filtroEstado() === e.valor"
-          (click)="filtroEstado.set(e.valor)"
-        >
-          <span>{{ e.label }}</span>
-        </button>
-      }
+        <div class="filtros-actions">
+          @for (t of tipos; track t.valor) {
+            <button
+              class="filtro-btn"
+              [class.active]="filtroTipo() === t.valor"
+              (click)="filtroTipo.set(t.valor)"
+            >
+              <span class="filtro-icon">{{ t.icon }}</span>
+              <span>{{ t.label }}</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- ESTADO -->
+      <div class="filtros-grupo">
+        <span class="filtros-label">Estado</span>
+
+        <div class="filtros-actions">
+          @for (e of estados; track e.valor) {
+            <button
+              class="filtro-btn filtro-estado"
+              [class.active]="filtroEstado() === e.valor"
+              (click)="filtroEstado.set(e.valor)"
+            >
+              <span>{{ e.label }}</span>
+            </button>
+          }
+        </div>
+      </div>
     </div>
   </div>
 
@@ -56,7 +69,12 @@
   @if (error() && !loading()) {
     <div class="estado-error">
       <span class="error-icon">⚠️</span>
-      <span class="error-message">{{ error() }}</span>
+
+      <div class="estado-error-info">
+        <span class="error-title">Error al cargar alertas</span>
+        <span class="error-message">{{ error() }}</span>
+      </div>
+
       <button class="btn-primary" (click)="cargarAlertas()">Reintentar</button>
     </div>
   }
@@ -65,14 +83,26 @@
   @if (!loading() && !error()) {
     @if (alertasFiltradas().length === 0) {
       <div class="empty-state">
-        <span class="empty-icon">🔍</span>
-        <span class="empty-message">
+        <div class="empty-icon-wrap">
+          <span class="empty-icon">🔍</span>
+        </div>
+
+        <span class="empty-title">
           @if (alertas().length === 0) {
             No hay alertas disponibles
           } @else {
-            No se encontraron alertas con los filtros seleccionados
+            No se encontraron alertas
           }
         </span>
+
+        <span class="empty-message">
+          @if (alertas().length === 0) {
+            Aún no existen alertas registradas en el sistema.
+          } @else {
+            Prueba cambiando o limpiando los filtros actuales.
+          }
+        </span>
+
         @if (alertas().length > 0) {
           <button
             class="btn-secondary"
@@ -92,7 +122,7 @@
             [class.alert-resuelta]="alerta.estado === 'RESUELTA'"
             [class.alert-vencida]="alerta.estado === 'VENCIDA'"
           >
-            <!-- TOP -->
+            <!-- HEADER CARD -->
             <div class="alert-top">
               <div
                 class="alert-icon"
@@ -103,26 +133,25 @@
               </div>
 
               <div class="alert-main">
-                <span class="alert-title">
-                  {{ alerta.tipo }}
-                </span>
+                <div class="alert-title-row">
+                  <span class="alert-title">
+                    {{ alerta.tipo }}
+                  </span>
 
-                <span class="alert-date">
-                  Fecha de Creacion:
-                  {{ alerta.fecha | date: 'dd/MM/yyyy HH:mm' }}
-                </span>
-              </div>
+                  <div class="alert-badges">
+                    @if (alerta.estado === 'PENDIENTE') {
+                      <span class="badge-estado pendiente">Pendiente</span>
+                    } @else if (alerta.estado === 'VISTA') {
+                      <span class="badge-estado vista">Vista</span>
+                    } @else if (alerta.estado === 'RESUELTA') {
+                      <span class="badge-estado resuelta">Resuelta</span>
+                    } @else if (alerta.estado === 'VENCIDA') {
+                      <span class="badge-estado vencida">Vencida</span>
+                    }
+                  </div>
+                </div>
 
-              <div class="alert-badges">
-                @if (alerta.estado === 'PENDIENTE') {
-                  <span class="badge-estado pendiente">Pendiente</span>
-                } @else if (alerta.estado === 'VISTA') {
-                  <span class="badge-estado vista">Vista</span>
-                } @else if (alerta.estado === 'RESUELTA') {
-                  <span class="badge-estado resuelta">Resuelta</span>
-                } @else if (alerta.estado === 'VENCIDA') {
-                  <span class="badge-estado vencida">Vencida</span>
-                }
+                <span class="alert-date"> 📅 {{ alerta.fecha | date: 'dd/MM/yyyy HH:mm' }} </span>
               </div>
             </div>
 
@@ -133,31 +162,49 @@
               </p>
 
               <div class="alert-meta">
-                <span class="badge badge-cliente">
-                  <span class="badge-label">Cliente:</span>
-                  {{ getClienteNombre(alerta.clienteId) }}
-                </span>
+                <div class="meta-row">
+                  <span class="meta-label">Cliente</span>
 
-                <span class="badge badge-usuario">
-                  <span class="badge-label">Usuario:</span>
-                  {{ getUsuarioNombre(alerta.usuarioId) }}
-                </span>
+                  <div class="meta-content">
+                    <span class="badge badge-cliente">
+                      {{ getClienteNombre(alerta.clienteId) }}
+                    </span>
+
+                    @if (getCalificacion(alerta.clienteId); as q) {
+                      <app-qualification-badge [nivel]="q.clasificacion" />
+                    }
+                  </div>
+                </div>
+
+                <div class="meta-row">
+                  <span class="meta-label">Usuario</span>
+
+                  <div class="meta-content">
+                    <span class="badge badge-usuario">
+                      {{ getUsuarioNombre(alerta.usuarioId) }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- FOOTER -->
             <div class="alert-actions">
-              @if (alerta.estado === 'PENDIENTE') {
-                <button class="btn-secondary" (click)="marcarVista(alerta.id)">
-                  Marcar como vista
-                </button>
-              }
+              <div class="alert-actions-left">
+                @if (alerta.estado === 'PENDIENTE') {
+                  <button class="btn-secondary" (click)="marcarVista(alerta.id)">
+                    Marcar vista
+                  </button>
+                }
+              </div>
 
-              @if (alerta.estado !== 'RESUELTA') {
-                <button class="btn-primary" (click)="resolver(alerta.id)">Resolver</button>
-              }
+              <div class="alert-actions-right">
+                @if (alerta.estado !== 'RESUELTA') {
+                  <button class="btn-primary" (click)="resolver(alerta.id)">Resolver</button>
+                }
 
-              <button class="btn-outline" (click)="irADetalle(alerta.id)">Ver detalle</button>
+                <button class="btn-outline" (click)="irADetalle(alerta.id)">Ver detalle</button>
+              </div>
             </div>
           </div>
         }

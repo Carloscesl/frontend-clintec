@@ -83,6 +83,27 @@
 }
 
 /* =========================================
+   QUALIFICATION WIDGET ROW
+========================================= */
+
+.detail-row--widget {
+  align-items: flex-start;
+}
+
+.detail-widget {
+  flex: 1;
+
+  min-width: 0;
+}
+
+/* Evita que el widget se pegue al borde */
+.detail-widget app-qualification-widget {
+  display: block;
+
+  width: 100%;
+}
+
+/* =========================================
    RESPONSIVE
 ========================================= */
 

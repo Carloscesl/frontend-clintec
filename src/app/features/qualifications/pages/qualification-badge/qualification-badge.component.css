@@ -1,44 +1,88 @@
+/* =========================================
+   BADGE
+========================================= */
+
 .q-badge {
   display: inline-flex;
   align-items: center;
+
   gap: 8px;
 
-  height: 34px;
-
-  padding: 0 14px;
+  padding: 8px 14px;
 
   border-radius: 999px;
 
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
-  font-size: 0.82rem;
-  font-weight: 600;
-  font-family: inherit;
+  font-size: 0.84rem;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: -0.01em;
+
+  white-space: nowrap;
 
   backdrop-filter: blur(10px);
 
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
   transition: var(--transition);
-
-  white-space: nowrap;
 }
 
-/* ICON */
-.q-badge__icon {
-  font-size: 0.9rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* LABEL */
-.q-badge__label {
-  line-height: 1;
-}
-
-/* HOVER */
 .q-badge:hover {
   transform: translateY(-1px);
 
-  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* =========================================
+   ICON
+========================================= */
+
+.q-badge__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.95rem;
+
+  line-height: 1;
+}
+
+/* =========================================
+   LABEL
+========================================= */
+
+.q-badge__label {
+  font-size: 0.82rem;
+
+  font-weight: 700;
+
+  line-height: 1;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .q-badge {
+    padding: 7px 12px;
+
+    gap: 6px;
+  }
+
+  .q-badge__label {
+    font-size: 0.78rem;
+  }
+
+  .q-badge__icon {
+    font-size: 0.88rem;
+  }
 }

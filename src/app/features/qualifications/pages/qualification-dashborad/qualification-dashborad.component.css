@@ -1,0 +1,362 @@
+:host {
+  display: block;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =========================================
+   PAGE
+========================================= */
+
+.qd {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.qd__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.qd__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+
+  letter-spacing: -0.03em;
+}
+
+.qd__sub {
+  margin-top: 6px;
+
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   KPI CARDS
+========================================= */
+
+.qd__kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+}
+
+.kpi-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  padding: 22px;
+
+  border-radius: 22px;
+
+  border: 1px solid var(--border-color);
+
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+
+  cursor: pointer;
+
+  transition: var(--transition);
+
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background: var(--bg);
+
+  opacity: 0.08;
+
+  pointer-events: none;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+
+  border-color: var(--accent);
+
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+}
+
+.kpi-card--active {
+  border-color: var(--accent);
+
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 18px 36px rgba(0, 0, 0, 0.3);
+}
+
+.kpi-card__icon {
+  font-size: 1.4rem;
+}
+
+.kpi-card__count {
+  font-size: 2rem;
+  font-weight: 800;
+
+  color: var(--text-primary);
+
+  line-height: 1;
+}
+
+.kpi-card__label {
+  font-size: 0.92rem;
+  font-weight: 600;
+
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   TABLE WRAPPER
+========================================= */
+
+.qd__table-wrap {
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  border: 1px solid var(--border-color);
+
+  background: var(--bg-card);
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
+/* =========================================
+   TABLE
+========================================= */
+
+.qd__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.qd__table thead {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.qd__table th {
+  padding: 18px;
+
+  text-align: left;
+
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  color: var(--text-secondary);
+
+  border-bottom: 1px solid var(--border-color);
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.qd__table td {
+  padding: 18px;
+
+  border-bottom: 1px solid var(--border-color);
+
+  color: var(--text-primary);
+
+  vertical-align: middle;
+}
+
+.qd__row {
+  transition: var(--transition);
+}
+
+.qd__row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* =========================================
+   CLIENT CELL
+========================================= */
+
+.qd__cell-cliente {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  font-weight: 600;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  flex-shrink: 0;
+
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================================
+   MUTED
+========================================= */
+
+.qd__cell-muted {
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   PUNTAJE
+========================================= */
+
+.qd__cell-puntaje {
+  min-width: 220px;
+}
+
+/* =========================================
+   INLINE EDIT
+========================================= */
+
+.qd__edit-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qd__edit-input {
+  width: 80px;
+  height: 42px;
+
+  padding: 0 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--border-color);
+
+  background: rgba(255, 255, 255, 0.03);
+
+  color: var(--text-primary);
+
+  outline: none;
+
+  transition: var(--transition);
+
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.qd__edit-input:focus {
+  border-color: var(--primary);
+
+  box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.12);
+}
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.btn-edit,
+.btn-save,
+.btn-cancel {
+  height: 40px;
+
+  padding: 0 16px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--border-color);
+
+  background: rgba(255, 255, 255, 0.03);
+
+  color: var(--text-primary);
+
+  cursor: pointer;
+
+  transition: var(--transition);
+
+  font-size: 0.84rem;
+  font-weight: 600;
+
+  font-family: inherit;
+}
+
+.btn-edit:hover {
+  border-color: var(--primary);
+
+  color: var(--primary);
+
+  background: rgba(0, 212, 170, 0.08);
+}
+
+.btn-save:hover {
+  border-color: var(--success);
+
+  color: var(--success);
+
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.btn-cancel:hover {
+  border-color: var(--danger);
+
+  color: var(--danger);
+
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.qd__loading {
+  padding: 40px;
+
+  text-align: center;
+
+  color: var(--text-secondary);
+
+  font-size: 0.95rem;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1024px) {
+  .qd__table-wrap {
+    overflow-x: auto;
+  }
+
+  .qd__table {
+    min-width: 900px;
+  }
+}
+
+@media (max-width: 768px) {
+  .qd__title {
+    font-size: 1.7rem;
+  }
+
+  .qd__kpis {
+    grid-template-columns: 1fr;
+  }
+}

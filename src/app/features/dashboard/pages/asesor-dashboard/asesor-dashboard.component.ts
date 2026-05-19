@@ -4,13 +4,14 @@ import { Chart, registerables } from 'chart.js';
 import { DashboardService } from '../../../../core/services/dashboard.service';
 import { AsesorDashboard } from '../../../../core/models/dashboard.model';
 import { AuthService } from '../../../../core/services/auth.service';
+import { QualificationPriorityPanelComponent } from '../../../qualifications/pages/qualification-priority-panel/qualification-priority-panel.component';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-asesor-dashboard',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, QualificationPriorityPanelComponent],
   templateUrl: './asesor-dashboard.component.html',
   styleUrl: './asesor-dashboard.component.css',
 })
