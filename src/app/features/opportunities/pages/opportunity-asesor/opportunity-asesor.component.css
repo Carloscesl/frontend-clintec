@@ -1,178 +1,486 @@
+/* =========================================
+   KANBAN BOARD - MODERN CRM UI
+========================================= */
+
 .kanban-board {
   display: flex;
-  gap: 18px;
-  padding: 20px;
+  gap: 24px;
+  padding: 4px;
   overflow-x: auto;
   align-items: flex-start;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
 }
 
-/* ───────────────────────────────
+.kanban-board::-webkit-scrollbar {
+  height: 10px;
+}
+
+.kanban-board::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 999px;
+}
+
+/* =========================================
    COLUMNAS
-─────────────────────────────── */
+========================================= */
+
 .kanban-col {
-  min-width: 300px;
-  background: var(--bg-card);
+  min-width: 340px;
+  width: 340px;
+
+  background: linear-gradient(180deg, var(--bg-navbar) 0%, var(--bg-sidebar) 100%);
+
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+
+  border-radius: 24px;
+
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 140px);
+
+  max-height: calc(100vh - 180px);
+
+  overflow: hidden;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+
+  transition: var(--transition);
 }
 
-/* HEADER COLUMNA */
+.kanban-col:hover {
+  border-color: rgba(0, 212, 170, 0.18);
+}
+
+/* =========================================
+   HEADER COLUMNA
+========================================= */
+
 .col-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 16px;
+
+  padding: 18px 20px;
+
   border-bottom: 1px solid var(--border-color);
+
   background: rgba(255, 255, 255, 0.02);
+
+  backdrop-filter: blur(10px);
 }
 
 .col-header-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .col-dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
+
+  box-shadow: 0 0 12px currentColor;
 }
 
 .col-title {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
 .col-count {
-  background: rgba(255, 255, 255, 0.05);
+  min-width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 12px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
   color: var(--text-secondary);
-  font-size: 0.75rem;
-  padding: 4px 10px;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* =========================================
+   CONTENEDOR CARDS
+========================================= */
+
+.col-cards {
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  overflow-y: auto;
+
+  min-height: 220px;
+  flex: 1;
+}
+
+.col-cards::-webkit-scrollbar {
+  width: 8px;
+}
+
+.col-cards::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 999px;
 }
 
-/* ───────────────────────────────
-   ZONA DRAG
-─────────────────────────────── */
-.col-cards {
-  padding: 12px;
+/* =========================================
+   CARD
+========================================= */
+
+.kanban-card {
+  position: relative;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.015) 100%
+  );
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 20px;
+
+  padding: 18px;
+
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  overflow-y: auto;
-  min-height: 200px;
+  gap: 14px;
+
+  cursor: grab;
+
+  overflow: hidden;
+
+  transition: var(--transition);
 }
 
-/* ───────────────────────────────
-   CARD
-─────────────────────────────── */
-.kanban-card {
-  background: linear-gradient(180deg, var(--bg-navbar), var(--bg-sidebar));
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  cursor: grab;
-  transition: var(--transition);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.kanban-card::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(circle at top right, rgba(0, 212, 170, 0.08), transparent 35%);
+
+  pointer-events: none;
 }
 
 .kanban-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--primary);
+  transform: translateY(-4px);
+
+  border-color: rgba(0, 212, 170, 0.25);
+
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
 }
 
 .kanban-card:active {
   cursor: grabbing;
 }
 
-/* ───────────────────────────────
-   USER
-─────────────────────────────── */
+/* =========================================
+   CLIENTE
+========================================= */
+
 .usuario-cell {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .avatar-sm {
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
+
   border-radius: 50%;
-  background: var(--primary);
+
+  background: linear-gradient(135deg, var(--primary), rgba(0, 212, 170, 0.7));
+
   color: #fff;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 0.75rem;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  box-shadow: 0 6px 18px rgba(0, 212, 170, 0.22);
 }
 
 .usuario-nombre {
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.96rem;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
-/* ───────────────────────────────
-   BADGE EMPRESA
-─────────────────────────────── */
+/* =========================================
+   BADGES
+========================================= */
+
 .badge {
-  padding: 4px 10px;
+  width: fit-content;
+
+  padding: 6px 12px;
+
   border-radius: 999px;
+
   font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .badge-info {
-  background: rgba(59, 130, 246, 0.15);
+  background: rgba(59, 130, 246, 0.14);
+
   color: var(--info);
+
+  border: 1px solid rgba(59, 130, 246, 0.18);
 }
 
-/* ───────────────────────────────
+/* =========================================
    TEXTO
-─────────────────────────────── */
+========================================= */
+
 .text-muted {
-  font-size: 0.8rem;
   color: var(--text-secondary);
+
+  font-size: 0.85rem;
+  line-height: 1.45;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
 }
 
-/* ───────────────────────────────
+/* =========================================
    VALOR
-─────────────────────────────── */
+========================================= */
+
 .card-valor {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  font-weight: 700;
+
   color: var(--success);
 }
 
-/* ───────────────────────────────
-   EMPTY STATE
-─────────────────────────────── */
-.empty-state {
-  text-align: center;
-  padding: 20px;
-  font-size: 0.85rem;
+/* =========================================
+   PROGRESS
+========================================= */
+
+.card-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 0.82rem;
+
   color: var(--text-secondary);
 }
 
-/* ───────────────────────────────
-   DRAG & DROP FX (CDK)
-─────────────────────────────── */
+.progress-top strong {
+  color: var(--text-primary);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  border-radius: 999px;
+
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  transition: width 0.35s ease;
+}
+
+/* =========================================
+   BOTON EDITAR
+========================================= */
+
+.btn-icon {
+  margin-top: 4px;
+
+  height: 42px;
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  color: var(--text-secondary);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  font-size: 0.88rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: var(--transition);
+}
+
+.btn-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-icon:hover {
+  background: rgba(0, 212, 170, 0.08);
+
+  border-color: rgba(0, 212, 170, 0.25);
+
+  color: var(--primary);
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-state {
+  min-height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: 1px dashed var(--border-color);
+
+  border-radius: 18px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.9rem;
+}
+
+/* =========================================
+   DRAG & DROP
+========================================= */
+
 .cdk-drag-preview {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border-radius: var(--radius-md);
+  border-radius: 20px;
+
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 }
 
 .cdk-drag-placeholder {
-  opacity: 0.2;
+  opacity: 0.25;
+
   border: 2px dashed var(--primary);
+
+  border-radius: 20px;
+
+  min-height: 120px;
 }
 
 .cdk-drop-list-dragging .kanban-card {
   transition: transform 0.2s ease;
+}
+
+/* =========================================
+   CIERRE PENDIENTE
+========================================= */
+
+.card-cierre-pendiente {
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+
+  background: linear-gradient(
+    180deg,
+    rgba(245, 158, 11, 0.12) 0%,
+    rgba(245, 158, 11, 0.05) 100%
+  ) !important;
+}
+
+.cierre-pendiente-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 14px;
+
+  border-radius: 14px;
+
+  background: rgba(245, 158, 11, 0.12);
+
+  border: 1px solid rgba(245, 158, 11, 0.18);
+
+  color: #fbbf24;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: var(--transition);
+}
+
+.cierre-pendiente-banner:hover {
+  background: rgba(245, 158, 11, 0.18);
+}
+
+.btn-reabrir {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .kanban-board {
+    gap: 18px;
+    padding-bottom: 12px;
+  }
+
+  .kanban-col {
+    min-width: 300px;
+    width: 300px;
+  }
+
+  .col-header {
+    padding: 16px;
+  }
+
+  .col-cards {
+    padding: 14px;
+  }
+
+  .kanban-card {
+    padding: 16px;
+  }
 }

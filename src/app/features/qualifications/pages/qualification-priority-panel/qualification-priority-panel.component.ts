@@ -1,5 +1,5 @@
 // qualification/components/qualification-priority-panel/qualification-priority-panel.component.ts
-import { Component, Input, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QualificationBadgeComponent } from '../qualification-badge/qualification-badge.component';
 import { QualificationProgressBarComponent } from '../qualification-progress-bar/qualification-progress-bar.component';

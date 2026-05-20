@@ -55,6 +55,7 @@
                 cdkDrag
                 [cdkDragData]="op"
                 (click)="abrirModalProbabilidad(op, $event)"
+                [class.card-cierre-pendiente]="tieneCierrePendiente(op)"
               >
                 <div class="drag-placeholder" *cdkDragPlaceholder></div>
 
@@ -105,6 +106,12 @@
                 @if (getCalificacion(op.clienteId); as q) {
                   <app-qualification-badge [nivel]="q.clasificacion" />
                 }
+                @if (tieneCierrePendiente(op)) {
+                  <div class="cierre-pendiente-banner" (click)="reabrirModalCierre(op, $event)">
+                    <span>⚠️ Confirmar estado de cierre</span>
+                    <span class="btn-reabrir">→</span>
+                  </div>
+                }
 
                 <button
                   class="btn-icon btn-icon--edit"
@@ -143,6 +150,16 @@
       [probabilidadActual]="opSeleccionada()!.probabilidad"
       (cerrar)="modalAbierto.set(false)"
       (guardado)="onProbabilidadGuardada($event)"
+    />
+  }
+
+  <!-- Modal de cierre — aparece automáticamente al arrastrar a cierre -->
+  @if (modalCierreAbierto() && opCierre() && tipoCierre()) {
+    <app-modal-cierre
+      [oportunidad]="opCierre()!"
+      [tipoCierre]="tipoCierre()!"
+      (confirmado)="onCierreConfirmado($event)"
+      (cancelado)="onCierreCancelado()"
     />
   }
 </div>

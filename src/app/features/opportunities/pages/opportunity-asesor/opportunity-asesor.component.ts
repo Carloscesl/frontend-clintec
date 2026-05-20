@@ -7,6 +7,7 @@ import { ClienteService } from '../../../../core/services/cliente.service';
 import { AuthService } from '../../../../core/services/auth.service';
 
 import {
+  EstadoOportunidad,
   EtapaOportunidad,
   OportunidadResponse,
   STAGE_RANGES,
@@ -20,10 +21,11 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { ModalProbabilidadComponent } from '../modal-probabilidad/modal-probabilidad.component';
+import { ModalProbabilidadComponent } from '../../components/modal-probabilidad/modal-probabilidad.component';
 import { QualificationClient } from '../../../../core/models/calificacion.model';
 import { CalificacionService } from '../../../../core/services/calificacion.service';
 import { QualificationBadgeComponent } from '../../../qualifications/pages/qualification-badge/qualification-badge.component';
+import { ModalCierreComponent } from '../../components/modal-cierre/modal-cierre.component';
 
 interface KanbanColumn {
   etapa: EtapaOportunidad;
@@ -36,7 +38,13 @@ interface KanbanColumn {
 @Component({
   selector: 'app-opportunity-asesor',
   standalone: true,
-  imports: [CommonModule, DragDropModule, ModalProbabilidadComponent, QualificationBadgeComponent],
+  imports: [
+    CommonModule,
+    DragDropModule,
+    ModalProbabilidadComponent,
+    QualificationBadgeComponent,
+    ModalCierreComponent,
+  ],
   templateUrl: './opportunity-asesor.component.html',
   styleUrls: ['./opportunity-asesor.component.css'],
 })
@@ -51,6 +59,12 @@ export class OpportunityAsesorComponent implements OnInit {
   oportunidades = signal<OportunidadResponse[]>([]);
   clientes = signal<ClienteResponse[]>([]);
   nombreAsesor = signal('');
+
+  modalCierreAbierto = signal(false);
+  opCierre = signal<OportunidadResponse | null>(null);
+  tipoCierre = signal<'CIERRE_GANADO' | 'CIERRE_PERDIDO' | null>(null);
+
+  oportunidadesPendientesCierre = signal<Set<number>>(new Set());
 
   loading = signal(true);
   error = signal<string | null>(null);
@@ -181,6 +195,14 @@ export class OpportunityAsesorComponent implements OnInit {
       event.currentIndex,
     );
 
+    if (columnaDestino.etapa !== 'CIERRE_GANADO' && columnaDestino.etapa !== 'CIERRE_PERDIDO') {
+      const pendientes = new Set(this.oportunidadesPendientesCierre());
+
+      pendientes.delete(oportunidad.idOportunidad);
+
+      this.oportunidadesPendientesCierre.set(pendientes);
+    }
+
     const updated = this.oportunidades().map((op) =>
       op.idOportunidad === oportunidad.idOportunidad
         ? {
@@ -192,9 +214,17 @@ export class OpportunityAsesorComponent implements OnInit {
     );
 
     this.oportunidades.set(updated);
+
     this.reconstruirKanban();
 
-    this.cambiarEtapa(oportunidad, columnaDestino.etapa);
+    // ✅ Si entra a cierre → abrir modal
+    if (columnaDestino.etapa === 'CIERRE_GANADO' || columnaDestino.etapa === 'CIERRE_PERDIDO') {
+      this.cambiarEtapa(oportunidad, columnaDestino.etapa);
+
+      this.abrirModalCierre(oportunidad, columnaDestino.etapa);
+    } else {
+      this.cambiarEtapa(oportunidad, columnaDestino.etapa);
+    }
   }
 
   // ── BACKEND UPDATE ──────────────────────────────────────
@@ -251,5 +281,87 @@ export class OpportunityAsesorComponent implements OnInit {
 
     this.modalAbierto.set(false);
     this.opSeleccionada.set(null);
+  }
+
+  abrirModalCierre(op: OportunidadResponse, tipo: 'CIERRE_GANADO' | 'CIERRE_PERDIDO'): void {
+    this.opCierre.set(op);
+    this.tipoCierre.set(tipo);
+    this.modalCierreAbierto.set(true);
+  }
+
+  // ── El usuario confirmó el cierre ───────────────────────
+  onCierreConfirmado(estado: EstadoOportunidad): void {
+    const op = this.opCierre();
+    if (!op) return;
+
+    // Llamar al backend según el estado
+    const accion =
+      estado === 'GANADA'
+        ? this.serviceOportunidad.cerrarGanada(op.idOportunidad)
+        : this.serviceOportunidad.cerrarPerdida(op.idOportunidad);
+
+    accion.subscribe({
+      next: () => {
+        // Quitar de la lista de pendientes si estaba
+        const pendientes = new Set(this.oportunidadesPendientesCierre());
+        pendientes.delete(op.idOportunidad);
+        this.oportunidadesPendientesCierre.set(pendientes);
+
+        // Actualizar estado en memoria
+        this.oportunidades.update((lista) =>
+          lista.map((o) => (o.idOportunidad === op.idOportunidad ? { ...o, estado } : o)),
+        );
+
+        // Si GANADA → redirigir a registrar venta
+        if (estado === 'GANADA') {
+          this.router.navigate(['/ventas/nueva'], {
+            queryParams: { oportunidadId: op.idOportunidad },
+          });
+        }
+
+        // Recargar kanban sin esa oportunidad (ya no es ACTIVA)
+        this.cargar();
+      },
+      error: () => {
+        this.error.set('Error al cerrar la oportunidad');
+        this.cargar();
+      },
+    });
+
+    this.cerrarModalCierre();
+  }
+
+  // ── El usuario canceló — guarda como pendiente ───────────
+  onCierreCancelado(): void {
+    const op = this.opCierre();
+    if (!op) return;
+
+    // Marca la oportunidad como pendiente de confirmar
+    const pendientes = new Set(this.oportunidadesPendientesCierre());
+    pendientes.add(op.idOportunidad);
+    this.oportunidadesPendientesCierre.set(pendientes);
+
+    this.cerrarModalCierre();
+  }
+
+  // ── Cierra el modal ──────────────────────────────────────
+  cerrarModalCierre(): void {
+    this.modalCierreAbierto.set(false);
+    this.opCierre.set(null);
+    this.tipoCierre.set(null);
+  }
+
+  // ── Verifica si una oportunidad tiene cierre pendiente ───
+  tieneCierrePendiente(op: OportunidadResponse): boolean {
+    return (
+      op.estado === 'ACTIVA' && (op.etapa === 'CIERRE_GANADO' || op.etapa === 'CIERRE_PERDIDO')
+    );
+  }
+
+  // ── Reabre el modal desde el botón de la card ────────────
+  reabrirModalCierre(op: OportunidadResponse, event: Event): void {
+    event.stopPropagation();
+    const tipo = op.etapa === 'CIERRE_GANADO' ? 'CIERRE_GANADO' : 'CIERRE_PERDIDO';
+    this.abrirModalCierre(op, tipo);
   }
 }
