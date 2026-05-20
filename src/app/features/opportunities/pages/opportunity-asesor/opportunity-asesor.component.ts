@@ -314,7 +314,7 @@ export class OpportunityAsesorComponent implements OnInit {
 
         // Si GANADA → redirigir a registrar venta
         if (estado === 'GANADA') {
-          this.router.navigate(['/ventas/nueva'], {
+          this.router.navigate(['/sales/registrar'], {
             queryParams: { oportunidadId: op.idOportunidad },
           });
         }

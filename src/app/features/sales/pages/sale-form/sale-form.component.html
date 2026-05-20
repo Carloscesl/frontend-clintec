@@ -1,0 +1,122 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Registrar venta</h1>
+      <p class="page-subtitle">Confirma los detalles del cierre</p>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="estado-loading">
+      <div class="spinner"></div>
+      <span>Cargando oportunidad...</span>
+    </div>
+  }
+
+  @if (error() && !loading()) {
+    <div class="estado-error" style="margin-bottom: 20px">
+      <span>{{ error() }}</span>
+    </div>
+  }
+
+  @if (!loading() && oportunidad()) {
+    <!-- Resumen de la oportunidad -->
+    <div class="op-resumen">
+      <div class="op-resumen-header">
+        <span class="badge badge-activo">✓ Oportunidad ganada</span>
+        <span class="text-muted">#{{ oportunidad()!.idOportunidad }}</span>
+      </div>
+      <div class="op-resumen-body">
+        <div class="op-dato">
+          <span class="op-dato-lbl">Descripción</span>
+          <span class="op-dato-val">{{ oportunidad()!.descripcion }}</span>
+        </div>
+        <div class="op-dato">
+          <span class="op-dato-lbl">Valor estimado</span>
+          <span class="op-dato-val" style="color: var(--success); font-weight: 700">
+            {{ oportunidad()!.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
+          </span>
+        </div>
+        <div class="op-dato">
+          <span class="op-dato-lbl">Probabilidad</span>
+          <span class="op-dato-val">{{ oportunidad()!.probabilidad }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form-card">
+      <!-- Valor real de la venta -->
+      <div class="form-grupo">
+        <label>Valor real de la venta *</label>
+        <p class="form-hint text-muted">
+          El valor estimado era
+          {{ oportunidad()!.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}. Ajusta si el
+          cierre fue diferente.
+        </p>
+        <div class="input-num-wrap" style="max-width: 240px">
+          <input type="number" formControlName="valorVenta" class="input-num" [min]="1" />
+          <span class="input-num-suffix">COP</span>
+        </div>
+        @if (f['valorVenta'].touched) {
+          @if (f['valorVenta'].hasError('required')) {
+            <span class="campo-error">El valor es requerido</span>
+          }
+          @if (f['valorVenta'].hasError('min')) {
+            <span class="campo-error">El valor debe ser mayor a 0</span>
+          }
+        }
+      </div>
+
+      <!-- Método de pago -->
+      <div class="form-grupo">
+        <label>Método de pago *</label>
+        <div class="tipo-grid">
+          @for (m of metodos; track m.valor) {
+            <button
+              type="button"
+              class="tipo-btn"
+              [class.active]="f['paymentMethod'].value === m.valor"
+              (click)="f['paymentMethod'].setValue(m.valor)"
+            >
+              <span class="tipo-icon">{{ m.icon }}</span>
+              <span class="tipo-label">{{ m.label }}</span>
+            </button>
+          }
+        </div>
+        @if (f['paymentMethod'].touched && f['paymentMethod'].hasError('required')) {
+          <span class="campo-error">Selecciona el método de pago</span>
+        }
+      </div>
+
+      <!-- Notas del cierre -->
+      <div class="form-grupo">
+        <label>Notas del cierre</label>
+        <textarea
+          formControlName="notas"
+          class="input-textarea"
+          rows="3"
+          placeholder="Condiciones especiales, descuentos aplicados, acuerdos..."
+        >
+        </textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-reset" (click)="cancelar()">Cancelar</button>
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="form.invalid || guardando()"
+          style="height: 44px; padding: 0 24px; border-radius: 12px"
+        >
+          @if (guardando()) {
+            <span class="spinner-sm"></span>
+            Registrando...
+          } @else {
+            Confirmar venta
+          }
+        </button>
+      </div>
+    </form>
+  }
+</div>

@@ -1,0 +1,129 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Ventas</h1>
+      <p class="page-subtitle">Historial de ventas cerradas</p>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="estado-loading">
+      <div class="spinner"></div>
+      <span>Cargando ventas...</span>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="estado-error">
+      <span>{{ error() }}</span>
+      <button (click)="cargar()">Reintentar</button>
+    </div>
+  }
+
+  @if (!loading() && !error()) {
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-icon">🧾</span>
+        <span class="kpi-num">{{ totalVentas() }}</span>
+        <span class="kpi-lbl">Total ventas</span>
+      </div>
+      <div class="kpi-card kpi-card--green">
+        <span class="kpi-icon">💰</span>
+        <span class="kpi-num">
+          {{ valorTotal() | currency: 'COP' : 'symbol' : '1.0-0' }}
+        </span>
+        <span class="kpi-lbl">Valor total</span>
+      </div>
+      <div class="kpi-card kpi-card--blue">
+        <span class="kpi-icon">📊</span>
+        <span class="kpi-num">
+          {{ valorPromedio() | currency: 'COP' : 'symbol' : '1.0-0' }}
+        </span>
+        <span class="kpi-lbl">Promedio por venta</span>
+      </div>
+      <div class="kpi-card kpi-card--purple">
+        <span class="kpi-icon">🏆</span>
+        <span class="kpi-num">
+          {{ ventaMayor() | currency: 'COP' : 'symbol' : '1.0-0' }}
+        </span>
+        <span class="kpi-lbl">Venta mayor</span>
+      </div>
+    </div>
+
+    <!-- Filtros por método de pago -->
+    <div class="filtros">
+      @for (m of metodos; track m.valor) {
+        <button
+          class="filtro-btn"
+          [class.active]="filtroMetodo() === m.valor"
+          (click)="filtroMetodo.set(m.valor)"
+        >
+          <span>{{ m.icon }}</span>
+          <span>{{ m.label }}</span>
+        </button>
+      }
+    </div>
+
+    @if (ventasFiltradas().length === 0) {
+      <div class="empty-state">
+        <span>No hay ventas con el filtro seleccionado</span>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table class="cl-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Oportunidad</th>
+              <th>Asesor</th>
+              <th>Valor</th>
+              <th>Método de pago</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (v of ventasFiltradas(); track v.idVenta) {
+              <tr>
+                <td class="text-muted">{{ v.idVenta }}</td>
+                <td>
+                  <span class="badge badge-activa"> Oportunidad #{{ v.idOportunidad }} </span>
+                </td>
+                <td>
+                  <div class="usuario-cell">
+                    <div class="avatar-sm">A</div>
+                    <span>Asesor #{{ v.idAsesor }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="venta-valor">
+                    {{ v.valorVenta | currency: 'COP' : 'symbol' : '1.0-0' }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="badge"
+                    [style.background]="getMetodoConfig(v.paymentMethod).bg"
+                    [style.color]="getMetodoConfig(v.paymentMethod).color"
+                  >
+                    {{ getMetodoConfig(v.paymentMethod).icon }}
+                    {{ v.paymentMethod }}
+                  </span>
+                </td>
+                <td class="text-muted">
+                  {{ v.fechaVenta | date: 'dd/MM/yyyy HH:mm' }}
+                </td>
+                <td>
+                  <button class="btn-icon btn-icon--edit" (click)="irADetalle(v.idVenta)">
+                    Ver detalle
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

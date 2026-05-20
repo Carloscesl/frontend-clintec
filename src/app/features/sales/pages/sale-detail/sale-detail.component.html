@@ -1,0 +1,108 @@
+<div class="page-container">
+  <div class="page-header">
+    <button class="btn-reset" (click)="volver()">← Volver</button>
+    <div>
+      <h1>Detalle de venta</h1>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="estado-loading">
+      <div class="spinner"></div>
+      <span>Cargando venta...</span>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="estado-error">
+      <span>{{ error() }}</span>
+    </div>
+  }
+
+  @if (!loading() && venta()) {
+    <div class="detail-grid">
+      <!-- VENTA -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <span class="detail-card-title">Venta #{{ venta()!.idVenta }}</span>
+          <span class="badge badge-activo">✓ Cerrada</span>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-row">
+            <span class="detail-lbl">Valor real</span>
+            <span class="detail-val venta-valor-lg">
+              {{ venta()!.valorVenta | currency: 'COP' : 'symbol' : '1.0-0' }}
+            </span>
+          </div>
+
+          <!-- Diferencia con estimado -->
+          @if (oportunidad()) {
+            <div class="detail-row">
+              <span class="detail-lbl">vs. Valor estimado</span>
+              <span
+                class="detail-val"
+                [style.color]="diferencia() >= 0 ? 'var(--success)' : 'var(--danger)'"
+              >
+                {{ diferencia() >= 0 ? '+' : '' }}
+                {{ diferencia() | currency: 'COP' : 'symbol' : '1.0-0' }}
+              </span>
+            </div>
+          }
+
+          <div class="detail-row">
+            <span class="detail-lbl">Método de pago</span>
+            <span
+              class="badge"
+              [style.background]="getMetodoConfig(venta()!.paymentMethod).bg"
+              [style.color]="getMetodoConfig(venta()!.paymentMethod).color"
+            >
+              {{ getMetodoConfig(venta()!.paymentMethod).icon }}
+              {{ venta()!.paymentMethod }}
+            </span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-lbl">Fecha de venta</span>
+            <span class="detail-val">
+              {{ venta()!.fechaVenta | date: 'dd/MM/yyyy HH:mm' }}
+            </span>
+          </div>
+
+          @if (venta()!.notas) {
+            <div class="detail-row detail-row--col">
+              <span class="detail-lbl">Notas del cierre</span>
+              <p class="detail-nota">{{ venta()!.notas }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- OPORTUNIDAD ASOCIADA -->
+      @if (oportunidad()) {
+        <div class="detail-card">
+          <div class="detail-card-header">
+            <span class="detail-card-title">Oportunidad origen</span>
+            <span class="badge badge-activo">GANADA</span>
+          </div>
+          <div class="detail-section">
+            <div class="detail-row">
+              <span class="detail-lbl">Descripción</span>
+              <span class="detail-val">{{ oportunidad()!.descripcion }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-lbl">Valor estimado</span>
+              <span class="detail-val">
+                {{ oportunidad()!.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
+              </span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-lbl">Probabilidad final</span>
+              <span class="detail-val">{{ oportunidad()!.probabilidad }}%</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

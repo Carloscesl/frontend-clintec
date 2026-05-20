@@ -1,0 +1,78 @@
+/* KPI GRID */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: var(--bg-navbar);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.kpi-card--green {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+.kpi-card--blue {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+.kpi-card--purple {
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.kpi-icon {
+  font-size: 1.4rem;
+}
+.kpi-num {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.kpi-lbl {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* FILTROS */
+.filtros {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.filtro-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.filtro-btn:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+.filtro-btn.active {
+  background: rgba(0, 212, 170, 0.12);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* VALOR */
+.venta-valor {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--success);
+}

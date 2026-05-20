@@ -1,0 +1,85 @@
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 900px;
+}
+
+@media (max-width: 768px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-card {
+  background: var(--bg-navbar);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.detail-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  gap: 12px;
+}
+.detail-row:last-child {
+  border-bottom: none;
+}
+.detail-row--col {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.detail-lbl {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+.detail-val {
+  color: var(--text-primary);
+  font-weight: 500;
+  text-align: right;
+}
+
+.venta-valor-lg {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--success);
+}
+
+.detail-nota {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  margin-top: 6px;
+  width: 100%;
+}
