@@ -196,6 +196,34 @@
   overflow: hidden;
 
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+
+  scrollbar-width: thin;
+
+  scrollbar-color: var(--primary) rgba(255, 255, 255, 0.04);
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 6px;
+
+  width: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+
+  border-radius: 999px;
+
+  margin: 0 24px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--primary);
+
+  border-radius: 999px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
 }
 
 /* =========================================

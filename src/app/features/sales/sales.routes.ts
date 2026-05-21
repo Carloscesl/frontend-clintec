@@ -5,7 +5,7 @@ export const SALES_ROUTES: Routes = [
   {
     path: 'sales',
     canActivate: [roleGuard],
-    data: { roles: ['ADMINISTRADOR', 'GERENTE'] },
+    data: { roles: ['ADMINISTRADOR', 'GERENTE', 'ASESOR'] },
     loadComponent: () =>
       import('./pages/sale-list/sale-list.component').then((m) => m.SaleListComponent),
   },

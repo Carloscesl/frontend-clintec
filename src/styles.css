@@ -101,3 +101,28 @@ body {
 
   --info: #2563eb;
 }
+
+/* En tu archivo global (styles.css o similar) */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) rgba(255, 255, 255, 0.04);
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--bg-sidebar);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}

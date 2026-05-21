@@ -8,6 +8,7 @@ export interface OportunidadResponse {
   etapa: EtapaOportunidad;
   estado: EstadoOportunidad;
   esPotencial: boolean;
+  ventaId: number | null;
   fechaCierreEstimada: string;
   fechaCreacion: string;
   fechaActualizacion: string;

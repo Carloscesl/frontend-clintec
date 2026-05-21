@@ -1,10 +1,56 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>Ventas</h1>
-      <p class="page-subtitle">Historial de ventas cerradas</p>
+      <h1>{{ esAsesor ? 'Mis Ventas' : 'Ventas' }}</h1>
+      <p class="page-subtitle">
+        {{ esAsesor ? 'Historial de tus ventas cerradas' : 'Historial de todas las ventas' }}
+      </p>
     </div>
   </div>
+
+  <!-- SECCIÓN EXCLUSIVA DEL ASESOR: oportunidades ganadas sin venta registrada -->
+  @if (esAsesor && oportunidadesPendientes().length > 0) {
+    <div class="pendientes-section">
+      <div class="pendientes-header">
+        <span class="pendientes-icon">⚠️</span>
+        <div>
+          <span class="pendientes-title">
+            Tienes {{ oportunidadesPendientes().length }} oportunidad{{
+              oportunidadesPendientes().length !== 1 ? 'es' : ''
+            }}
+            ganada{{ oportunidadesPendientes().length !== 1 ? 's' : '' }}
+            sin venta registrada
+          </span>
+          <p class="pendientes-sub text-muted">
+            Registra la venta para completar el ciclo comercial
+          </p>
+        </div>
+      </div>
+      <div class="pendientes-list">
+        @for (op of oportunidadesPendientes(); track op.idOportunidad) {
+          <div class="pendiente-card">
+            <div class="pendiente-info">
+              <span class="badge badge-activo">✓ Ganada</span>
+              <span class="pendiente-desc">{{ op.descripcion }}</span>
+              <span class="pendiente-valor text-muted">
+                Valor estimado:
+                <strong style="color: var(--success)">
+                  {{ op.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
+                </strong>
+              </span>
+            </div>
+            <button
+              class="btn-primary"
+              style="height: 38px; padding: 0 18px; border-radius: 10px; font-size: 0.82rem"
+              (click)="registrarVenta(op)"
+            >
+              Registrar venta →
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  }
 
   @if (loading()) {
     <div class="estado-loading">
@@ -26,7 +72,7 @@
       <div class="kpi-card">
         <span class="kpi-icon">🧾</span>
         <span class="kpi-num">{{ totalVentas() }}</span>
-        <span class="kpi-lbl">Total ventas</span>
+        <span class="kpi-lbl">{{ esAsesor ? 'Mis ventas' : 'Total ventas' }}</span>
       </div>
       <div class="kpi-card kpi-card--green">
         <span class="kpi-icon">💰</span>
@@ -51,7 +97,7 @@
       </div>
     </div>
 
-    <!-- Filtros por método de pago -->
+    <!-- Filtros -->
     <div class="filtros">
       @for (m of metodos; track m.valor) {
         <button
@@ -67,7 +113,13 @@
 
     @if (ventasFiltradas().length === 0) {
       <div class="empty-state">
-        <span>No hay ventas con el filtro seleccionado</span>
+        <span>
+          {{
+            esAsesor
+              ? 'Aún no tienes ventas registradas'
+              : 'No hay ventas con el filtro seleccionado'
+          }}
+        </span>
       </div>
     } @else {
       <div class="table-wrapper">
@@ -76,7 +128,9 @@
             <tr>
               <th>#</th>
               <th>Oportunidad</th>
-              <th>Asesor</th>
+              @if (!esAsesor) {
+                <th>Asesor</th>
+              }
               <th>Valor</th>
               <th>Método de pago</th>
               <th>Fecha</th>
@@ -90,12 +144,14 @@
                 <td>
                   <span class="badge badge-activa"> Oportunidad #{{ v.idOportunidad }} </span>
                 </td>
-                <td>
-                  <div class="usuario-cell">
-                    <div class="avatar-sm">A</div>
-                    <span>Asesor #{{ v.idAsesor }}</span>
-                  </div>
-                </td>
+                @if (!esAsesor) {
+                  <td>
+                    <div class="usuario-cell">
+                      <div class="avatar-sm">A</div>
+                      <span>Asesor #{{ v.idAsesor }}</span>
+                    </div>
+                  </td>
+                }
                 <td>
                   <span class="venta-valor">
                     {{ v.valorVenta | currency: 'COP' : 'symbol' : '1.0-0' }}
@@ -116,7 +172,7 @@
                 </td>
                 <td>
                   <button class="btn-icon btn-icon--edit" (click)="irADetalle(v.idVenta)">
-                    Ver detalle
+                    Ver
                   </button>
                 </td>
               </tr>

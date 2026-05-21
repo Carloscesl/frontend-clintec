@@ -1,78 +1,283 @@
-/* KPI GRID */
+/* =========================================
+   PENDIENTES SECTION
+========================================= */
+
+.pendientes-section {
+  background: linear-gradient(180deg, var(--bg-navbar) 0%, var(--bg-sidebar) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  margin-bottom: 28px;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.08);
+}
+
+.pendientes-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.pendientes-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pendientes-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--warning);
+  display: block;
+}
+
+.pendientes-sub {
+  margin-top: 4px;
+  font-size: 0.82rem;
+}
+
+.pendientes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pendiente-card {
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: var(--transition);
+}
+
+.pendiente-card:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.pendiente-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pendiente-desc {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.pendiente-valor {
+  font-size: 0.82rem;
+}
+
+/* =========================================
+   KPI GRID
+========================================= */
+
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
 }
 
 .kpi-card {
-  background: var(--bg-navbar);
+  background: linear-gradient(180deg, var(--bg-navbar) 0%, var(--bg-sidebar) 100%);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
-  padding: 18px;
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  transition: var(--transition);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
 .kpi-card--green {
-  border-color: rgba(16, 185, 129, 0.3);
+  border-color: rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.06);
 }
+
 .kpi-card--blue {
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.06);
 }
+
 .kpi-card--purple {
-  border-color: rgba(168, 85, 247, 0.3);
+  border-color: rgba(139, 92, 246, 0.2);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.06);
 }
 
 .kpi-icon {
   font-size: 1.4rem;
-}
-.kpi-num {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-.kpi-lbl {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+  line-height: 1;
 }
 
-/* FILTROS */
+.kpi-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.kpi-card--green .kpi-num {
+  color: var(--success);
+}
+
+.kpi-card--blue .kpi-num {
+  color: var(--info);
+}
+
+.kpi-card--purple .kpi-num {
+  color: #8b5cf6;
+}
+
+.kpi-lbl {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* =========================================
+   FILTROS
+========================================= */
+
 .filtros {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
+
 .filtro-btn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 14px;
-  border-radius: 20px;
-  border: 1px solid var(--border-color);
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 0.82rem;
-  font-weight: 500;
-  cursor: pointer;
   transition: var(--transition);
 }
+
 .filtro-btn:hover {
   border-color: var(--primary);
   color: var(--text-primary);
+  background: rgba(0, 212, 170, 0.06);
 }
+
 .filtro-btn.active {
   background: rgba(0, 212, 170, 0.12);
   border-color: var(--primary);
   color: var(--primary);
-  font-weight: 700;
 }
 
-/* VALOR */
+/* =========================================
+   VALOR VENTA
+========================================= */
+
 .venta-valor {
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--success);
+}
+
+/* =========================================
+   BADGE ACTIVA (override puntual)
+========================================= */
+
+.badge-activa {
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--info);
+}
+
+/* =========================================
+   CUSTOM SCROLLBAR
+========================================= */
+
+.table-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) rgba(255, 255, 255, 0.04);
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+  margin: 0 24px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 999px;
+  opacity: 0.7;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .kpi-num {
+    font-size: 1.2rem;
+  }
+
+  .pendiente-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pendiente-card .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filtros {
+    gap: 8px;
+  }
+
+  .filtro-btn {
+    font-size: 0.8rem;
+    height: 36px;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -102,6 +102,6 @@ export class SaleFormComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(['/opportunities']);
+    this.router.navigate(['/sales']);
   }
 }

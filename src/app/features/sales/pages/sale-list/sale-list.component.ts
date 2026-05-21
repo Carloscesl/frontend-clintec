@@ -2,7 +2,10 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { VentaService } from '../../../../core/services/venta.service';
+import { OportunidadService } from '../../../../core/services/oportunidad.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { VentaResponse, MetodoPago } from '../../../../core/models/venta.model';
+import { OportunidadResponse } from '../../../../core/models/oportunidad.model';
 
 @Component({
   selector: 'app-sale-list',
@@ -12,14 +15,22 @@ import { VentaResponse, MetodoPago } from '../../../../core/models/venta.model';
   styleUrl: './sale-list.component.css',
 })
 export class SaleListComponent implements OnInit {
-  private service = inject(VentaService);
-  private router = inject(Router);
+  private readonly service = inject(VentaService);
+  private readonly opService = inject(OportunidadService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   ventas = signal<VentaResponse[]>([]);
+  oportunidadesPendientes = signal<OportunidadResponse[]>([]);
   loading = signal(true);
+  loadingOps = signal(false);
   error = signal<string | null>(null);
-
   filtroMetodo = signal<MetodoPago | 'TODOS'>('TODOS');
+
+  // Rol del usuario
+  private readonly rol = this.authService.obtenerRol() ?? '';
+  private readonly usuarioId = this.authService.obtenerUsuarioId();
+  esAsesor = this.rol === 'ASESOR';
 
   metodos: { valor: MetodoPago | 'TODOS'; label: string; icon: string }[] = [
     { valor: 'TODOS', label: 'Todos', icon: '◈' },
@@ -29,45 +40,67 @@ export class SaleListComponent implements OnInit {
     { valor: 'TARJETA_DEBITO', label: 'Tarjeta débito', icon: '💳' },
   ];
 
-  // Ventas filtradas por método
   ventasFiltradas = computed(() => {
     const metodo = this.filtroMetodo();
     if (metodo === 'TODOS') return this.ventas();
     return this.ventas().filter((v) => v.paymentMethod === metodo);
   });
 
-  // KPIs calculados
   totalVentas = computed(() => this.ventasFiltradas().length);
-
-  valorTotal = computed(() => this.ventasFiltradas().reduce((acc, v) => acc + v.valorVenta, 0));
-
+  valorTotal = computed(() => this.ventasFiltradas().reduce((a, v) => a + v.valorVenta, 0));
   valorPromedio = computed(() =>
     this.totalVentas() > 0 ? this.valorTotal() / this.totalVentas() : 0,
   );
-
   ventaMayor = computed(() =>
     this.ventasFiltradas().reduce((max, v) => (v.valorVenta > max ? v.valorVenta : max), 0),
   );
 
   ngOnInit(): void {
     this.cargar();
+    // El asesor también ve sus oportunidades ganadas sin venta registrada
+    if (this.esAsesor && this.usuarioId) {
+      this.cargarOportunidadesPendientes();
+    }
   }
 
   cargar(): void {
     this.loading.set(true);
     this.error.set(null);
-    this.service.listAll().subscribe({
+
+    const peticion =
+      this.esAsesor && this.usuarioId
+        ? this.service.findAssessor(this.usuarioId)
+        : this.service.listAll();
+
+    peticion.subscribe({
       next: (data) => {
-        const ordenadas = data.sort(
-          (a, b) => new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime(),
+        this.ventas.set(
+          data.sort((a, b) => new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime()),
         );
-        this.ventas.set(ordenadas);
         this.loading.set(false);
       },
       error: () => {
         this.error.set('Error al cargar ventas');
         this.loading.set(false);
       },
+    });
+  }
+
+  cargarOportunidadesPendientes(): void {
+    this.loadingOps.set(true);
+    this.opService.listarPorAsesor(this.usuarioId!).subscribe({
+      next: (ops) => {
+        const pendientes = ops.filter((o) => o.estado === 'GANADA' && o.ventaId === null);
+        this.oportunidadesPendientes.set(pendientes);
+        this.loadingOps.set(false);
+      },
+      error: () => this.loadingOps.set(false),
+    });
+  }
+
+  registrarVenta(op: OportunidadResponse): void {
+    this.router.navigate(['/sales/registrar'], {
+      queryParams: { oportunidadId: op.idOportunidad },
     });
   }
 
