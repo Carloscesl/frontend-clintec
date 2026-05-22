@@ -51,19 +51,25 @@
 .dashboard-card {
   background: linear-gradient(180deg, var(--bg-navbar) 0%, var(--bg-sidebar) 100%);
   border: 1px solid var(--border-color);
-  border-radius: 24px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  transition: var(--transition);
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+  border-color: rgba(0, 212, 170, 0.12);
 }
 
 /* =========================================
-   KPI GRID
+   KPI GRID — 2 filas de 3
 ========================================= */
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 /* =========================================
@@ -71,21 +77,26 @@
 ========================================= */
 
 .kpi-card {
-  padding: 26px;
+  padding: 24px;
   position: relative;
   transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .kpi-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   border-color: rgba(0, 212, 170, 0.2);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
 }
 
 .kpi-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top right, rgba(0, 212, 170, 0.08), transparent 35%);
+  border-radius: inherit;
+  background: radial-gradient(circle at top right, rgba(0, 212, 170, 0.06), transparent 40%);
   pointer-events: none;
 }
 
@@ -94,18 +105,19 @@
 ========================================= */
 
 .kpi-icon-wrap {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .kpi-icon-wrap svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 }
 
 /* =========================================
@@ -116,58 +128,88 @@
   background: rgba(59, 130, 246, 0.12);
   color: var(--info);
 }
-
 .kpi-green {
   background: rgba(16, 185, 129, 0.12);
   color: var(--success);
 }
-
 .kpi-amber {
   background: rgba(245, 158, 11, 0.12);
   color: var(--warning);
 }
-
 .kpi-purple {
   background: rgba(139, 92, 246, 0.12);
   color: #8b5cf6;
 }
-
+.kpi-gray {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--text-secondary);
+}
 .kpi-red {
   background: rgba(239, 68, 68, 0.12);
   color: var(--danger);
 }
 
 /* =========================================
-   KPI TEXT
+   KPI BODY
 ========================================= */
+
+.kpi-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
 
 .kpi-label {
   display: block;
   color: var(--text-secondary);
-  font-size: 0.92rem;
-  margin-bottom: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kpi-value {
-  font-size: 2.2rem;
-  font-weight: 700;
+  font-size: 2.1rem;
+  font-weight: 800;
   color: var(--text-primary);
   line-height: 1.1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kpi-value--sm {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+  white-space: normal;
+  word-break: break-word;
 }
 
 /* =========================================
-   CHARTS GRID
+   CHARTS — donuts arriba, barra abajo
 ========================================= */
 
 .charts-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
   gap: 24px;
   margin-bottom: 24px;
+}
+
+.charts-row-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.charts-row-bottom {
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 /* =========================================
@@ -183,52 +225,77 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .chart-card-header h3 {
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .chart-subtitle {
   color: var(--text-secondary);
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   margin-top: 4px;
   display: block;
 }
 
+/* Donuts — centradas */
+.chart-wrap--donut {
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-wrap--donut canvas {
+  max-width: 260px !important;
+  max-height: 260px !important;
+  margin: auto;
+}
+
+/* Barra — llena el ancho */
 .chart-wrap {
   width: 100%;
-  height: 340px;
+  height: 320px;
   position: relative;
+  overflow: hidden;
+}
+
+.chart-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
 }
 
 /* =========================================
-   SUMMARY
+   SUMMARY / FUNNEL
 ========================================= */
 
 .funnel-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
 }
 
 .funnel-item {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-color);
-  border-radius: 18px;
-  padding: 18px;
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   transition: var(--transition);
 }
 
 .funnel-item:hover {
   border-color: rgba(0, 212, 170, 0.2);
+  background: rgba(255, 255, 255, 0.035);
   transform: translateY(-2px);
 }
 
@@ -237,23 +304,31 @@
   align-items: center;
   gap: 10px;
   flex: 1;
+  min-width: 0;
 }
 
 .funnel-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .funnel-label {
   color: var(--text-secondary);
-  font-size: 0.92rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .funnel-value {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1.05rem;
+  font-weight: 800;
   color: var(--text-primary);
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
 }
 
 /* =========================================
@@ -264,31 +339,42 @@
 .estado-error {
   background: linear-gradient(180deg, var(--bg-navbar) 0%, var(--bg-sidebar) 100%);
   border: 1px solid var(--border-color);
-  border-radius: 24px;
-  padding: 40px;
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
   text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-.estado-loading span,
-.estado-error span {
+.estado-loading span {
   display: block;
-}
-
-.spinner {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, 0.08);
-  border-top-color: var(--primary);
-  margin: 0 auto 16px;
-  animation: spin 1s linear infinite;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 .estado-error {
+  border-color: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
+}
+
+.estado-error span {
+  display: block;
+  color: var(--danger);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--primary);
+  margin: 0 auto 16px;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
@@ -311,8 +397,21 @@
 ========================================= */
 
 @media (max-width: 1200px) {
-  .dashboard-grid,
-  .charts-grid {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts-row-top {
     grid-template-columns: 1fr;
   }
 }
@@ -324,19 +423,69 @@
   }
 
   .kpi-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
-  .chart-wrap {
-    height: 280px;
+  .kpi-card {
+    padding: 16px;
+  }
+
+  .kpi-icon-wrap {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 14px;
+  }
+
+  .kpi-value {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+  }
+
+  .kpi-value--sm {
+    font-size: clamp(0.9rem, 3vw, 1.15rem);
+  }
+
+  .chart-wrap,
+  .chart-wrap--donut {
+    height: 240px;
+  }
+
+  .chart-wrap--donut canvas {
+    max-width: 200px !important;
+    max-height: 200px !important;
   }
 
   .funnel-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .btn-secondary,
   .btn-primary {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-card {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .kpi-icon-wrap {
+    margin-bottom: 0;
+  }
+
+  .kpi-value {
+    font-size: 1.55rem;
+  }
+
+  .funnel-list {
+    grid-template-columns: 1fr;
   }
 }

@@ -217,48 +217,45 @@
 
     <!-- CHARTS -->
     <div class="charts-grid" data-testid="dashboard-charts">
-      <!-- DISTRIBUCION -->
-      <div class="dashboard-card chart-card">
-        <div class="chart-card-header">
-          <div>
-            <h3>Distribución de cartera</h3>
-
-            <span class="chart-subtitle"> Clasificación de clientes </span>
+      <!-- FILA SUPERIOR: 2 donuts -->
+      <div class="charts-row-top">
+        <div class="dashboard-card chart-card">
+          <div class="chart-card-header">
+            <div>
+              <h3>Distribución de cartera</h3>
+              <span class="chart-subtitle">Clasificación de clientes</span>
+            </div>
+          </div>
+          <div class="chart-wrap chart-wrap--donut">
+            <canvas #graficaDistribucion></canvas>
           </div>
         </div>
 
-        <div class="chart-wrap chart-wrap--donut">
-          <canvas #graficaDistribucion></canvas>
+        <div class="dashboard-card chart-card">
+          <div class="chart-card-header">
+            <div>
+              <h3>Estado de oportunidades</h3>
+              <span class="chart-subtitle">Distribución actual</span>
+            </div>
+          </div>
+          <div class="chart-wrap chart-wrap--donut">
+            <canvas #graficaEstado></canvas>
+          </div>
         </div>
       </div>
 
-      <!-- EMBUDO -->
-      <div class="dashboard-card chart-card" data-testid="chart-embudo">
-        <div class="chart-card-header">
-          <div>
-            <h3>Embudo de ventas</h3>
-
-            <span class="chart-subtitle"> Oportunidades por etapa </span>
+      <!-- FILA INFERIOR: embudo full width -->
+      <div class="charts-row-bottom">
+        <div class="dashboard-card chart-card">
+          <div class="chart-card-header">
+            <div>
+              <h3>Embudo de ventas</h3>
+              <span class="chart-subtitle">Oportunidades por etapa</span>
+            </div>
           </div>
-        </div>
-
-        <div class="chart-wrap">
-          <canvas #graficaEmbudo></canvas>
-        </div>
-      </div>
-
-      <!-- ESTADO -->
-      <div class="dashboard-card chart-card" data-testid="chart-estado">
-        <div class="chart-card-header">
-          <div>
-            <h3>Estado de oportunidades</h3>
-
-            <span class="chart-subtitle"> Distribución actual </span>
+          <div class="chart-wrap chart-wrap--bar">
+            <canvas #graficaEmbudo></canvas>
           </div>
-        </div>
-
-        <div class="chart-wrap chart-wrap--donut">
-          <canvas #graficaEstado></canvas>
         </div>
       </div>
     </div>

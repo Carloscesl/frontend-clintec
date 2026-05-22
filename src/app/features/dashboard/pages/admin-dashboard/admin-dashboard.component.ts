@@ -50,7 +50,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       next: ({ dashboard, distribucion }) => {
         this.data.set(dashboard);
         this.loading.set(false);
-        setTimeout(() => this.dibujarGraficas(distribucion), 100); // ✅ pasa el parámetro
+        setTimeout(() => this.dibujarGraficas(distribucion), 100);
       },
       error: () => {
         this.error.set('Error al cargar el dashboard');
@@ -59,7 +59,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  // ✅ Firma corregida — recibe distribucion como parámetro
   dibujarGraficas(distribucion?: QualificationDistribucion): void {
     if (!this.data()) return;
     const d = this.data()!;
@@ -100,6 +99,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         options: {
           indexAxis: 'y',
           responsive: true,
+          maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } },
         },
@@ -122,6 +122,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: { legend: { position: 'bottom' } },
         },
       });
@@ -157,7 +158,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  // ✅ Destruye las 3 gráficas
   ngOnDestroy(): void {
     if (this.chartEmbudo) this.chartEmbudo.destroy();
     if (this.chartEstado) this.chartEstado.destroy();
