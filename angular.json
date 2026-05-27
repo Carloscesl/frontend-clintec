@@ -92,7 +92,13 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "runner": "vitest",
+            "buildTarget": "frontend-clintec:build",
+            "setupFiles": ["src/test-setup.ts"]
+          }
         }
       }
     }

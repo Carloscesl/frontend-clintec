@@ -48,14 +48,20 @@
     <form [formGroup]="form" (ngSubmit)="submit()" class="form-card">
       <!-- Valor real de la venta -->
       <div class="form-grupo">
-        <label>Valor real de la venta *</label>
+        <label for="valorVenta">Valor real de la venta *</label>
         <p class="form-hint text-muted">
           El valor estimado era
           {{ oportunidad()!.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}. Ajusta si el
           cierre fue diferente.
         </p>
         <div class="input-num-wrap" style="max-width: 240px">
-          <input type="number" formControlName="valorVenta" class="input-num" [min]="1" />
+          <input
+            id="valorVenta"
+            type="number"
+            formControlName="valorVenta"
+            class="input-num"
+            [min]="1"
+          />
           <span class="input-num-suffix">COP</span>
         </div>
         @if (f['valorVenta'].touched) {
@@ -91,14 +97,14 @@
 
       <!-- Notas del cierre -->
       <div class="form-grupo">
-        <label>Notas del cierre</label>
+        <label for="notas">Notas del cierre</label>
         <textarea
+          id="notas"
           formControlName="notas"
           class="input-textarea"
           rows="3"
           placeholder="Condiciones especiales, descuentos aplicados, acuerdos..."
-        >
-        </textarea>
+        ></textarea>
       </div>
 
       <div class="modal-actions">

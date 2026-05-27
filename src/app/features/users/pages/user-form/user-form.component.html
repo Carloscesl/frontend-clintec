@@ -19,8 +19,8 @@
 
     <!-- Nombre -->
     <div class="cl-campo">
-      <label>Nombre de usuario</label>
-      <input formControlName="nombre" type="text" placeholder="Ej: Carlos Mendoza" />
+      <label for="nombre">Nombre de usuario</label>
+      <input id="nombre" formControlName="nombre" type="text" placeholder="Ej: Carlos Mendoza" />
       @if (f['nombre'].touched) {
         @if (f['nombre'].hasError('required')) {
           <span class="cl-error">El nombre es requerido</span>
@@ -33,8 +33,8 @@
 
     <!-- Email -->
     <div class="cl-campo">
-      <label>Email</label>
-      <input formControlName="email" type="email" placeholder="correo@ejemplo.com" />
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" placeholder="correo@ejemplo.com" />
       @if (f['email'].touched && f['email'].hasError('email')) {
         <span class="cl-error">Ingresa un email válido</span>
       }
@@ -42,13 +42,13 @@
 
     <!-- Password -->
     <div class="cl-campo">
-      <label>
+      <label for="password">
         Contraseña
         @if (modoEdicion()) {
           <span class="campo-hint">— dejar vacío para no cambiar</span>
         }
       </label>
-      <input formControlName="password" type="password" placeholder="••••••••" />
+      <input id="password" formControlName="password" type="password" placeholder="••••••••" />
       @if (!modoEdicion() && f['password'].touched && f['password'].hasError('required')) {
         <span class="cl-error">La contraseña es requerida</span>
       }
@@ -56,8 +56,8 @@
 
     <!-- Rol -->
     <div class="cl-campo">
-      <label>Rol</label>
-      <select formControlName="rol">
+      <label for="rol">Rol</label>
+      <select id="rol" formControlName="rol">
         <option value="">Selecciona un rol</option>
         <option value="ADMINISTRADOR">Administrador</option>
         <option value="ASESOR">Asesor</option>

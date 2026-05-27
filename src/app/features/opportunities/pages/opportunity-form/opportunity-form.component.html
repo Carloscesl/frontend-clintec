@@ -27,9 +27,8 @@
   <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
     <!-- CLIENTE -->
     <div class="cl-campo">
-      <label> Cliente * </label>
-
-      <select formControlName="clienteId">
+      <label for="clienteId"> Cliente * </label>
+      <select id="clienteId" formControlName="clienteId">
         <option value="0">Selecciona un cliente</option>
 
         @for (cliente of ListaClientes(); track cliente.id) {
@@ -46,9 +45,8 @@
 
     <!-- ASESOR -->
     <div class="cl-campo">
-      <label> Asesor * </label>
-
-      <select formControlName="asesorId">
+      <label for="asesorId"> Asesor * </label>
+      <select id="asesorId" formControlName="asesorId">
         <option value="0">Selecciona un asesor</option>
 
         @for (asesor of ListaUsuarios(); track asesor.id) {
@@ -65,9 +63,10 @@
 
     <!-- DESCRIPCION -->
     <div class="cl-campo">
-      <label> Descripción * </label>
+      <label for="descripcion"> Descripción * </label>
 
       <textarea
+        id="descripcion"
         formControlName="descripcion"
         rows="5"
         placeholder="Describe la oportunidad..."
@@ -86,10 +85,14 @@
 
     <!-- VALOR -->
     <div class="cl-campo">
-      <label> Valor estimado * </label>
+      <label for="valorEstimado"> Valor estimado * </label>
 
-      <input formControlName="valorEstimado" type="number" placeholder="Ej: 5000000" />
-
+      <input
+        id="valorEstimado"
+        formControlName="valorEstimado"
+        type="number"
+        placeholder="Ej: 5000000"
+      />
       @if (f['valorEstimado'].touched) {
         @if (f['valorEstimado'].hasError('required')) {
           <span class="cl-error"> El valor es requerido </span>
@@ -103,9 +106,9 @@
 
     <!-- FECHA -->
     <div class="cl-campo">
-      <label> Fecha estimada de cierre * </label>
+      <label for="fechaCierreEstimada"> Fecha estimada de cierre * </label>
 
-      <input formControlName="fechaCierreEstimada" type="date" />
+      <input id="fechaCierreEstimada" formControlName="fechaCierreEstimada" type="date" />
 
       @if (f['fechaCierreEstimada'].touched && f['fechaCierreEstimada'].hasError('required')) {
         <span class="cl-error"> La fecha es requerida </span>
