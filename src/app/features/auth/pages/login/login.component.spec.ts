@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { vi } from 'vitest';
@@ -6,6 +7,11 @@ import { of, throwError } from 'rxjs';
 import { LoginComponent } from './login.component';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ModalService } from '../../../../shared/services/modal.service';
+
+// ── Componente dummy para rutas stub ───────────────────────────────────────
+
+@Component({ template: '', standalone: true })
+class DummyComponent {}
 
 // ── Mocks ──────────────────────────────────────────────────────────────────
 
@@ -37,7 +43,13 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [
-        provideRouter([]),
+        provideRouter([
+          { path: 'login', component: DummyComponent },
+          { path: 'dashboard/admin', component: DummyComponent },
+          { path: 'dashboard/gerente', component: DummyComponent },
+          { path: 'dashboard/asesor', component: DummyComponent },
+          { path: '**', component: DummyComponent },
+        ]),
         { provide: AuthService, useValue: authServiceMock },
         { provide: ModalService, useValue: modalServiceMock },
       ],
@@ -127,7 +139,6 @@ describe('LoginComponent', () => {
     it('debería poner cargando en true al enviar', () => {
       authServiceMock.login.mockReturnValue(of(loginConRol('ADMINISTRADOR')));
       component.onLogin();
-      // guardarSesion se llama → cargando queda true hasta redirección
       expect(authServiceMock.guardarSesion).toHaveBeenCalled();
     });
 

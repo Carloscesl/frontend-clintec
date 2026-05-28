@@ -1,12 +1,17 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { of, throwError } from 'rxjs';
-import { provideRouter } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { provideRouter, ActivatedRoute } from '@angular/router';
 
 import { ClientFormComponent } from './client-form.component';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { ClienteResponse } from '../../../../core/models/cliente.model';
+
+// ── Componente dummy para rutas stub ───────────────────────────────────────
+
+@Component({ template: '', standalone: true })
+class DummyComponent {}
 
 // ── Datos de prueba ────────────────────────────────────────────────────────
 
@@ -27,7 +32,6 @@ const clienteServiceMock = {
   crear: vi.fn(),
   actualizar: vi.fn(),
 };
-const routerMock = { navigate: vi.fn() };
 
 // ── Suite ──────────────────────────────────────────────────────────────────
 
@@ -41,7 +45,10 @@ describe('ClientFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ClientFormComponent],
       providers: [
-        provideRouter([]),
+        provideRouter([
+          { path: 'clients', component: DummyComponent },
+          { path: '**', component: DummyComponent },
+        ]),
         { provide: ClienteService, useValue: clienteServiceMock },
         {
           provide: ActivatedRoute,
