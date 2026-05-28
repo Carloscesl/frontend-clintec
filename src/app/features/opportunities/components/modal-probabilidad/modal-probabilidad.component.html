@@ -15,7 +15,7 @@
         </p>
       </div>
 
-      <button type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
+      <button data-testid="modal-probabilidad-btn-cerrar-emit" type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
     </div>
 
     <!-- DISPLAY -->
@@ -57,12 +57,12 @@
     </div>
 
     <!-- FORM -->
-    <form [formGroup]="form" (ngSubmit)="submit()">
+    <form data-testid="modal-probabilidad-form-form" [formGroup]="form" (ngSubmit)="submit()">
       <div class="form-grupo">
         <label for="probabilidad"> Probabilidad de cierre </label>
 
         <!-- RANGE -->
-        <input
+        <input data-testid="modal-probabilidad-input-probabilidad"
           id="probabilidad"
           type="range"
           class="prob-slider"
@@ -75,7 +75,7 @@
 
         <!-- NUMBER -->
         <div class="input-num-wrap">
-          <input
+          <input data-testid="modal-probabilidad-input-probabilidad"
             type="number"
             class="input-num"
             formControlName="probabilidad"
@@ -112,7 +112,7 @@
       <!-- ACTIONS -->
       <div class="modal-actions">
         <!-- RESET -->
-        <button
+        <button data-testid="modal-probabilidad-btn-reseteardefault"
           type="button"
           class="btn-reset"
           (click)="resetearDefault()"
@@ -123,7 +123,7 @@
 
         <!-- BOTONES -->
         <div style="display: flex; gap: 10px; flex-wrap: wrap">
-          <button
+          <button data-testid="modal-probabilidad-btn-cerrar-emit"
             type="button"
             class="btn-secondary"
             (click)="cerrar.emit()"
@@ -131,7 +131,7 @@
           >
             Cancelar
           </button>
-          <button
+          <button data-testid="modal-probabilidad-btn-btn-primary"
             type="submit"
             class="btn-primary"
             [disabled]="form.invalid || guardando()"

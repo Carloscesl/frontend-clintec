@@ -14,7 +14,7 @@ import { forkJoin, map, of, switchMap } from 'rxjs';
 @Component({
   selector: 'app-qualification-priority-panel',
   standalone: true,
-  imports: [CommonModule, QualificationBadgeComponent, QualificationProgressBarComponent],
+  imports: [CommonModule, QualificationBadgeComponent],
   templateUrl: './qualification-priority-panel.component.html',
   styleUrls: ['./qualification-priority-panel.component.css'],
 })

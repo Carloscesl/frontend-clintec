@@ -11,7 +11,7 @@
   <!-- KPI Cards -->
   <div class="qd__kpis">
     @for (nivel of niveles; track nivel) {
-      <button
+      <button data-testid="qualification-dashborad-btn-togglefiltro"
         class="kpi-card"
         [class.kpi-card--active]="filtroActivo() === nivel"
         [style.--accent]="config[nivel].color"
@@ -20,7 +20,7 @@
       >
         <span class="kpi-card__icon">{{ config[nivel].icon }}</span>
         <span class="kpi-card__count">
-          {{ distribucion() ? (distribucion()![nivel] ?? 0) : '—' }}
+          {{ distribucion() ? (distribucion()![nivel] || 0) : '—' }}
         </span>
         <span class="kpi-card__label">{{ config[nivel].label }}</span>
       </button>
@@ -71,18 +71,18 @@
               <td>
                 @if (editando()?.clienteId === c.clienteId) {
                   <div class="qd__edit-inline">
-                    <input
+                    <input data-testid="qualification-dashborad-input-number"
                       type="number"
                       min="0"
                       max="100"
                       [(ngModel)]="editando()!.puntaje"
                       class="qd__edit-input"
                     />
-                    <button class="btn-save" (click)="guardarPuntaje()">✓</button>
-                    <button class="btn-cancel" (click)="editando.set(null)">✕</button>
+                    <button data-testid="qualification-dashborad-btn-guardarpuntaje" class="btn-save" (click)="guardarPuntaje()">✓</button>
+                    <button data-testid="qualification-dashborad-btn-editando-set" class="btn-cancel" (click)="editando.set(null)">✕</button>
                   </div>
                 } @else {
-                  <button class="btn-edit" (click)="iniciarEdicion(c)">Ajustar</button>
+                  <button data-testid="qualification-dashborad-btn-iniciaredicion" class="btn-edit" (click)="iniciarEdicion(c)">Ajustar</button>
                 }
               </td>
             </tr>

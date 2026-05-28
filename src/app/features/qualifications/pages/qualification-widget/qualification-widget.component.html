@@ -3,7 +3,7 @@
   <div class="qw__header">
     <h3 class="qw__title">Calificación</h3>
     @if (puedeEditar && calificacion()) {
-      <button class="qw__edit-btn" (click)="editando.set(!editando())">
+      <button data-testid="qualification-widget-btn-editando-set" class="qw__edit-btn" (click)="editando.set(!editando())">
         {{ editando() ? 'Cancelar' : 'Ajustar' }}
       </button>
     }
@@ -30,7 +30,7 @@
       <div class="qw__editor">
         <label class="qw__editor-label" for="editor">Nuevo puntaje (0–100)</label>
         <div class="qw__editor-row">
-          <input
+          <input data-testid="qualification-widget-input-editor"
             id="editor"
             type="range"
             min="0"
@@ -43,7 +43,7 @@
             {{ nuevoPuntaje() }}
           </span>
         </div>
-        <button class="qw__save-btn" (click)="guardar()">Guardar cambio</button>
+        <button data-testid="qualification-widget-btn-guardar" class="qw__save-btn" (click)="guardar()">Guardar cambio</button>
       </div>
     }
 

@@ -1,4 +1,4 @@
-<div class="page-container">
+<div data-testid="asesor-dashboard-container-page-container" class="page-container">
   <!-- HEADER -->
   <div class="page-header">
     <div>
@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <button class="btn-secondary" (click)="cargar()" [disabled]="loading()">
+    <button data-testid="asesor-dashboard-btn-cargar" class="btn-secondary" (click)="cargar()" [disabled]="loading()">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -40,7 +40,7 @@
     <div class="estado-error">
       <span>{{ error() }}</span>
 
-      <button class="btn-primary" (click)="cargar()">Reintentar</button>
+      <button data-testid="asesor-dashboard-btn-cargar" class="btn-primary" (click)="cargar()">Reintentar</button>
     </div>
   }
 

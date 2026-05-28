@@ -9,7 +9,7 @@
         <p class="modal-subtitle">Información completa de la alerta seleccionada</p>
       </div>
 
-      <button class="btn-close" (click)="cerrar.emit()">✕</button>
+      <button data-testid="detail-modal-alerts-btn-cerrar-emit" class="btn-close" (click)="cerrar.emit()">✕</button>
     </div>
 
     <!-- LOADING -->
@@ -26,7 +26,7 @@
         <span class="error-icon">⚠️</span>
         <span>{{ error() }}</span>
 
-        <button class="btn-primary" (click)="cargar(alertaId())">Reintentar</button>
+        <button data-testid="detail-modal-alerts-btn-cargar" class="btn-primary" (click)="cargar(alertaId())">Reintentar</button>
       </div>
     }
 
@@ -111,7 +111,7 @@
 
       <!-- FOOTER -->
       <div class="modal-actions">
-        <button class="btn-secondary" (click)="cerrar.emit()">Cerrar</button>
+        <button data-testid="detail-modal-alerts-btn-cerrar-emit" class="btn-secondary" (click)="cerrar.emit()">Cerrar</button>
       </div>
     }
   </div>

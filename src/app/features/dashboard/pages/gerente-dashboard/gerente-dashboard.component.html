@@ -6,7 +6,7 @@
         Bienvenido, <strong>{{ usuario?.username }}</strong>
       </p>
     </div>
-    <button class="btn-refresh" (click)="cargar()" [disabled]="loading()">
+    <button data-testid="gerente-dashboard-btn-cargar" class="btn-refresh" (click)="cargar()" [disabled]="loading()">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -33,7 +33,7 @@
   @if (error()) {
     <div class="dash-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button data-testid="gerente-dashboard-btn-cargar" (click)="cargar()">Reintentar</button>
     </div>
   }
 

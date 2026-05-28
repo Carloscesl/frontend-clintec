@@ -24,7 +24,7 @@
         {{ message$ | async }}
       </span>
 
-      <button (click)="close()">✕</button>
+      <button data-testid="modal-btn-close" (click)="close()">✕</button>
     </div>
   </div>
 }

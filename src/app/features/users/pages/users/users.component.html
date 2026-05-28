@@ -1,11 +1,11 @@
-<div class="page-container">
+<div data-testid="users-container-page-container" class="page-container">
   <!-- Header -->
   <div class="page-header">
     <div>
       <h1>Usuarios</h1>
       <p class="page-subtitle">Gestión de cuentas y roles del sistema</p>
     </div>
-    <button class="btn-primary" (click)="irACrear()">
+    <button data-testid="users-btn-iracrear" class="btn-primary" (click)="irACrear()">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -32,7 +32,7 @@
   @if (error()) {
     <div class="estado-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button data-testid="users-btn-cargar" (click)="cargar()">Reintentar</button>
     </div>
   }
 
@@ -81,7 +81,7 @@
               <!-- Acciones -->
               <td>
                 <div class="acciones-cell">
-                  <button class="btn-icon btn-icon--edit" (click)="irAEditar(u.id)" title="Editar">
+                  <button data-testid="users-btn-iraeditar" class="btn-icon btn-icon--edit" (click)="irAEditar(u.id)" title="Editar">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
@@ -97,7 +97,7 @@
                     Editar
                   </button>
 
-                  <button
+                  <button data-testid="users-btn-toggleestado"
                     class="btn-icon"
                     [class]="u.activo ? 'btn-icon--danger' : 'btn-icon--success'"
                     (click)="toggleEstado(u.email, u.activo, u.id)"

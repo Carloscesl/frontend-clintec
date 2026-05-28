@@ -1,4 +1,4 @@
-<div class="page-container">
+<div data-testid="opportunity-main-container-page-container" class="page-container">
   <!-- HEADER -->
   <div class="page-header">
     <div>
@@ -7,7 +7,7 @@
       <p class="page-subtitle">Gestión y seguimiento de oportunidades comerciales</p>
     </div>
 
-    <button class="btn-primary" (click)="irAcrear()">
+    <button data-testid="opportunity-main-btn-iracrear" class="btn-primary" (click)="irAcrear()">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -36,7 +36,7 @@
     <div class="estado-error">
       <span>{{ error() }}</span>
 
-      <button (click)="cargarTodo()">Reintentar</button>
+      <button data-testid="opportunity-main-btn-cargartodo" (click)="cargarTodo()">Reintentar</button>
     </div>
   }
 
@@ -143,7 +143,7 @@
                       <strong> {{ op.probabilidad }}% </strong>
                     </div>
 
-                    <button
+                    <button data-testid="opportunity-main-btn-iraeditar"
                       class="btn-icon btn-icon--edit"
                       (click)="irAeditar(op.idOportunidad); $event.stopPropagation()"
                     >

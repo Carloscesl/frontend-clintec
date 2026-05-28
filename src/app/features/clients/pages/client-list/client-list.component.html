@@ -1,4 +1,4 @@
-<div class="page-container">
+<div data-testid="client-list-container-page-container" class="page-container">
   <!-- HEADER -->
   <div class="page-header">
     <div>
@@ -130,7 +130,7 @@
                 <td>
                   <div class="acciones-cell">
                     <!-- VER -->
-                    <button
+                    <button data-testid="client-list-btn-iradetalle"
                       class="btn-icon btn-icon--success"
                       [attr.data-testid]="'view-client-' + c.id"
                       (click)="irADetalle(c.id)"
@@ -152,7 +152,7 @@
 
                     <!-- EDITAR -->
                     @if (puedeEditar) {
-                      <button
+                      <button data-testid="client-list-btn-iraeditar"
                         class="btn-icon btn-icon--edit"
                         [attr.data-testid]="'edit-client-' + c.id"
                         (click)="irAEditar(c.id)"

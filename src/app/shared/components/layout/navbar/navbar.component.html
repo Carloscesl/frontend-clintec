@@ -4,7 +4,7 @@
   </div>
 
   <div class="navbar-right">
-    <button class="theme-btn" (click)="toggleTheme()">Tema</button>
+    <button data-testid="navbar-btn-toggletheme" class="theme-btn" (click)="toggleTheme()">Tema</button>
 
     <!-- ROL -->
     <span class="rol-badge badge-{{ rol().toLowerCase() }}">
@@ -23,7 +23,7 @@
     </div>
 
     <!-- LOGOUT -->
-    <button class="btn-logout" (click)="cerrarSesion()">
+    <button data-testid="navbar-btn-cerrarsesion" class="btn-logout" (click)="cerrarSesion()">
       <svg
         viewBox="0 0 24 24"
         fill="none"

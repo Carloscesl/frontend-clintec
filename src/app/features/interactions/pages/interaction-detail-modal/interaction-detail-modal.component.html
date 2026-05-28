@@ -8,7 +8,7 @@
         <h3 class="modal-title">Detalle de interacción</h3>
         <p class="modal-subtitle">Información completa del registro</p>
       </div>
-      <button type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
+      <button data-testid="interaction-detail-modal-btn-cerrar-emit" type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
     </div>
 
     <!-- LOADING -->
@@ -121,7 +121,7 @@
 
       <!-- ACTIONS -->
       <div class="modal-actions">
-        <button type="button" class="btn-primary" (click)="cerrar.emit()">Cerrar</button>
+        <button data-testid="interaction-detail-modal-btn-cerrar-emit" type="button" class="btn-primary" (click)="cerrar.emit()">Cerrar</button>
       </div>
     }
   </div>

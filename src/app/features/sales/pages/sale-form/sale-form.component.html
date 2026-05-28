@@ -1,4 +1,4 @@
-<div class="page-container">
+<div data-testid="sale-form-container-page-container" class="page-container">
   <div class="page-header">
     <div>
       <h1>Registrar venta</h1>
@@ -45,7 +45,7 @@
     </div>
 
     <!-- Formulario -->
-    <form [formGroup]="form" (ngSubmit)="submit()" class="form-card">
+    <form data-testid="sale-form-form-form" [formGroup]="form" (ngSubmit)="submit()" class="form-card">
       <!-- Valor real de la venta -->
       <div class="form-grupo">
         <label for="valorVenta">Valor real de la venta *</label>
@@ -55,7 +55,7 @@
           cierre fue diferente.
         </p>
         <div class="input-num-wrap" style="max-width: 240px">
-          <input
+          <input data-testid="sale-form-input-valorventa"
             id="valorVenta"
             type="number"
             formControlName="valorVenta"
@@ -79,7 +79,7 @@
         <label>Método de pago *</label>
         <div class="tipo-grid">
           @for (m of metodos; track m.valor) {
-            <button
+            <button data-testid="sale-form-btn-f-paymentmethod-setvalue"
               type="button"
               class="tipo-btn"
               [class.active]="f['paymentMethod'].value === m.valor"
@@ -98,7 +98,7 @@
       <!-- Notas del cierre -->
       <div class="form-grupo">
         <label for="notas">Notas del cierre</label>
-        <textarea
+        <textarea data-testid="sale-form-textarea-notas"
           id="notas"
           formControlName="notas"
           class="input-textarea"
@@ -108,8 +108,8 @@
       </div>
 
       <div class="modal-actions">
-        <button type="button" class="btn-reset" (click)="cancelar()">Cancelar</button>
-        <button
+        <button data-testid="sale-form-btn-cancelar" type="button" class="btn-reset" (click)="cancelar()">Cancelar</button>
+        <button data-testid="sale-form-btn-btn-primary"
           type="submit"
           class="btn-primary"
           [disabled]="form.invalid || guardando()"

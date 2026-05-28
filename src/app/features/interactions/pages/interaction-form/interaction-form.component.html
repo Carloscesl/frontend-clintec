@@ -8,16 +8,16 @@
         <h3 class="side-panel-title">Nueva Interacción</h3>
         <p class="side-panel-subtitle">Registra una nueva interacción con el cliente</p>
       </div>
-      <button type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
+      <button data-testid="interaction-form-btn-cerrar-emit" type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
     </div>
 
     <!-- Content -->
     <div class="side-panel-content">
-      <form [formGroup]="form" (ngSubmit)="submit()">
+      <form data-testid="interaction-form-form-form" [formGroup]="form" (ngSubmit)="submit()">
         <!-- Cliente -->
         <div class="form-group">
           <label for="clienteId">Cliente *</label>
-          <select
+          <select data-testid="interaction-form-select-clienteid"
             id="clienteId"
             formControlName="clienteId"
             (change)="onClienteChange(+$any($event.target).value)"
@@ -36,7 +36,7 @@
         <!-- Oportunidad -->
         <div class="form-group">
           <label for="oportunidadId">Oportunidad *</label>
-          <select
+          <select data-testid="interaction-form-select-oportunidadid"
             id="oportunidadId"
             formControlName="oportunidadId"
             [class.invalid]="f['oportunidadId'].invalid && f['oportunidadId'].touched"
@@ -56,7 +56,7 @@
           <label>Tipo de interacción *</label>
           <div class="tipo-grid">
             @for (t of tipos; track t.valor) {
-              <button
+              <button data-testid="interaction-form-btn-f-tipo-setvalue"
                 type="button"
                 class="tipo-btn"
                 [class.active]="f['tipo'].value === t.valor"
@@ -75,7 +75,7 @@
         <!-- Nota -->
         <div class="form-group">
           <label for="nota">Nota *</label>
-          <textarea
+          <textarea data-testid="interaction-form-textarea-nota"
             id="nota"
             formControlName="nota"
             rows="5"
@@ -105,10 +105,10 @@
 
     <!-- Footer con acciones -->
     <div class="side-panel-footer">
-      <button type="button" class="btn-secondary" (click)="cancelar()" [disabled]="guardando()">
+      <button data-testid="interaction-form-btn-cancelar" type="button" class="btn-secondary" (click)="cancelar()" [disabled]="guardando()">
         Cancelar
       </button>
-      <button type="button" class="btn-primary" (click)="submit()" [disabled]="guardando()">
+      <button data-testid="interaction-form-btn-submit" type="button" class="btn-primary" (click)="submit()" [disabled]="guardando()">
         @if (guardando()) {
           <span class="spinner-sm"></span>
           Guardando...

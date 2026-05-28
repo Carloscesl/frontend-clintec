@@ -38,7 +38,7 @@
 
   <!-- Footer: colapsar + cerrar sesión -->
   <div class="sidebar-footer">
-    <button
+    <button data-testid="sidebar-btn-togglecollapse"
       class="nav-item"
       (click)="toggleCollapse()"
       [title]="collapsed() ? 'Expandir' : 'Colapsar'"

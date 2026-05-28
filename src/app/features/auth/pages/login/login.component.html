@@ -47,12 +47,12 @@
         <p>Ingresa tus credenciales para continuar</p>
       </div>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <form data-testid="login-form-loginform" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <!-- EMAIL -->
         <div class="campo">
           <label for="email">Correo electrónico</label>
 
-          <div class="input-container">
+          <div data-testid="login-container-input-container" class="input-container">
             <span class="input-icon">✉</span>
 
             <input
@@ -84,7 +84,7 @@
             <a href="#">¿Olvidaste tu contraseña?</a>
           </div>
 
-          <div class="input-container">
+          <div data-testid="login-container-input-container" class="input-container">
             <span class="input-icon">🔒</span>
 
             <input

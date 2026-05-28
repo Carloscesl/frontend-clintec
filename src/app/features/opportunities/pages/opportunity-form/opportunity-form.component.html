@@ -1,4 +1,4 @@
-<div class="page-container">
+<div data-testid="opportunity-form-container-page-container" class="page-container">
   <!-- HEADER -->
   <div class="page-header">
     <div>
@@ -24,11 +24,11 @@
   }
 
   <!-- FORM -->
-  <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
+  <form data-testid="opportunity-form-form-form" [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
     <!-- CLIENTE -->
     <div class="cl-campo">
       <label for="clienteId"> Cliente * </label>
-      <select id="clienteId" formControlName="clienteId">
+      <select data-testid="opportunity-form-select-clienteid" id="clienteId" formControlName="clienteId">
         <option value="0">Selecciona un cliente</option>
 
         @for (cliente of ListaClientes(); track cliente.id) {
@@ -46,7 +46,7 @@
     <!-- ASESOR -->
     <div class="cl-campo">
       <label for="asesorId"> Asesor * </label>
-      <select id="asesorId" formControlName="asesorId">
+      <select data-testid="opportunity-form-select-asesorid" id="asesorId" formControlName="asesorId">
         <option value="0">Selecciona un asesor</option>
 
         @for (asesor of ListaUsuarios(); track asesor.id) {
@@ -65,7 +65,7 @@
     <div class="cl-campo">
       <label for="descripcion"> Descripción * </label>
 
-      <textarea
+      <textarea data-testid="opportunity-form-textarea-descripcion"
         id="descripcion"
         formControlName="descripcion"
         rows="5"
@@ -87,7 +87,7 @@
     <div class="cl-campo">
       <label for="valorEstimado"> Valor estimado * </label>
 
-      <input
+      <input data-testid="opportunity-form-input-valorestimado"
         id="valorEstimado"
         formControlName="valorEstimado"
         type="number"
@@ -108,7 +108,7 @@
     <div class="cl-campo">
       <label for="fechaCierreEstimada"> Fecha estimada de cierre * </label>
 
-      <input id="fechaCierreEstimada" formControlName="fechaCierreEstimada" type="date" />
+      <input data-testid="opportunity-form-input-fechacierreestimada" id="fechaCierreEstimada" formControlName="fechaCierreEstimada" type="date" />
 
       @if (f['fechaCierreEstimada'].touched && f['fechaCierreEstimada'].hasError('required')) {
         <span class="cl-error"> La fecha es requerida </span>
@@ -118,10 +118,10 @@
     <!-- ACTIONS -->
     <div class="cl-form-actions">
       <!-- CANCELAR -->
-      <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
+      <button data-testid="opportunity-form-btn-cancelar" type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
 
       <!-- SUBMIT -->
-      <button type="submit" class="btn-primary" [disabled]="guardando()">
+      <button data-testid="opportunity-form-btn-btn-primary" type="submit" class="btn-primary" [disabled]="guardando()">
         @if (guardando()) {
           <span class="spinner-sm"></span>
 

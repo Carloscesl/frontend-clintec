@@ -1,4 +1,4 @@
-<div class="page-container">
+<div data-testid="main-alerts-container-page-container" class="page-container">
   <!-- HEADER -->
   <div class="page-header">
     <div>
@@ -26,7 +26,7 @@
 
         <div class="filtros-actions">
           @for (t of tipos; track t.valor) {
-            <button
+            <button data-testid="main-alerts-btn-filtrotipo-set"
               class="filtro-btn"
               [class.active]="filtroTipo() === t.valor"
               (click)="filtroTipo.set(t.valor)"
@@ -44,7 +44,7 @@
 
         <div class="filtros-actions">
           @for (e of estados; track e.valor) {
-            <button
+            <button data-testid="main-alerts-btn-filtroestado-set"
               class="filtro-btn filtro-estado"
               [class.active]="filtroEstado() === e.valor"
               (click)="filtroEstado.set(e.valor)"
@@ -75,7 +75,7 @@
         <span class="error-message">{{ error() }}</span>
       </div>
 
-      <button class="btn-primary" (click)="cargarAlertas()">Reintentar</button>
+      <button data-testid="main-alerts-btn-cargaralertas" class="btn-primary" (click)="cargarAlertas()">Reintentar</button>
     </div>
   }
 
@@ -104,7 +104,7 @@
         </span>
 
         @if (alertas().length > 0) {
-          <button
+          <button data-testid="main-alerts-btn-filtrotipo-set"
             class="btn-secondary"
             (click)="filtroTipo.set('TODOS'); filtroEstado.set('TODOS')"
           >
@@ -192,7 +192,7 @@
             <div class="alert-actions">
               <div class="alert-actions-left">
                 @if (alerta.estado === 'PENDIENTE') {
-                  <button class="btn-secondary" (click)="marcarVista(alerta.id)">
+                  <button data-testid="main-alerts-btn-marcarvista" class="btn-secondary" (click)="marcarVista(alerta.id)">
                     Marcar vista
                   </button>
                 }
@@ -200,10 +200,10 @@
 
               <div class="alert-actions-right">
                 @if (alerta.estado !== 'RESUELTA') {
-                  <button class="btn-primary" (click)="resolver(alerta.id)">Resolver</button>
+                  <button data-testid="main-alerts-btn-resolver" class="btn-primary" (click)="resolver(alerta.id)">Resolver</button>
                 }
 
-                <button class="btn-outline" (click)="irADetalle(alerta.id)">Ver detalle</button>
+                <button data-testid="main-alerts-btn-iradetalle" class="btn-outline" (click)="irADetalle(alerta.id)">Ver detalle</button>
               </div>
             </div>
           </div>

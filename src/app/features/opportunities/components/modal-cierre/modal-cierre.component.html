@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <button type="button" class="btn-close" (click)="cerrar()" aria-label="Cerrar modal">
+      <button data-testid="modal-cierre-btn-cerrar" type="button" class="btn-close" (click)="cerrar()" aria-label="Cerrar modal">
         ✕
       </button>
     </div>
@@ -40,7 +40,7 @@
           <span class="info-label"> Oportunidad </span>
 
           <span class="info-value">
-            {{ oportunidad().descripcion ?? 'Sin descripción' }}
+            {{ oportunidad().descripcion || 'Sin descripción' }}
           </span>
         </div>
 
@@ -77,9 +77,9 @@
 
     <!-- FOOTER -->
     <div class="modal-actions">
-      <button type="button" class="btn-secondary" (click)="cerrar()">Cancelar</button>
+      <button data-testid="modal-cierre-btn-cerrar" type="button" class="btn-secondary" (click)="cerrar()">Cancelar</button>
 
-      <button
+      <button data-testid="modal-cierre-btn-confirmar"
         type="button"
         class="btn-primary"
         [class.btn-success]="esGanado"

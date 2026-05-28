@@ -1,4 +1,4 @@
-<div class="page-container">
+<div data-testid="sale-list-container-page-container" class="page-container">
   <div class="page-header">
     <div>
       <h1>{{ esAsesor ? 'Mis Ventas' : 'Ventas' }}</h1>
@@ -39,7 +39,7 @@
                 </strong>
               </span>
             </div>
-            <button
+            <button data-testid="sale-list-btn-registrarventa"
               class="btn-primary"
               style="height: 38px; padding: 0 18px; border-radius: 10px; font-size: 0.82rem"
               (click)="registrarVenta(op)"
@@ -62,7 +62,7 @@
   @if (error()) {
     <div class="estado-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button data-testid="sale-list-btn-cargar" (click)="cargar()">Reintentar</button>
     </div>
   }
 
@@ -100,7 +100,7 @@
     <!-- Filtros -->
     <div class="filtros">
       @for (m of metodos; track m.valor) {
-        <button
+        <button data-testid="sale-list-btn-filtrometodo-set"
           class="filtro-btn"
           [class.active]="filtroMetodo() === m.valor"
           (click)="filtroMetodo.set(m.valor)"
@@ -171,7 +171,7 @@
                   {{ v.fechaVenta | date: 'dd/MM/yyyy HH:mm' }}
                 </td>
                 <td>
-                  <button class="btn-icon btn-icon--edit" (click)="irADetalle(v.idVenta)">
+                  <button data-testid="sale-list-btn-iradetalle" class="btn-icon btn-icon--edit" (click)="irADetalle(v.idVenta)">
                     Ver
                   </button>
                 </td>

@@ -1,4 +1,4 @@
-<div class="page-container">
+<div data-testid="list-interactions-container-page-container" class="page-container">
   <div class="page-header">
     <div>
       <h1>{{ esAsesor ? 'Mis Interacciones' : 'Interacciones' }}</h1>
@@ -9,14 +9,14 @@
       </p>
     </div>
     @if (esAsesor) {
-      <button class="btn-primary" (click)="irACrear()">+ Nueva interacción</button>
+      <button data-testid="list-interactions-btn-iracrear" class="btn-primary" (click)="irACrear()">+ Nueva interacción</button>
     }
   </div>
 
   <!-- Filtros por tipo -->
   <div class="filtros">
     @for (t of tipos; track t.valor) {
-      <button
+      <button data-testid="list-interactions-btn-filtrotipo-set"
         class="filtro-btn"
         [class.active]="filtroTipo() === t.valor"
         (click)="filtroTipo.set(t.valor)"
@@ -37,7 +37,7 @@
   @if (error()) {
     <div class="estado-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button data-testid="list-interactions-btn-cargar" (click)="cargar()">Reintentar</button>
     </div>
   }
 
