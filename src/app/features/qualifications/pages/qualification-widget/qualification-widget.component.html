@@ -28,9 +28,10 @@
     <!-- Editor inline -->
     @if (editando()) {
       <div class="qw__editor">
-        <label class="qw__editor-label">Nuevo puntaje (0–100)</label>
+        <label class="qw__editor-label" for="editor">Nuevo puntaje (0–100)</label>
         <div class="qw__editor-row">
           <input
+            id="editor"
             type="range"
             min="0"
             max="100"

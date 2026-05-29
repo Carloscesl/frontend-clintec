@@ -21,8 +21,9 @@
       <form [formGroup]="form" (ngSubmit)="submit()">
         <!-- Cliente -->
         <div class="form-group">
-          <label>Cliente *</label>
+          <label for="clienteId">Cliente *</label>
           <select
+            id="clienteId"
             formControlName="clienteId"
             data-testid="select-cliente-interaccion"
             (change)="onClienteChange(+$any($event.target).value)"
@@ -40,8 +41,9 @@
 
         <!-- Oportunidad -->
         <div class="form-group">
-          <label>Oportunidad *</label>
+          <label for="oportunidadId">Oportunidad *</label>
           <select
+            id="oportunidadId"
             formControlName="oportunidadId"
             data-testid="select-oportunidad-interaccion"
             [class.invalid]="f['oportunidadId'].invalid && f['oportunidadId'].touched"
@@ -80,8 +82,9 @@
 
         <!-- Nota -->
         <div class="form-group">
-          <label>Nota *</label>
+          <label for="nota">Nota *</label>
           <textarea
+            id="nota"
             formControlName="nota"
             data-testid="textarea-nota-interaccion"
             rows="5"

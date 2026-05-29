@@ -1,141 +1,85 @@
-<div class="page-container">
-  <!-- HEADER -->
-  <div class="page-header">
-    <div>
-      <h1>
-        {{ modoEdicion() ? 'Editar oportunidad' : 'Nueva oportunidad' }}
-      </h1>
-      <p class="page-subtitle">
-        {{
-          modoEdicion()
-            ? 'Actualiza la información de la oportunidad'
-            : 'Completa el formulario para registrar una oportunidad'
-        }}
-      </p>
-    </div>
-  </div>
+<!-- CLIENTE -->
+<div class="cl-campo">
+  <label for="clienteId">Cliente *</label>
+  <select
+    id="clienteId"
+    formControlName="clienteId"
+    data-testid="select-cliente-oportunidad"
+  >
+    <option value="0">Selecciona un cliente</option>
+    @for (cliente of ListaClientes(); track cliente.id) {
+      <option [value]="cliente.id">{{ cliente.nombre }}</option>
+    }
+  </select>
 
-  <!-- ERROR -->
-  @if (error()) {
-    <div class="estado-error" data-testid="opportunity-form-error">
-      {{ error() }}
-    </div>
+  @if (f["clienteId"].touched && f["clienteId"].invalid) {
+    <span class="cl-error">Debes seleccionar un cliente</span>
   }
+</div>
 
-  <!-- FORM -->
-  <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
-    <!-- CLIENTE -->
-    <div class="cl-campo">
-      <label>Cliente *</label>
-      <select formControlName="clienteId" data-testid="select-cliente-oportunidad">
-        <option value="0">Selecciona un cliente</option>
-        @for (cliente of ListaClientes(); track cliente.id) {
-          <option [value]="cliente.id">{{ cliente.nombre }}</option>
-        }
-      </select>
-      @if (f['clienteId'].touched && f['clienteId'].invalid) {
-        <span class="cl-error">Debes seleccionar un cliente</span>
-      }
-    </div>
+<!-- ASESOR -->
+<div class="cl-campo">
+  <label for="asesorId">Asesor *</label>
 
-    <!-- ASESOR -->
-    <div class="cl-campo">
-      <label>Asesor *</label>
-      <select formControlName="asesorId" data-testid="select-asesor-oportunidad">
-        <option value="0">Selecciona un asesor</option>
-        @for (asesor of ListaUsuarios(); track asesor.id) {
-          <option [value]="asesor.id">{{ asesor.nombre }}</option>
-        }
-      </select>
-      @if (f['asesorId'].touched && f['asesorId'].invalid) {
-        <span class="cl-error">Debes seleccionar un asesor</span>
-      }
-    </div>
+  <select
+    id="asesorId"
+    formControlName="asesorId"
+    data-testid="select-asesor-oportunidad"
+  >
+    <option value="0">Selecciona un asesor</option>
 
-    <!-- DESCRIPCION -->
-    <div class="cl-campo">
-      <label>Descripción *</label>
-      <textarea
-        formControlName="descripcion"
-        data-testid="input-descripcion-oportunidad"
-        rows="5"
-        placeholder="Describe la oportunidad..."
-      ></textarea>
-      @if (f['descripcion'].touched) {
-        @if (f['descripcion'].hasError('required')) {
-          <span class="cl-error">La descripción es requerida</span>
-        }
-        @if (f['descripcion'].hasError('minlength')) {
-          <span class="cl-error">Mínimo 10 caracteres</span>
-        }
-      }
-    </div>
+    @for (asesor of ListaUsuarios(); track asesor.id) {
+      <option [value]="asesor.id">{{ asesor.nombre }}</option>
+    }
+  </select>
 
-    <!-- VALOR -->
-    <div class="cl-campo">
-      <label>Valor estimado *</label>
-      <input
-        formControlName="valorEstimado"
-        data-testid="input-valor-oportunidad"
-        type="number"
-        placeholder="Ej: 5000000"
-      />
-      @if (f['valorEstimado'].touched) {
-        @if (f['valorEstimado'].hasError('required')) {
-          <span class="cl-error">El valor es requerido</span>
-        }
-        @if (f['valorEstimado'].hasError('min')) {
-          <span class="cl-error">El valor debe ser mayor o igual a 0</span>
-        }
-      }
-    </div>
+  @if (f["asesorId"].touched && f["asesorId"].invalid) {
+    <span class="cl-error">Debes seleccionar un asesor</span>
+  }
+</div>
 
-    <!-- FECHA -->
-    <div class="cl-campo">
-      <label>Fecha estimada de cierre *</label>
-      <input
-        formControlName="fechaCierreEstimada"
-        data-testid="input-fecha-oportunidad"
-        type="date"
-      />
-      @if (f['fechaCierreEstimada'].touched && f['fechaCierreEstimada'].hasError('required')) {
-        <span class="cl-error">La fecha es requerida</span>
-      }
-    </div>
+<!-- DESCRIPCION -->
+<div class="cl-campo">
+  <label for="descripcion">Descripción *</label>
 
-    <!-- ACTIONS -->
-    <div class="cl-form-actions">
-      <button
-        type="button"
-        class="btn-secondary"
-        data-testid="btn-cancelar-oportunidad"
-        (click)="cancelar()"
-      >
-        Cancelar
-      </button>
-      <button
-        type="submit"
-        class="btn-primary"
-        data-testid="btn-guardar-oportunidad"
-        [disabled]="guardando()"
-      >
-        @if (guardando()) {
-          <span class="spinner-sm"></span>
-          Guardando...
-        } @else {
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          {{ modoEdicion() ? 'Actualizar oportunidad' : 'Crear oportunidad' }}
-        }
-      </button>
-    </div>
-  </form>
+  <textarea
+    id="descripcion"
+    formControlName="descripcion"
+    data-testid="input-descripcion-oportunidad"
+    rows="5"
+    placeholder="Describe la oportunidad..."
+  ></textarea>
+
+  @if (f["descripcion"].touched) {
+    @if (f["descripcion"].hasError("required")) {
+      <span class="cl-error">La descripción es requerida</span>
+    }
+
+    @if (f["descripcion"].hasError("minlength")) {
+      <span class="cl-error">Mínimo 10 caracteres</span>
+    }
+  }
+</div>
+
+<!-- VALOR -->
+<div class="cl-campo">
+  <label for="valorEstimado">Valor estimado *</label>
+
+  <input
+    id="valorEstimado"
+    formControlName="valorEstimado"
+    data-testid="input-valor-oportunidad"
+    type="number"
+    placeholder="Ej: 5000000"
+  />
+
+  @if (f["valorEstimado"].touched) {
+    @if (f["valorEstimado"].hasError("required")) {
+      <span class="cl-error">El valor es requerido</span>
+    }
+
+    @if (f["valorEstimado"].hasError("min")) {
+      <span class="cl-error"> El valor debe ser mayor o igual a 0 </span>
+    }
+  }
 </div>

@@ -6,7 +6,11 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:watch": "ng test --watch",
+    "test:coverage": "ng test --code-coverage",
+    "coverage:lcov": "vitest run --coverage --reporter=verbose",
+    "sonar": "sonar-scanner"
   },
   "prettier": {
     "printWidth": 100,
@@ -34,22 +38,27 @@
     "chart.js": "^4.5.1",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "zone.js": "^0.16.2"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.5.2",
     "@angular/build": "^21.1.4",
     "@angular/cli": "^21.1.4",
     "@angular/compiler-cli": "^21.1.0",
+    "@angular/platform-browser-dynamic": "^21.2.3",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4.1.12",
     "@types/express": "^5.0.1",
     "@types/node": "^20.19.41",
+    "@vitest/coverage-v8": "^4.1.7",
+    "clover2lcov": "^1.0.0",
     "dotenv": "^17.4.2",
-    "jsdom": "^27.1.0",
+    "jsdom": "^27.4.0",
     "postcss": "^8.5.3",
+    "sonarqube-scanner": "^4.3.6",
     "tailwindcss": "^4.1.12",
     "typescript": "~5.9.2",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.8",
+    "zone.js": "^0.16.2"
   }
 }

@@ -1,12 +1,12 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>{{ modoEdicion() ? 'Editar usuario' : 'Nuevo usuario' }}</h1>
+      <h1>{{ modoEdicion() ? "Editar usuario" : "Nuevo usuario" }}</h1>
       <p class="page-subtitle">
         {{
           modoEdicion()
-            ? 'Modifica los datos del usuario'
-            : 'Completa el formulario para crear un usuario'
+            ? "Modifica los datos del usuario"
+            : "Completa el formulario para crear un usuario"
         }}
       </p>
     </div>
@@ -14,10 +14,13 @@
 
   <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
     @if (error()) {
-      <div class="estado-error" data-testid="user-form-error">{{ error() }}</div>
+      <div class="estado-error" data-testid="user-form-error">
+        {{ error() }}
+      </div>
     }
 
     <div class="cl-campo">
+      <<<<<<< HEAD
       <label>Nombre de usuario</label>
       <input
         data-testid="input-nombre-usuario"
@@ -25,17 +28,27 @@
         type="text"
         placeholder="Ej: Carlos Mendoza"
       />
-      @if (f['nombre'].touched) {
-        @if (f['nombre'].hasError('required')) {
+      =======
+      <label for="nombre">Nombre de usuario</label>
+      <input
+        id="nombre"
+        formControlName="nombre"
+        type="text"
+        placeholder="Ej: Carlos Mendoza"
+      />
+      >>>>>>> 22945d2231326afeb9ac87154f797dc4449fd7cd
+      @if (f["nombre"].touched) {
+        @if (f["nombre"].hasError("required")) {
           <span class="cl-error">El nombre es requerido</span>
         }
-        @if (f['nombre'].hasError('minlength')) {
+        @if (f["nombre"].hasError("minlength")) {
           <span class="cl-error">Mínimo 3 caracteres</span>
         }
       }
     </div>
 
     <div class="cl-campo">
+      <<<<<<< HEAD
       <label>Email</label>
       <input
         data-testid="input-email-usuario"
@@ -43,38 +56,60 @@
         type="email"
         placeholder="correo@ejemplo.com"
       />
-      @if (f['email'].touched && f['email'].hasError('email')) {
+      =======
+      <label for="email">Email</label>
+      <input
+        id="email"
+        formControlName="email"
+        type="email"
+        placeholder="correo@ejemplo.com"
+      />
+      >>>>>>> 22945d2231326afeb9ac87154f797dc4449fd7cd
+      @if (f["email"].touched && f["email"].hasError("email")) {
         <span class="cl-error">Ingresa un email válido</span>
       }
     </div>
 
     <div class="cl-campo">
-      <label>
+      <label for="password">
         Contraseña
         @if (modoEdicion()) {
           <span class="campo-hint">— dejar vacío para no cambiar</span>
         }
       </label>
+      <<<<<<< HEAD
       <input
         data-testid="input-password-usuario"
         formControlName="password"
         type="password"
         placeholder="••••••••"
       />
-      @if (!modoEdicion() && f['password'].touched && f['password'].hasError('required')) {
+      =======
+      <input
+        id="password"
+        formControlName="password"
+        type="password"
+        placeholder="••••••••"
+      />
+      >>>>>>> 22945d2231326afeb9ac87154f797dc4449fd7cd
+      @if (
+        !modoEdicion() &&
+        f["password"].touched &&
+        f["password"].hasError("required")
+      ) {
         <span class="cl-error">La contraseña es requerida</span>
       }
     </div>
 
     <div class="cl-campo">
-      <label>Rol</label>
-      <select data-testid="select-rol-usuario" formControlName="rol">
+      <label for="rol">Rol</label>
+      <select id="rol" data-testid="select-rol-usuario" formControlName="rol">
         <option value="">Selecciona un rol</option>
         <option value="ADMINISTRADOR">Administrador</option>
         <option value="ASESOR">Asesor</option>
         <option value="GERENTE">Gerente</option>
       </select>
-      @if (f['rol'].touched && f['rol'].hasError('required')) {
+      @if (f["rol"].touched && f["rol"].hasError("required")) {
         <span class="cl-error">El rol es requerido</span>
       }
     </div>
@@ -98,7 +133,7 @@
           <span class="spinner-sm"></span>
           Guardando...
         } @else {
-          {{ modoEdicion() ? 'Actualizar usuario' : 'Crear usuario' }}
+          {{ modoEdicion() ? "Actualizar usuario" : "Crear usuario" }}
         }
       </button>
     </div>

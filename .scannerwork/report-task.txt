@@ -1,0 +1,6 @@
+projectKey=frontend-Clintec
+serverUrl=http://localhost:9000
+serverVersion=26.5.0.122743
+dashboardUrl=http://localhost:9000/dashboard?id=frontend-Clintec
+ceTaskId=7c34c87c-37ab-4c57-82db-17d89b7be649
+ceTaskUrl=http://localhost:9000/api/ce/task?id=7c34c87c-37ab-4c57-82db-17d89b7be649
