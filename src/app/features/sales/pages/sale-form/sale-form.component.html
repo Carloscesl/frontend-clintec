@@ -1,27 +1,26 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>Registrar venta</h1>
+      <h1 data-testid="sale-form-title">Registrar venta</h1>
       <p class="page-subtitle">Confirma los detalles del cierre</p>
     </div>
   </div>
 
   @if (loading()) {
-    <div class="estado-loading">
+    <div class="estado-loading" data-testid="sale-form-loading">
       <div class="spinner"></div>
       <span>Cargando oportunidad...</span>
     </div>
   }
 
   @if (error() && !loading()) {
-    <div class="estado-error" style="margin-bottom: 20px">
+    <div class="estado-error" data-testid="sale-form-error" style="margin-bottom: 20px">
       <span>{{ error() }}</span>
     </div>
   }
 
   @if (!loading() && oportunidad()) {
-    <!-- Resumen de la oportunidad -->
-    <div class="op-resumen">
+    <div class="op-resumen" data-testid="sale-op-resumen">
       <div class="op-resumen-header">
         <span class="badge badge-activo">✓ Oportunidad ganada</span>
         <span class="text-muted">#{{ oportunidad()!.idOportunidad }}</span>
@@ -29,7 +28,9 @@
       <div class="op-resumen-body">
         <div class="op-dato">
           <span class="op-dato-lbl">Descripción</span>
-          <span class="op-dato-val">{{ oportunidad()!.descripcion }}</span>
+          <span class="op-dato-val" data-testid="sale-op-descripcion">
+            {{ oportunidad()!.descripcion }}
+          </span>
         </div>
         <div class="op-dato">
           <span class="op-dato-lbl">Valor estimado</span>
@@ -44,9 +45,8 @@
       </div>
     </div>
 
-    <!-- Formulario -->
     <form [formGroup]="form" (ngSubmit)="submit()" class="form-card">
-      <!-- Valor real de la venta -->
+      <!-- Valor real -->
       <div class="form-grupo">
         <label>Valor real de la venta *</label>
         <p class="form-hint text-muted">
@@ -55,7 +55,13 @@
           cierre fue diferente.
         </p>
         <div class="input-num-wrap" style="max-width: 240px">
-          <input type="number" formControlName="valorVenta" class="input-num" [min]="1" />
+          <input
+            type="number"
+            formControlName="valorVenta"
+            data-testid="input-valor-venta"
+            class="input-num"
+            [min]="1"
+          />
           <span class="input-num-suffix">COP</span>
         </div>
         @if (f['valorVenta'].touched) {
@@ -76,6 +82,7 @@
             <button
               type="button"
               class="tipo-btn"
+              [attr.data-testid]="'metodo-btn-' + m.valor"
               [class.active]="f['paymentMethod'].value === m.valor"
               (click)="f['paymentMethod'].setValue(m.valor)"
             >
@@ -89,11 +96,12 @@
         }
       </div>
 
-      <!-- Notas del cierre -->
+      <!-- Notas -->
       <div class="form-grupo">
         <label>Notas del cierre</label>
         <textarea
           formControlName="notas"
+          data-testid="textarea-notas-venta"
           class="input-textarea"
           rows="3"
           placeholder="Condiciones especiales, descuentos aplicados, acuerdos..."
@@ -102,10 +110,18 @@
       </div>
 
       <div class="modal-actions">
-        <button type="button" class="btn-reset" (click)="cancelar()">Cancelar</button>
+        <button
+          type="button"
+          class="btn-reset"
+          data-testid="btn-cancelar-venta"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
         <button
           type="submit"
           class="btn-primary"
+          data-testid="btn-confirmar-venta"
           [disabled]="form.invalid || guardando()"
           style="height: 44px; padding: 0 24px; border-radius: 12px"
         >

@@ -40,13 +40,21 @@ export class QualificationWidgetComponent implements OnInit {
   }
 
   cargar() {
-    this.svc.findByClienteId(this.clienteId).subscribe((q) => {
-      this.calificacion.set(q);
-      this.nuevoPuntaje.set(q.puntaje);
+    this.svc.findByClienteId(this.clienteId).subscribe({
+      next: (q) => {
+        if (q) {
+          this.calificacion.set(q);
+          this.nuevoPuntaje.set(q.puntaje);
+        } else {
+          this.calificacion.set(null);
+        }
+      },
+      error: () => this.calificacion.set(null), // ← si 404 o error, no crashea
     });
-    this.svc
-      .historialPorCliente(this.clienteId)
-      .subscribe((h) => this.historial.set(h.slice(0, 5)));
+    this.svc.historialPorCliente(this.clienteId).subscribe({
+      next: (h) => this.historial.set(h.slice(0, 5)),
+      error: () => this.historial.set([]),
+    });
   }
 
   guardar() {

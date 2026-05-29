@@ -1,7 +1,9 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>{{ esAsesor ? 'Mis Interacciones' : 'Interacciones' }}</h1>
+      <h1 data-testid="interactions-title">
+        {{ esAsesor ? 'Mis Interacciones' : 'Interacciones' }}
+      </h1>
       <p class="page-subtitle">
         {{ interaccionesFiltradas().length }} registro{{
           interaccionesFiltradas().length !== 1 ? 's' : ''
@@ -9,7 +11,9 @@
       </p>
     </div>
     @if (esAsesor) {
-      <button class="btn-primary" (click)="irACrear()">+ Nueva interacción</button>
+      <button class="btn-primary" data-testid="new-interaction-btn" (click)="irACrear()">
+        + Nueva interacción
+      </button>
     }
   </div>
 
@@ -18,6 +22,7 @@
     @for (t of tipos; track t.valor) {
       <button
         class="filtro-btn"
+        [attr.data-testid]="'filtro-' + t.valor"
         [class.active]="filtroTipo() === t.valor"
         (click)="filtroTipo.set(t.valor)"
       >
@@ -28,14 +33,14 @@
   </div>
 
   @if (loading()) {
-    <div class="estado-loading">
+    <div class="estado-loading" data-testid="interactions-loading">
       <div class="spinner"></div>
       <span>Cargando interacciones...</span>
     </div>
   }
 
   @if (error()) {
-    <div class="estado-error">
+    <div class="estado-error" data-testid="interactions-error">
       <span>{{ error() }}</span>
       <button (click)="cargar()">Reintentar</button>
     </div>
@@ -43,15 +48,17 @@
 
   @if (!loading() && !error()) {
     @if (interaccionesFiltradas().length === 0) {
-      <div class="empty-state">
+      <div class="empty-state" data-testid="interactions-empty">
         <span>No hay interacciones registradas</span>
       </div>
     } @else {
-      <!-- Timeline -->
-      <div class="timeline">
+      <div class="timeline" data-testid="interactions-timeline">
         @for (interaccion of interaccionesFiltradas(); track interaccion.id) {
-          <div class="timeline-item" (click)="irADetalle(interaccion.id)">
-            <!-- Línea vertical + icono tipo -->
+          <div
+            class="timeline-item"
+            [attr.data-testid]="'interaction-item-' + interaccion.id"
+            (click)="irADetalle(interaccion.id)"
+          >
             <div
               class="timeline-icon"
               [style.background]="getTipoConfig(interaccion.tipo).bg"
@@ -61,7 +68,6 @@
             </div>
             <div class="timeline-line"></div>
 
-            <!-- Card -->
             <div class="timeline-card">
               <div class="card-top">
                 <div class="usuario-cell">
@@ -69,7 +75,10 @@
                     {{ getClienteNombre(interaccion.clienteId).charAt(0) }}
                   </div>
                   <div>
-                    <span class="usuario-nombre">
+                    <span
+                      class="usuario-nombre"
+                      [attr.data-testid]="'interaction-cliente-' + interaccion.id"
+                    >
                       {{ getClienteNombre(interaccion.clienteId) }}
                     </span>
                     <span class="text-muted" style="display: block; font-size: 0.78rem">
@@ -80,6 +89,7 @@
                 <div class="card-meta">
                   <span
                     class="badge"
+                    [attr.data-testid]="'interaction-tipo-' + interaccion.id"
                     [style.background]="getTipoConfig(interaccion.tipo).bg"
                     [style.color]="getTipoConfig(interaccion.tipo).color"
                   >
@@ -93,7 +103,9 @@
               </div>
 
               @if (interaccion.nota) {
-                <p class="card-nota">{{ interaccion.nota }}</p>
+                <p class="card-nota" [attr.data-testid]="'interaction-nota-' + interaccion.id">
+                  {{ interaccion.nota }}
+                </p>
               }
             </div>
           </div>

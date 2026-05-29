@@ -1,16 +1,15 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>{{ esAsesor ? 'Mis Ventas' : 'Ventas' }}</h1>
+      <h1 data-testid="sales-title">{{ esAsesor ? 'Mis Ventas' : 'Ventas' }}</h1>
       <p class="page-subtitle">
         {{ esAsesor ? 'Historial de tus ventas cerradas' : 'Historial de todas las ventas' }}
       </p>
     </div>
   </div>
 
-  <!-- SECCIÓN EXCLUSIVA DEL ASESOR: oportunidades ganadas sin venta registrada -->
   @if (esAsesor && oportunidadesPendientes().length > 0) {
-    <div class="pendientes-section">
+    <div class="pendientes-section" data-testid="pendientes-section">
       <div class="pendientes-header">
         <span class="pendientes-icon">⚠️</span>
         <div>
@@ -18,8 +17,7 @@
             Tienes {{ oportunidadesPendientes().length }} oportunidad{{
               oportunidadesPendientes().length !== 1 ? 'es' : ''
             }}
-            ganada{{ oportunidadesPendientes().length !== 1 ? 's' : '' }}
-            sin venta registrada
+            ganada{{ oportunidadesPendientes().length !== 1 ? 's' : '' }} sin venta registrada
           </span>
           <p class="pendientes-sub text-muted">
             Registra la venta para completar el ciclo comercial
@@ -28,7 +26,7 @@
       </div>
       <div class="pendientes-list">
         @for (op of oportunidadesPendientes(); track op.idOportunidad) {
-          <div class="pendiente-card">
+          <div class="pendiente-card" [attr.data-testid]="'pendiente-card-' + op.idOportunidad">
             <div class="pendiente-info">
               <span class="badge badge-activo">✓ Ganada</span>
               <span class="pendiente-desc">{{ op.descripcion }}</span>
@@ -41,6 +39,7 @@
             </div>
             <button
               class="btn-primary"
+              [attr.data-testid]="'btn-registrar-venta-' + op.idOportunidad"
               style="height: 38px; padding: 0 18px; border-radius: 10px; font-size: 0.82rem"
               (click)="registrarVenta(op)"
             >
@@ -53,28 +52,27 @@
   }
 
   @if (loading()) {
-    <div class="estado-loading">
+    <div class="estado-loading" data-testid="sales-loading">
       <div class="spinner"></div>
       <span>Cargando ventas...</span>
     </div>
   }
 
   @if (error()) {
-    <div class="estado-error">
+    <div class="estado-error" data-testid="sales-error">
       <span>{{ error() }}</span>
       <button (click)="cargar()">Reintentar</button>
     </div>
   }
 
   @if (!loading() && !error()) {
-    <!-- KPI Cards -->
-    <div class="kpi-grid">
-      <div class="kpi-card">
+    <div class="kpi-grid" data-testid="sales-kpi-grid">
+      <div class="kpi-card" data-testid="kpi-total-ventas">
         <span class="kpi-icon">🧾</span>
         <span class="kpi-num">{{ totalVentas() }}</span>
         <span class="kpi-lbl">{{ esAsesor ? 'Mis ventas' : 'Total ventas' }}</span>
       </div>
-      <div class="kpi-card kpi-card--green">
+      <div class="kpi-card kpi-card--green" data-testid="kpi-valor-total">
         <span class="kpi-icon">💰</span>
         <span class="kpi-num">
           {{ valorTotal() | currency: 'COP' : 'symbol' : '1.0-0' }}
@@ -97,11 +95,11 @@
       </div>
     </div>
 
-    <!-- Filtros -->
     <div class="filtros">
       @for (m of metodos; track m.valor) {
         <button
           class="filtro-btn"
+          [attr.data-testid]="'filtro-metodo-' + m.valor"
           [class.active]="filtroMetodo() === m.valor"
           (click)="filtroMetodo.set(m.valor)"
         >
@@ -112,7 +110,7 @@
     </div>
 
     @if (ventasFiltradas().length === 0) {
-      <div class="empty-state">
+      <div class="empty-state" data-testid="sales-empty">
         <span>
           {{
             esAsesor
@@ -123,7 +121,7 @@
       </div>
     } @else {
       <div class="table-wrapper">
-        <table class="cl-table">
+        <table class="cl-table" data-testid="sales-table">
           <thead>
             <tr>
               <th>#</th>
@@ -139,10 +137,10 @@
           </thead>
           <tbody>
             @for (v of ventasFiltradas(); track v.idVenta) {
-              <tr>
+              <tr [attr.data-testid]="'sale-row-' + v.idVenta">
                 <td class="text-muted">{{ v.idVenta }}</td>
                 <td>
-                  <span class="badge badge-activa"> Oportunidad #{{ v.idOportunidad }} </span>
+                  <span class="badge badge-activa">Oportunidad #{{ v.idOportunidad }}</span>
                 </td>
                 @if (!esAsesor) {
                   <td>
@@ -153,7 +151,7 @@
                   </td>
                 }
                 <td>
-                  <span class="venta-valor">
+                  <span class="venta-valor" [attr.data-testid]="'sale-valor-' + v.idVenta">
                     {{ v.valorVenta | currency: 'COP' : 'symbol' : '1.0-0' }}
                   </span>
                 </td>
@@ -167,11 +165,13 @@
                     {{ v.paymentMethod }}
                   </span>
                 </td>
-                <td class="text-muted">
-                  {{ v.fechaVenta | date: 'dd/MM/yyyy HH:mm' }}
-                </td>
+                <td class="text-muted">{{ v.fechaVenta | date: 'dd/MM/yyyy HH:mm' }}</td>
                 <td>
-                  <button class="btn-icon btn-icon--edit" (click)="irADetalle(v.idVenta)">
+                  <button
+                    class="btn-icon btn-icon--edit"
+                    [attr.data-testid]="'btn-ver-venta-' + v.idVenta"
+                    (click)="irADetalle(v.idVenta)"
+                  >
                     Ver
                   </button>
                 </td>

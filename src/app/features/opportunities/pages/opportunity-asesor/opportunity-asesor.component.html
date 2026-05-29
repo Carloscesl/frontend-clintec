@@ -1,99 +1,83 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>Oportunidades</h1>
+      <h1 data-testid="kanban-title">Oportunidades</h1>
       <p class="page-subtitle">Pipeline de ventas por etapa</p>
     </div>
   </div>
 
-  <!-- LOADING -->
   @if (loading()) {
-    <div class="estado-loading">
+    <div class="estado-loading" data-testid="kanban-loading">
       <div class="spinner"></div>
       <span>Cargando oportunidades...</span>
     </div>
   }
 
-  <!-- ERROR -->
   @if (error()) {
-    <div class="estado-error">
+    <div class="estado-error" data-testid="kanban-error">
       <span>{{ error() }}</span>
       <button (click)="cargar()">Reintentar</button>
     </div>
   }
 
-  <!-- CONTENIDO -->
   @if (!loading() && !error()) {
-    <div class="kanban-board">
+    <div class="kanban-board" data-testid="kanban-board">
       @for (col of columnas; track col.etapa) {
-        <div class="kanban-col">
-          <!-- HEADER COLUMNA -->
+        <div class="kanban-col" [attr.data-testid]="'kanban-col-' + col.etapa">
           <div class="col-header">
             <div class="col-header-left">
               <span class="col-dot" [style.background]="col.color"></span>
               <span class="col-title">{{ col.label }}</span>
             </div>
-
-            <span class="col-count">
+            <span class="col-count" [attr.data-testid]="'col-count-' + col.etapa">
               {{ col.items.length }}
             </span>
           </div>
 
-          <!-- DROP ZONE -->
           <div
             class="col-cards"
             cdkDropList
             [id]="col.etapa"
+            [attr.data-testid]="'drop-zone-' + col.etapa"
             [cdkDropListData]="col.items"
             [cdkDropListConnectedTo]="connectedLists"
             (cdkDropListDropped)="onDrop($event, col)"
           >
             @for (op of col.items; track op.idOportunidad) {
-              <!-- CARD -->
               <div
                 class="kanban-card"
                 cdkDrag
                 [cdkDragData]="op"
+                [attr.data-testid]="'kanban-card-' + op.idOportunidad"
                 (click)="abrirModalProbabilidad(op, $event)"
                 [class.card-cierre-pendiente]="tieneCierrePendiente(op)"
               >
                 <div class="drag-placeholder" *cdkDragPlaceholder></div>
 
-                <!-- CLIENTE -->
                 <div class="usuario-cell">
                   <div class="avatar-sm">
                     {{ getIniciales(getClienteNombre(op.clienteId)) }}
                   </div>
-
-                  <span class="usuario-nombre">
-                    {{ getClienteNombre(op.clienteId) }}
-                  </span>
+                  <span class="usuario-nombre">{{ getClienteNombre(op.clienteId) }}</span>
                 </div>
 
-                <!-- EMPRESA -->
                 <div class="card-info">
-                  <span class="badge badge-info">
-                    {{ getClienteEmpresa(op.clienteId) }}
-                  </span>
+                  <span class="badge badge-info">{{ getClienteEmpresa(op.clienteId) }}</span>
                 </div>
 
-                <!-- DESCRIPCION -->
-                <div class="text-muted">
+                <div class="text-muted" [attr.data-testid]="'card-desc-' + op.idOportunidad">
                   {{ op.descripcion }}
                 </div>
 
-                <!-- VALOR -->
                 <div class="card-valor">
                   {{ op.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
                 </div>
 
-                <!-- PROBABILIDAD -->
                 <div class="card-progress">
                   <div class="progress-top">
                     <span>Probabilidad </span>
                     <strong>{{ op.probabilidad }}%</strong>
                   </div>
-
                   <div class="progress-bar">
                     <div
                       class="progress-fill"
@@ -106,8 +90,13 @@
                 @if (getCalificacion(op.clienteId); as q) {
                   <app-qualification-badge [nivel]="q.clasificacion" />
                 }
+
                 @if (tieneCierrePendiente(op)) {
-                  <div class="cierre-pendiente-banner" (click)="reabrirModalCierre(op, $event)">
+                  <div
+                    class="cierre-pendiente-banner"
+                    [attr.data-testid]="'cierre-pendiente-' + op.idOportunidad"
+                    (click)="reabrirModalCierre(op, $event)"
+                  >
                     <span>⚠️ Confirmar estado de cierre</span>
                     <span class="btn-reabrir">→</span>
                   </div>
@@ -115,6 +104,7 @@
 
                 <button
                   class="btn-icon btn-icon--edit"
+                  [attr.data-testid]="'edit-kanban-op-' + op.idOportunidad"
                   (click)="irAeditar(op.idOportunidad); $event.stopPropagation()"
                 >
                   <svg
@@ -129,12 +119,13 @@
                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                     />
                   </svg>
-
                   Editar
                 </button>
               </div>
             } @empty {
-              <div class="empty-state">Sin oportunidades</div>
+              <div class="empty-state" [attr.data-testid]="'kanban-empty-' + col.etapa">
+                Sin oportunidades
+              </div>
             }
           </div>
         </div>
@@ -142,7 +133,6 @@
     </div>
   }
 
-  <!-- MODAL -->
   @if (modalAbierto() && opSeleccionada()) {
     <app-modal-probabilidad
       [oportunidadId]="opSeleccionada()!.idOportunidad"
@@ -153,7 +143,6 @@
     />
   }
 
-  <!-- Modal de cierre — aparece automáticamente al arrastrar a cierre -->
   @if (modalCierreAbierto() && opCierre() && tipoCierre()) {
     <app-modal-cierre
       [oportunidad]="opCierre()!"

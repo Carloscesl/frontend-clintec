@@ -2,12 +2,10 @@
   <!-- HEADER -->
   <div class="page-header">
     <div>
-      <h1>Oportunidades</h1>
-
+      <h1 data-testid="opportunities-title">Oportunidades</h1>
       <p class="page-subtitle">Gestión y seguimiento de oportunidades comerciales</p>
     </div>
-
-    <button class="btn-primary" (click)="irAcrear()">
+    <button class="btn-primary" data-testid="new-opportunity-btn" (click)="irAcrear()">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -18,14 +16,13 @@
       >
         <path d="M12 5v14M5 12h14" />
       </svg>
-
       Nueva oportunidad
     </button>
   </div>
 
-  <!-- LOADING GENERAL -->
+  <!-- LOADING -->
   @if (loading()) {
-    <div class="estado-loading">
+    <div class="estado-loading" data-testid="opportunities-loading">
       <div class="spinner"></div>
       <span>Cargando oportunidades...</span>
     </div>
@@ -33,56 +30,43 @@
 
   <!-- ERROR -->
   @if (error()) {
-    <div class="estado-error">
+    <div class="estado-error" data-testid="opportunities-error">
       <span>{{ error() }}</span>
-
       <button (click)="cargarTodo()">Reintentar</button>
     </div>
   }
 
   <!-- CONTENIDO -->
   @if (!loading() && !error()) {
-    <div class="asesores-grid">
+    <div class="asesores-grid" data-testid="asesores-grid">
       @for (asesor of dataAsesores(); track asesor.id) {
-        <div class="asesor-card">
-          <!-- HEADER CARD -->
+        <div class="asesor-card" [attr.data-testid]="'asesor-card-' + asesor.id">
           <div class="asesor-header">
-            <div class="asesor-avatar">
-              {{ asesor.nombre.slice(0, 2).toUpperCase() }}
-            </div>
-
+            <div class="asesor-avatar">{{ asesor.nombre.slice(0, 2).toUpperCase() }}</div>
             <div class="asesor-info">
               <h3>{{ asesor.nombre }}</h3>
-
-              <span>
-                {{ asesor.email }}
-              </span>
+              <span>{{ asesor.email }}</span>
             </div>
           </div>
 
-          <!-- STATS -->
           <div class="asesor-stats">
             <div class="stat-item">
               <span class="stat-label">Oportunidades</span>
-
-              <span class="stat-value">
+              <span class="stat-value" [attr.data-testid]="'op-count-asesor-' + asesor.id">
                 {{ asesor.oportunidades.length }}
               </span>
             </div>
           </div>
 
-          <!-- LOADING INTERNO -->
           @if (asesor.cargandoOps) {
-            <div class="mini-loading">
+            <div class="mini-loading" [attr.data-testid]="'loading-ops-' + asesor.id">
               <div class="spinner-sm"></div>
-
               <span>Cargando...</span>
             </div>
           }
 
-          <!-- EMPTY -->
           @if (!asesor.cargandoOps && asesor.oportunidades.length === 0) {
-            <div class="empty-state">
+            <div class="empty-state" [attr.data-testid]="'empty-ops-' + asesor.id">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -93,22 +77,16 @@
               >
                 <path d="M9 12l2 2 4-4m5-2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-
               <span>No tiene oportunidades asignadas</span>
             </div>
           }
 
-          <!-- LISTA -->
           @if (!asesor.cargandoOps && asesor.oportunidades.length > 0) {
-            <div class="op-list">
+            <div class="op-list" [attr.data-testid]="'op-list-asesor-' + asesor.id">
               @for (op of asesor.oportunidades; track op.idOportunidad) {
-                <div class="op-card">
-                  <!-- TOP -->
+                <div class="op-card" [attr.data-testid]="'op-card-' + op.idOportunidad">
                   <div class="op-top">
-                    <div class="op-badge">
-                      {{ op.etapa }}
-                    </div>
-
+                    <div class="op-badge">{{ op.etapa }}</div>
                     <div
                       class="op-status"
                       [class.ganada]="op.estado === 'GANADA'"
@@ -117,34 +95,23 @@
                       {{ op.estado }}
                     </div>
                   </div>
-
-                  <!-- BODY -->
                   <div class="op-body">
-                    <h4>
+                    <h4 [attr.data-testid]="'op-descripcion-' + op.idOportunidad">
                       {{ op.descripcion }}
                     </h4>
-
                     <div class="op-meta">
-                      <span>
-                        {{ op.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
-                      </span>
-
-                      <span>
-                        {{ op.fechaCierreEstimada | date: 'dd/MM/yyyy' }}
-                      </span>
+                      <span>{{ op.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}</span>
+                      <span>{{ op.fechaCierreEstimada | date: 'dd/MM/yyyy' }}</span>
                     </div>
                   </div>
-
-                  <!-- FOOTER -->
                   <div class="op-footer">
                     <div class="probabilidad">
                       <span>Probabilidad</span>
-
-                      <strong> {{ op.probabilidad }}% </strong>
+                      <strong>{{ op.probabilidad }}%</strong>
                     </div>
-
                     <button
                       class="btn-icon btn-icon--edit"
+                      [attr.data-testid]="'edit-op-' + op.idOportunidad"
                       (click)="irAeditar(op.idOportunidad); $event.stopPropagation()"
                     >
                       <svg
@@ -159,7 +126,6 @@
                           d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                         />
                       </svg>
-
                       Editar
                     </button>
                   </div>

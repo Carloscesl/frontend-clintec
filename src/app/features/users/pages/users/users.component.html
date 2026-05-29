@@ -2,10 +2,10 @@
   <!-- Header -->
   <div class="page-header">
     <div>
-      <h1>Usuarios</h1>
+      <h1 data-testid="users-title">Usuarios</h1>
       <p class="page-subtitle">Gestión de cuentas y roles del sistema</p>
     </div>
-    <button class="btn-primary" (click)="irACrear()">
+    <button class="btn-primary" data-testid="new-user-btn" (click)="irACrear()">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -22,7 +22,7 @@
 
   <!-- Estado: cargando -->
   @if (loading()) {
-    <div class="estado-loading">
+    <div class="estado-loading" data-testid="users-loading">
       <div class="spinner"></div>
       <span>Cargando usuarios...</span>
     </div>
@@ -30,7 +30,7 @@
 
   <!-- Estado: error -->
   @if (error()) {
-    <div class="estado-error">
+    <div class="estado-error" data-testid="users-error">
       <span>{{ error() }}</span>
       <button (click)="cargar()">Reintentar</button>
     </div>
@@ -39,7 +39,7 @@
   <!-- Tabla -->
   @if (!loading() && !error()) {
     <div class="table-wrapper">
-      <table class="cl-table">
+      <table class="cl-table" data-testid="users-table">
         <thead>
           <tr>
             <th>Usuario</th>
@@ -51,37 +51,31 @@
         </thead>
         <tbody>
           @for (u of usuarios(); track u.id) {
-            <tr>
-              <!-- Avatar + nombre -->
+            <tr [attr.data-testid]="'user-row-' + u.id">
               <td>
                 <div class="usuario-cell">
                   <div class="avatar-sm">{{ u.nombre.slice(0, 2).toUpperCase() }}</div>
                   <span class="usuario-nombre">{{ u.nombre }}</span>
                 </div>
               </td>
-
-              <!-- Email -->
               <td class="text-muted">{{ u.email }}</td>
-
-              <!-- Rol badge -->
               <td>
-                <span class="badge badge-{{ u.rol.toLowerCase() }}">
-                  {{ u.rol }}
-                </span>
+                <span class="badge badge-{{ u.rol.toLowerCase() }}">{{ u.rol }}</span>
               </td>
-
-              <!-- Estado badge -->
               <td>
                 <span class="badge" [class]="u.activo ? 'badge-activo' : 'badge-inactivo'">
                   <span class="badge-dot"></span>
                   {{ u.activo ? 'Activo' : 'Inactivo' }}
                 </span>
               </td>
-
-              <!-- Acciones -->
               <td>
                 <div class="acciones-cell">
-                  <button class="btn-icon btn-icon--edit" (click)="irAEditar(u.id)" title="Editar">
+                  <button
+                    class="btn-icon btn-icon--edit"
+                    [attr.data-testid]="'edit-user-' + u.id"
+                    (click)="irAEditar(u.id)"
+                    title="Editar"
+                  >
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
@@ -100,6 +94,7 @@
                   <button
                     class="btn-icon"
                     [class]="u.activo ? 'btn-icon--danger' : 'btn-icon--success'"
+                    [attr.data-testid]="'toggle-user-' + u.id"
                     (click)="toggleEstado(u.email, u.activo, u.id)"
                     [disabled]="accionando() === u.id"
                     [title]="u.activo ? 'Desactivar' : 'Activar'"
@@ -131,10 +126,9 @@
             </tr>
           }
 
-          <!-- Lista vacía -->
           @if (usuarios().length === 0) {
             <tr>
-              <td colspan="5" class="empty-state">
+              <td colspan="5" class="empty-state" data-testid="users-empty">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"

@@ -1,5 +1,5 @@
 <!-- OVERLAY -->
-<div class="modal-overlay" (click)="cerrar()">
+<div class="modal-overlay" data-testid="modal-cierre" (click)="cerrar()">
   <!-- MODAL -->
   <div class="modal-panel modal-panel-sm" (click)="$event.stopPropagation()">
     <!-- HEADER -->
@@ -16,21 +16,17 @@
             ✕
           }
         </div>
-
         <div>
           <h3 class="modal-title">
             {{ titulo }}
           </h3>
-
           <p class="modal-subtitle">Confirma el estado final de la oportunidad</p>
         </div>
       </div>
-
       <button type="button" class="btn-close" (click)="cerrar()" aria-label="Cerrar modal">
         ✕
       </button>
     </div>
-
     <!-- BODY -->
     <div class="modal-body">
       <!-- INFO -->
@@ -38,22 +34,18 @@
         <!-- OPORTUNIDAD -->
         <div class="modal-info-card">
           <span class="info-label"> Oportunidad </span>
-
           <span class="info-value">
             {{ oportunidad().descripcion ?? 'Sin descripción' }}
           </span>
         </div>
-
         <!-- VALOR -->
         <div class="modal-info-card">
           <span class="info-label"> Valor estimado </span>
-
           <span class="info-value info-value-success">
             {{ oportunidad().valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
           </span>
         </div>
       </div>
-
       <!-- MENSAJE -->
       <div
         class="modal-alert"
@@ -64,23 +56,20 @@
           {{ mensaje }}
         </span>
       </div>
-
       <!-- AVISO -->
       @if (esGanado) {
         <div class="modal-tip">
           <span class="modal-tip-icon">💡</span>
-
           <span> Al confirmar podrás registrar la venta automáticamente. </span>
         </div>
       }
     </div>
-
     <!-- FOOTER -->
     <div class="modal-actions">
       <button type="button" class="btn-secondary" (click)="cerrar()">Cancelar</button>
-
       <button
         type="button"
+        data-testid="btn-confirmar-cierre"
         class="btn-primary"
         [class.btn-success]="esGanado"
         [class.btn-danger]="!esGanado"
