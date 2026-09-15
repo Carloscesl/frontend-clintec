@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://backend-clintec-production.up.railway.app/api',
+  apiUrl: 'https://backend-clintec.onrender.com/api',
 };
