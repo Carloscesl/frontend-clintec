@@ -2,9 +2,9 @@
   <!-- HEADER -->
   <div class="page-header">
     <div>
-      <h1 data-testid="clients-title">Clientes</h1>
+      <h1 data-testid="clients-title">{{ 'CLIENTS.LIST.TITLE' | translate }}</h1>
 
-      <p class="page-subtitle">Gestión de clientes registrados</p>
+      <p class="page-subtitle">{{ 'CLIENTS.LIST.SUBTITLE' | translate }}</p>
     </div>
 
     @if (puedeCrear) {
@@ -20,7 +20,7 @@
           <path d="M12 5v14M5 12h14" />
         </svg>
 
-        Nuevo cliente
+        {{ 'CLIENTS.LIST.NEW' | translate }}
       </button>
     }
   </div>
@@ -30,7 +30,7 @@
     <div class="estado-loading" data-testid="clients-loading">
       <div class="spinner"></div>
 
-      <span>Cargando clientes...</span>
+      <span>{{ 'CLIENTS.LIST.LOADING' | translate }}</span>
     </div>
   }
 
@@ -40,7 +40,7 @@
       <span>{{ error() }}</span>
 
       <button type="button" data-testid="retry-clients-btn" (click)="cargarDatos()">
-        Reintentar
+        {{ 'COMMON.RETRY' | translate }}
       </button>
     </div>
   }
@@ -64,7 +64,7 @@
             <path d="M16 3.13a4 4 0 010 7.75" />
           </svg>
 
-          <span>No hay clientes registrados</span>
+          <span>{{ 'CLIENTS.LIST.EMPTY' | translate }}</span>
         </div>
       </div>
     } @else {
@@ -72,13 +72,13 @@
         <table class="cl-table" data-testid="clients-table">
           <thead>
             <tr>
-              <th>Cliente</th>
-              <th>Email</th>
-              <th>Teléfono</th>
-              <th>Empresa</th>
-              <th>Registro</th>
-              <th>Calificación</th>
-              <th>Acciones</th>
+              <th>{{ 'CLIENTS.LIST.COL_CLIENT' | translate }}</th>
+              <th>{{ 'COMMON.EMAIL' | translate }}</th>
+              <th>{{ 'COMMON.PHONE' | translate }}</th>
+              <th>{{ 'COMMON.COMPANY' | translate }}</th>
+              <th>{{ 'CLIENTS.LIST.COL_REGISTERED' | translate }}</th>
+              <th>{{ 'CLIENTS.LIST.COL_RATING' | translate }}</th>
+              <th>{{ 'COMMON.ACTIONS' | translate }}</th>
             </tr>
           </thead>
 
@@ -147,7 +147,7 @@
                         <circle cx="12" cy="12" r="3" />
                       </svg>
 
-                      Ver
+                      {{ 'COMMON.VIEW' | translate }}
                     </button>
 
                     <!-- EDITAR -->
@@ -170,7 +170,7 @@
                           />
                         </svg>
 
-                        Editar
+                        {{ 'COMMON.EDIT' | translate }}
                       </button>
                     }
                   </div>

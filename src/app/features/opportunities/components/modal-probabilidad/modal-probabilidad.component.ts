@@ -10,13 +10,14 @@ import {
 } from '@angular/core';
 import { OportunidadService } from '../../../../core/services/oportunidad.service';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EtapaOportunidad, STAGE_RANGES } from '../../../../core/models/oportunidad.model';
 
 @Component({
   selector: 'app-modal-probabilidad',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './modal-probabilidad.component.html',
   styleUrl: './modal-probabilidad.component.css',
 })
@@ -30,6 +31,7 @@ export class ModalProbabilidadComponent implements OnInit {
 
   private fb = inject(FormBuilder);
   private service = inject(OportunidadService);
+  private translate = inject(TranslateService);
 
   guardando = signal(false);
   error = signal<string | null>(null);
@@ -90,7 +92,9 @@ export class ModalProbabilidadComponent implements OnInit {
         this.guardado.emit(response.probabilidad);
       },
       error: (err) => {
-        this.error.set(err.error?.message ?? 'Error al actualizar la probabilidad');
+        this.error.set(
+          err.error?.message ?? this.translate.instant('OPPORTUNITIES.PROB_MODAL.ERROR_UPDATE'),
+        );
         this.guardando.set(false);
       },
     });

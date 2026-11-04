@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { UsuarioService } from '../../../../core/services/usuario.service';
 import { AlertaService } from '../../../../core/services/alerta.service';
@@ -9,7 +10,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 @Component({
   selector: 'app-detail-modal-alerts',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './detail-modal-alerts.component.html',
   styleUrl: './detail-modal-alerts.component.css',
 })
@@ -21,6 +22,7 @@ export class DetailModalAlertsComponent implements OnInit {
   private readonly alertaService = inject(AlertaService);
   private readonly clienteService = inject(ClienteService);
   private readonly usuarioService = inject(UsuarioService);
+  private readonly translate = inject(TranslateService);
   private readonly rol = this.authService.obtenerRol() ?? '';
 
   esAsesor = this.rol === 'ASESOR';
@@ -46,7 +48,7 @@ export class DetailModalAlertsComponent implements OnInit {
         this.cargarUsuario(data.usuarioId);
       },
       error: (err) => {
-        this.error.set('Error al cargar la alerta');
+        this.error.set(this.translate.instant('ALERTS.DETAIL.ERROR_LOAD'));
         this.loading.set(false);
       },
     });
@@ -55,24 +57,26 @@ export class DetailModalAlertsComponent implements OnInit {
   cargarCliente(clienteId: number): void {
     this.clienteService.buscarPorId(clienteId).subscribe({
       next: (data) => {
-        this.clienteNombre.set(data.nombreCliente || 'Desconocido');
+        this.clienteNombre.set(data.nombreCliente || this.translate.instant('ALERTS.UNKNOWN'));
       },
-      error: () => this.clienteNombre.set('Desconocido'),
+      error: () => this.clienteNombre.set(this.translate.instant('ALERTS.UNKNOWN')),
     });
   }
 
   cargarUsuario(usuarioId: number): void {
     if (this.esAsesor) {
       const usuarioLogueado = this.authService.obtenerUsuario();
-      this.usuarioNombre.set(usuarioLogueado?.username ?? 'Mi Usuario');
+      this.usuarioNombre.set(
+        usuarioLogueado?.username ?? this.translate.instant('ALERTS.MY_USER'),
+      );
       return;
     }
     this.usuarioService.buscarPorId(usuarioId).subscribe({
       next: (data) => {
-        this.usuarioNombre.set(data.nombre || 'Desconocido');
+        this.usuarioNombre.set(data.nombre || this.translate.instant('ALERTS.UNKNOWN'));
       },
       error: () => {
-        this.usuarioNombre.set('Desconocido');
+        this.usuarioNombre.set(this.translate.instant('ALERTS.UNKNOWN'));
         console.warn('El usuario no tiene permisos para ver detalles de otros usuarios.');
       },
     });

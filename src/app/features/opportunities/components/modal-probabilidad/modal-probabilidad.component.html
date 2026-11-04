@@ -5,13 +5,12 @@
     <!-- HEADER -->
     <div class="modal-header">
       <div>
-        <h3 class="modal-title">Ajustar probabilidad</h3>
+        <h3 class="modal-title">{{ 'OPPORTUNITIES.PROB_MODAL.TITLE' | translate }}</h3>
 
         <p class="modal-subtitle">
-          Etapa:
-          <strong>{{ etapa }}</strong>
-          — Rango válido:
-          {{ rango.min }}% – {{ rango.max }}%
+          {{ 'OPPORTUNITIES.PROB_MODAL.STAGE_LABEL' | translate }}
+          <strong>{{ 'ENUMS.ETAPA.' + etapa | translate }}</strong>
+          — {{ 'OPPORTUNITIES.PROB_MODAL.RANGE' | translate: { min: rango.min, max: rango.max } }}
         </p>
       </div>
 
@@ -37,14 +36,14 @@
         <div
           class="prob-marker prob-marker--min"
           [style.left.%]="rango.min"
-          [title]="'Mínimo permitido: ' + rango.min + '%'"
+          [title]="'OPPORTUNITIES.PROB_MODAL.MIN_ALLOWED' | translate: { min: rango.min }"
         ></div>
 
         <!-- MAX -->
         <div
           class="prob-marker prob-marker--max"
           [style.left.%]="rango.max"
-          [title]="'Máximo permitido: ' + rango.max + '%'"
+          [title]="'OPPORTUNITIES.PROB_MODAL.MAX_ALLOWED' | translate: { max: rango.max }"
         ></div>
       </div>
 
@@ -59,7 +58,7 @@
     <!-- FORM -->
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div class="form-grupo">
-        <label for="probabilidad"> Probabilidad de cierre </label>
+        <label for="probabilidad"> {{ 'OPPORTUNITIES.PROB_MODAL.LABEL' | translate }} </label>
 
         <!-- RANGE -->
         <input
@@ -89,15 +88,27 @@
         <!-- ERRORES -->
         @if (f['probabilidad'].touched || f['probabilidad'].dirty) {
           @if (f['probabilidad'].hasError('min')) {
-            <span class="campo-error"> El mínimo para {{ etapa }} es {{ rango.min }}% </span>
+            <span class="campo-error">
+              {{
+                'OPPORTUNITIES.PROB_MODAL.ERR_MIN'
+                  | translate: { etapa: ('ENUMS.ETAPA.' + etapa | translate), min: rango.min }
+              }}
+            </span>
           }
 
           @if (f['probabilidad'].hasError('max')) {
-            <span class="campo-error"> El máximo para {{ etapa }} es {{ rango.max }}% </span>
+            <span class="campo-error">
+              {{
+                'OPPORTUNITIES.PROB_MODAL.ERR_MAX'
+                  | translate: { etapa: ('ENUMS.ETAPA.' + etapa | translate), max: rango.max }
+              }}
+            </span>
           }
 
           @if (f['probabilidad'].hasError('required')) {
-            <span class="campo-error"> Debe ingresar una probabilidad válida </span>
+            <span class="campo-error">
+              {{ 'OPPORTUNITIES.PROB_MODAL.ERR_REQUIRED' | translate }}
+            </span>
           }
         }
       </div>
@@ -116,9 +127,9 @@
           type="button"
           class="btn-reset"
           (click)="resetearDefault()"
-          [title]="'Valor sugerido: ' + rango.default + '%'"
+          [title]="'OPPORTUNITIES.PROB_MODAL.DEFAULT_TITLE' | translate: { value: rango.default }"
         >
-          ↺ Default ({{ rango.default }}%)
+          {{ 'OPPORTUNITIES.PROB_MODAL.DEFAULT_BTN' | translate: { value: rango.default } }}
         </button>
 
         <!-- BOTONES -->
@@ -129,7 +140,7 @@
             (click)="cerrar.emit()"
             style="height: 44px; padding: 0 24px; border-radius: 12px"
           >
-            Cancelar
+            {{ 'COMMON.CANCEL' | translate }}
           </button>
           <button
             type="submit"
@@ -138,9 +149,9 @@
             style="height: 44px; padding: 0 24px; border-radius: 12px"
           >
             @if (guardando()) {
-              Guardando...
+              {{ 'COMMON.SAVING' | translate }}
             } @else {
-              Guardar cambios
+              {{ 'OPPORTUNITIES.PROB_MODAL.SAVE' | translate }}
             }
           </button>
         </div>

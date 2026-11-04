@@ -1,5 +1,6 @@
 import { Component, OnInit, computed, inject, signal, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { InteraccionService } from '../../../../core/services/interaccion.service';
 import { OportunidadService } from '../../../../core/services/oportunidad.service';
@@ -12,7 +13,7 @@ import { OportunidadResponse } from '../../../../core/models/oportunidad.model';
 @Component({
   selector: 'app-interaction-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './interaction-form.component.html',
   styleUrl: './interaction-form.component.css',
 })
@@ -22,6 +23,7 @@ export class InteractionFormComponent implements OnInit {
   private readonly clienteServ = inject(ClienteService);
   private readonly opServ = inject(OportunidadService);
   private readonly authService = inject(AuthService);
+  private readonly translate = inject(TranslateService);
 
   // Outputs para comunicación con el componente padre
   cerrar = output<void>();
@@ -35,12 +37,12 @@ export class InteractionFormComponent implements OnInit {
   private readonly usuarioId = this.authService.obtenerUsuarioId()!;
 
   tipos: { valor: TipoInteraccion; label: string; icon: string }[] = [
-    { valor: 'LLAMADA', label: 'Llamada', icon: '📞' },
-    { valor: 'REUNION', label: 'Reunión', icon: '🤝' },
-    { valor: 'EMAIL', label: 'Email', icon: '✉️' },
-    { valor: 'VISITA', label: 'Visita', icon: '🚗' },
-    { valor: 'WHATSAPP', label: 'WhatsApp', icon: '💬' },
-    { valor: 'OTRO', label: 'Otro', icon: '📌' },
+    { valor: 'LLAMADA', label: 'ENUMS.TIPO_INTERACCION.LLAMADA', icon: '📞' },
+    { valor: 'REUNION', label: 'ENUMS.TIPO_INTERACCION.REUNION', icon: '🤝' },
+    { valor: 'EMAIL', label: 'ENUMS.TIPO_INTERACCION.EMAIL', icon: '✉️' },
+    { valor: 'VISITA', label: 'ENUMS.TIPO_INTERACCION.VISITA', icon: '🚗' },
+    { valor: 'WHATSAPP', label: 'ENUMS.TIPO_INTERACCION.WHATSAPP', icon: '💬' },
+    { valor: 'OTRO', label: 'ENUMS.TIPO_INTERACCION.OTRO', icon: '📌' },
   ];
 
   form = this.fb.group({
@@ -108,7 +110,9 @@ export class InteractionFormComponent implements OnInit {
           this.form.reset();
         },
         error: (err) => {
-          this.error.set(err.error?.message ?? 'Error al registrar la interacción');
+          this.error.set(
+            err.error?.message ?? this.translate.instant('INTERACTIONS.FORM.ERROR_SAVE'),
+          );
           this.guardando.set(false);
         },
       });

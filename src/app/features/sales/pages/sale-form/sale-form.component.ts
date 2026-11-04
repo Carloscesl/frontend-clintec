@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { VentaService } from '../../../../core/services/venta.service';
 import { OportunidadService } from '../../../../core/services/oportunidad.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -11,7 +12,7 @@ import { OportunidadResponse } from '../../../../core/models/oportunidad.model';
 @Component({
   selector: 'app-sale-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CurrencyPipe],
+  imports: [CommonModule, ReactiveFormsModule, CurrencyPipe, TranslatePipe],
   templateUrl: './sale-form.component.html',
   styleUrl: './sale-form.component.css',
 })
@@ -22,6 +23,7 @@ export class SaleFormComponent implements OnInit {
   private ventaServ = inject(VentaService);
   private opServ = inject(OportunidadService);
   private authService = inject(AuthService);
+  private translate = inject(TranslateService);
 
   oportunidad = signal<OportunidadResponse | null>(null);
   guardando = signal(false);
@@ -31,10 +33,10 @@ export class SaleFormComponent implements OnInit {
   private usuarioId = this.authService.obtenerUsuarioId()!;
 
   metodos: { valor: MetodoPago; label: string; icon: string }[] = [
-    { valor: 'EFECTIVO', label: 'Efectivo', icon: '💵' },
-    { valor: 'TRANSFERENCIA', label: 'Transferencia', icon: '🏦' },
-    { valor: 'TARJETA_CREDITO', label: 'Tarjeta crédito', icon: '💳' },
-    { valor: 'TARJETA_DEBITO', label: 'Tarjeta débito', icon: '🔵' },
+    { valor: 'EFECTIVO', label: 'SALES.PAYMENT.EFECTIVO', icon: '💵' },
+    { valor: 'TRANSFERENCIA', label: 'SALES.PAYMENT.TRANSFERENCIA', icon: '🏦' },
+    { valor: 'TARJETA_CREDITO', label: 'SALES.PAYMENT.TARJETA_CREDITO', icon: '💳' },
+    { valor: 'TARJETA_DEBITO', label: 'SALES.PAYMENT.TARJETA_DEBITO', icon: '🔵' },
   ];
 
   form = this.fb.group({
@@ -51,7 +53,7 @@ export class SaleFormComponent implements OnInit {
     // Lee el oportunidadId desde query params: /sales/registrar?oportunidadId=5
     const oportunidadId = this.route.snapshot.queryParamMap.get('oportunidadId');
     if (!oportunidadId) {
-      this.error.set('No se especificó una oportunidad');
+      this.error.set(this.translate.instant('SALES.FORM.ERROR_NO_OPP'));
       return;
     }
     this.cargarOportunidad(Number(oportunidadId));
@@ -67,7 +69,7 @@ export class SaleFormComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('No se encontró la oportunidad');
+        this.error.set(this.translate.instant('SALES.FORM.ERROR_NOT_FOUND'));
         this.loading.set(false);
       },
     });
@@ -95,7 +97,7 @@ export class SaleFormComponent implements OnInit {
           this.router.navigate(['/sales/detalle', venta.idVenta]);
         },
         error: (err) => {
-          this.error.set(err.error?.message ?? 'Error al registrar la venta');
+          this.error.set(err.error?.message ?? this.translate.instant('SALES.FORM.ERROR_SAVE'));
           this.guardando.set(false);
         },
       });

@@ -7,6 +7,7 @@ import { ClienteResponse } from '../../../../core/models/cliente.model';
 import { UsuarioResponse } from '../../../../core/models/usuario.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DetailModalAlertsComponent } from '../detail-modal-alerts/detail-modal-alerts.component';
 import { CalificacionService } from '../../../../core/services/calificacion.service'; // ✅
 import { QualificationBadgeComponent } from '../../../qualifications/pages/qualification-badge/qualification-badge.component';
@@ -15,7 +16,7 @@ import { QualificationClient } from '../../../../core/models/calificacion.model'
 @Component({
   selector: 'app-main-alerts',
   standalone: true,
-  imports: [CommonModule, DetailModalAlertsComponent, QualificationBadgeComponent], // ✅
+  imports: [CommonModule, DetailModalAlertsComponent, QualificationBadgeComponent, TranslatePipe], // ✅
   templateUrl: './main-alerts.component.html',
   styleUrl: './main-alerts.component.css',
 })
@@ -25,6 +26,7 @@ export class MainAlertsComponent implements OnInit {
   private readonly clienteService = inject(ClienteService);
   private readonly authService = inject(AuthService);
   private readonly qualificationSvc = inject(CalificacionService);
+  private readonly translate = inject(TranslateService);
 
   private readonly calificaciones = signal<Map<number, QualificationClient>>(new Map());
 
@@ -55,19 +57,19 @@ export class MainAlertsComponent implements OnInit {
   });
 
   tipos: { valor: TipoAlerta | 'TODOS'; label: string; icon: string }[] = [
-    { valor: 'TODOS', label: 'Todos', icon: '◈' },
-    { valor: 'INACTIVIDAD', label: 'Inactividad', icon: '⏳' },
-    { valor: 'VENCIMIENTO', label: 'Vencimiento', icon: '⚠️' },
-    { valor: 'SEGUIMIENTO', label: 'Seguimiento', icon: '🔍' },
-    { valor: 'OPORTUNIDAD', label: 'Oportunidad', icon: '💡' },
+    { valor: 'TODOS', label: 'ENUMS.TIPO_ALERTA.TODOS', icon: '◈' },
+    { valor: 'INACTIVIDAD', label: 'ENUMS.TIPO_ALERTA.INACTIVIDAD', icon: '⏳' },
+    { valor: 'VENCIMIENTO', label: 'ENUMS.TIPO_ALERTA.VENCIMIENTO', icon: '⚠️' },
+    { valor: 'SEGUIMIENTO', label: 'ENUMS.TIPO_ALERTA.SEGUIMIENTO', icon: '🔍' },
+    { valor: 'OPORTUNIDAD', label: 'ENUMS.TIPO_ALERTA.OPORTUNIDAD', icon: '💡' },
   ];
 
   estados: { valor: EstadoAlerta | 'TODOS'; label: string }[] = [
-    { valor: 'TODOS', label: 'Todos los estados' },
-    { valor: 'PENDIENTE', label: 'Pendiente' },
-    { valor: 'VISTA', label: 'Vista' },
-    { valor: 'RESUELTA', label: 'Resuelta' },
-    { valor: 'VENCIDA', label: 'Vencida' },
+    { valor: 'TODOS', label: 'ENUMS.ESTADO_ALERTA.TODOS' },
+    { valor: 'PENDIENTE', label: 'ENUMS.ESTADO_ALERTA.PENDIENTE' },
+    { valor: 'VISTA', label: 'ENUMS.ESTADO_ALERTA.VISTA' },
+    { valor: 'RESUELTA', label: 'ENUMS.ESTADO_ALERTA.RESUELTA' },
+    { valor: 'VENCIDA', label: 'ENUMS.ESTADO_ALERTA.VENCIDA' },
   ];
 
   ngOnInit(): void {
@@ -101,7 +103,7 @@ export class MainAlertsComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar alertas:', err);
-        this.error.set('Error al cargar alertas');
+        this.error.set(this.translate.instant('ALERTS.ERROR_LOAD'));
         this.loading.set(false);
       },
     });
@@ -112,7 +114,7 @@ export class MainAlertsComponent implements OnInit {
       next: (usuarios) => this.usuarios.set(usuarios),
       error: (err) => {
         console.error('Error al cargar usuarios:', err);
-        this.error.set('Error al cargar usuarios');
+        this.error.set(this.translate.instant('ALERTS.ERROR_USERS'));
       },
     });
   }
@@ -122,18 +124,28 @@ export class MainAlertsComponent implements OnInit {
       next: (clientes) => this.clientes.set(clientes),
       error: (err) => {
         console.error('Error al cargar clientes:', err);
-        this.error.set('Error al cargar clientes');
+        this.error.set(this.translate.instant('ALERTS.ERROR_CLIENTS'));
       },
     });
   }
 
   getClienteNombre(clienteId: number): string {
-    return this.clientes().find((c) => c.id === clienteId)?.nombreCliente ?? 'Desconocido';
+    return (
+      this.clientes().find((c) => c.id === clienteId)?.nombreCliente ??
+      this.translate.instant('ALERTS.UNKNOWN')
+    );
   }
 
   getUsuarioNombre(usuarioId: number): string {
-    if (this.esAsesor) return this.authService.obtenerUsuario()?.username ?? 'Mi Usuario';
-    return this.usuarios().find((u) => u.id === usuarioId)?.nombre ?? 'Asesor Asignado';
+    if (this.esAsesor) {
+      return (
+        this.authService.obtenerUsuario()?.username ?? this.translate.instant('ALERTS.MY_USER')
+      );
+    }
+    return (
+      this.usuarios().find((u) => u.id === usuarioId)?.nombre ??
+      this.translate.instant('ALERTS.ASSIGNED_ADVISOR')
+    );
   }
 
   // ✅ Tipo de retorno corregido: QualificationClient no CalificacionService
@@ -154,14 +166,14 @@ export class MainAlertsComponent implements OnInit {
   marcarVista(id: number) {
     this.alertaService.marcarVista(id).subscribe({
       next: () => this.cargarAlertas(),
-      error: () => this.error.set('Error al marcar alerta como vista'),
+      error: () => this.error.set(this.translate.instant('ALERTS.ERROR_MARK')),
     });
   }
 
   resolver(id: number) {
     this.alertaService.resolver(id).subscribe({
       next: () => this.cargarAlertas(),
-      error: () => this.error.set('Error al resolver alerta'),
+      error: () => this.error.set(this.translate.instant('ALERTS.ERROR_RESOLVE')),
     });
   }
 

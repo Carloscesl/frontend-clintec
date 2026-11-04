@@ -1,8 +1,8 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>Oportunidades</h1>
-      <p class="page-subtitle">Pipeline de ventas por etapa</p>
+      <h1>{{ 'OPPORTUNITIES.MAIN.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'OPPORTUNITIES.KANBAN.SUBTITLE' | translate }}</p>
     </div>
   </div>
 
@@ -10,7 +10,7 @@
   @if (loading()) {
     <div class="estado-loading">
       <div class="spinner"></div>
-      <span>Cargando oportunidades...</span>
+      <span>{{ 'OPPORTUNITIES.LOADING' | translate }}</span>
     </div>
   }
 
@@ -18,7 +18,7 @@
   @if (error()) {
     <div class="estado-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button (click)="cargar()">{{ 'COMMON.RETRY' | translate }}</button>
     </div>
   }
 
@@ -31,7 +31,7 @@
           <div class="col-header">
             <div class="col-header-left">
               <span class="col-dot" [style.background]="col.color"></span>
-              <span class="col-title">{{ col.label }}</span>
+              <span class="col-title">{{ col.label | translate }}</span>
             </div>
 
             <span class="col-count">
@@ -90,7 +90,7 @@
                 <!-- PROBABILIDAD -->
                 <div class="card-progress">
                   <div class="progress-top">
-                    <span>Probabilidad </span>
+                    <span>{{ 'OPPORTUNITIES.PROBABILITY' | translate }} </span>
                     <strong>{{ op.probabilidad }}%</strong>
                   </div>
 
@@ -108,7 +108,7 @@
                 }
                 @if (tieneCierrePendiente(op)) {
                   <div class="cierre-pendiente-banner" (click)="reabrirModalCierre(op, $event)">
-                    <span>⚠️ Confirmar estado de cierre</span>
+                    <span>⚠️ {{ 'OPPORTUNITIES.KANBAN.CONFIRM_CLOSE' | translate }}</span>
                     <span class="btn-reabrir">→</span>
                   </div>
                 }
@@ -130,11 +130,11 @@
                     />
                   </svg>
 
-                  Editar
+                  {{ 'COMMON.EDIT' | translate }}
                 </button>
               </div>
             } @empty {
-              <div class="empty-state">Sin oportunidades</div>
+              <div class="empty-state">{{ 'OPPORTUNITIES.KANBAN.EMPTY' | translate }}</div>
             }
           </div>
         </div>

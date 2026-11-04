@@ -2,9 +2,9 @@
   <!-- HEADER -->
   <div class="page-header">
     <div>
-      <h1>Oportunidades</h1>
+      <h1>{{ 'OPPORTUNITIES.MAIN.TITLE' | translate }}</h1>
 
-      <p class="page-subtitle">Gestión y seguimiento de oportunidades comerciales</p>
+      <p class="page-subtitle">{{ 'OPPORTUNITIES.MAIN.SUBTITLE' | translate }}</p>
     </div>
 
     <button class="btn-primary" (click)="irAcrear()">
@@ -19,7 +19,7 @@
         <path d="M12 5v14M5 12h14" />
       </svg>
 
-      Nueva oportunidad
+      {{ 'OPPORTUNITIES.MAIN.NEW' | translate }}
     </button>
   </div>
 
@@ -27,7 +27,7 @@
   @if (loading()) {
     <div class="estado-loading">
       <div class="spinner"></div>
-      <span>Cargando oportunidades...</span>
+      <span>{{ 'OPPORTUNITIES.LOADING' | translate }}</span>
     </div>
   }
 
@@ -36,7 +36,7 @@
     <div class="estado-error">
       <span>{{ error() }}</span>
 
-      <button (click)="cargarTodo()">Reintentar</button>
+      <button (click)="cargarTodo()">{{ 'COMMON.RETRY' | translate }}</button>
     </div>
   }
 
@@ -63,7 +63,7 @@
           <!-- STATS -->
           <div class="asesor-stats">
             <div class="stat-item">
-              <span class="stat-label">Oportunidades</span>
+              <span class="stat-label">{{ 'OPPORTUNITIES.MAIN.COUNT' | translate }}</span>
 
               <span class="stat-value">
                 {{ asesor.oportunidades.length }}
@@ -76,7 +76,7 @@
             <div class="mini-loading">
               <div class="spinner-sm"></div>
 
-              <span>Cargando...</span>
+              <span>{{ 'OPPORTUNITIES.MAIN.LOADING_INNER' | translate }}</span>
             </div>
           }
 
@@ -94,7 +94,7 @@
                 <path d="M9 12l2 2 4-4m5-2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
 
-              <span>No tiene oportunidades asignadas</span>
+              <span>{{ 'OPPORTUNITIES.MAIN.EMPTY' | translate }}</span>
             </div>
           }
 
@@ -106,7 +106,7 @@
                   <!-- TOP -->
                   <div class="op-top">
                     <div class="op-badge">
-                      {{ op.etapa }}
+                      {{ 'ENUMS.ETAPA.' + op.etapa | translate }}
                     </div>
 
                     <div
@@ -114,7 +114,7 @@
                       [class.ganada]="op.estado === 'GANADA'"
                       [class.perdida]="op.estado === 'PERDIDA'"
                     >
-                      {{ op.estado }}
+                      {{ 'ENUMS.ESTADO.' + op.estado | translate }}
                     </div>
                   </div>
 
@@ -138,7 +138,7 @@
                   <!-- FOOTER -->
                   <div class="op-footer">
                     <div class="probabilidad">
-                      <span>Probabilidad</span>
+                      <span>{{ 'OPPORTUNITIES.PROBABILITY' | translate }}</span>
 
                       <strong> {{ op.probabilidad }}% </strong>
                     </div>
@@ -160,7 +160,7 @@
                         />
                       </svg>
 
-                      Editar
+                      {{ 'COMMON.EDIT' | translate }}
                     </button>
                   </div>
                 </div>

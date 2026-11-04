@@ -2,8 +2,8 @@
   <!-- Header -->
   <div class="page-header">
     <div>
-      <h1>Usuarios</h1>
-      <p class="page-subtitle">Gestión de cuentas y roles del sistema</p>
+      <h1>{{ 'USERS.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'USERS.SUBTITLE' | translate }}</p>
     </div>
     <button class="btn-primary" (click)="irACrear()">
       <svg
@@ -16,7 +16,7 @@
       >
         <path d="M12 5v14M5 12h14" />
       </svg>
-      Nuevo usuario
+      {{ 'USERS.NEW' | translate }}
     </button>
   </div>
 
@@ -24,7 +24,7 @@
   @if (loading()) {
     <div class="estado-loading">
       <div class="spinner"></div>
-      <span>Cargando usuarios...</span>
+      <span>{{ 'USERS.LOADING' | translate }}</span>
     </div>
   }
 
@@ -32,7 +32,7 @@
   @if (error()) {
     <div class="estado-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button (click)="cargar()">{{ 'COMMON.RETRY' | translate }}</button>
     </div>
   }
 
@@ -42,11 +42,11 @@
       <table class="cl-table">
         <thead>
           <tr>
-            <th>Usuario</th>
-            <th>Email</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+            <th>{{ 'USERS.COL_USER' | translate }}</th>
+            <th>{{ 'COMMON.EMAIL' | translate }}</th>
+            <th>{{ 'USERS.COL_ROLE' | translate }}</th>
+            <th>{{ 'USERS.COL_STATUS' | translate }}</th>
+            <th>{{ 'COMMON.ACTIONS' | translate }}</th>
           </tr>
         </thead>
         <tbody>
@@ -66,7 +66,7 @@
               <!-- Rol badge -->
               <td>
                 <span class="badge badge-{{ u.rol.toLowerCase() }}">
-                  {{ u.rol }}
+                  {{ 'ENUMS.ROL.' + u.rol | translate }}
                 </span>
               </td>
 
@@ -74,14 +74,18 @@
               <td>
                 <span class="badge" [class]="u.activo ? 'badge-activo' : 'badge-inactivo'">
                   <span class="badge-dot"></span>
-                  {{ u.activo ? 'Activo' : 'Inactivo' }}
+                  {{ (u.activo ? 'USERS.ACTIVE' : 'USERS.INACTIVE') | translate }}
                 </span>
               </td>
 
               <!-- Acciones -->
               <td>
                 <div class="acciones-cell">
-                  <button class="btn-icon btn-icon--edit" (click)="irAEditar(u.id)" title="Editar">
+                  <button
+                    class="btn-icon btn-icon--edit"
+                    (click)="irAEditar(u.id)"
+                    [title]="'COMMON.EDIT' | translate"
+                  >
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
@@ -94,7 +98,7 @@
                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                       />
                     </svg>
-                    Editar
+                    {{ 'COMMON.EDIT' | translate }}
                   </button>
 
                   <button
@@ -102,7 +106,7 @@
                     [class]="u.activo ? 'btn-icon--danger' : 'btn-icon--success'"
                     (click)="toggleEstado(u.email, u.activo, u.id)"
                     [disabled]="accionando() === u.id"
-                    [title]="u.activo ? 'Desactivar' : 'Activar'"
+                    [title]="(u.activo ? 'USERS.DEACTIVATE' : 'USERS.ACTIVATE') | translate"
                   >
                     @if (accionando() === u.id) {
                       <span class="spinner-sm"></span>
@@ -124,7 +128,11 @@
                         }
                       </svg>
                     }
-                    {{ accionando() === u.id ? '' : u.activo ? 'Desactivar' : 'Activar' }}
+                    {{
+                      accionando() === u.id
+                        ? ''
+                        : ((u.activo ? 'USERS.DEACTIVATE' : 'USERS.ACTIVATE') | translate)
+                    }}
                   </button>
                 </div>
               </td>
@@ -147,7 +155,7 @@
                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
                   />
                 </svg>
-                <span>No hay usuarios registrados</span>
+                <span>{{ 'USERS.EMPTY' | translate }}</span>
               </td>
             </tr>
           }

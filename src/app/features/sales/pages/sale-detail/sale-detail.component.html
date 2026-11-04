@@ -1,15 +1,15 @@
 <div class="page-container">
   <div class="page-header">
-    <button class="btn-reset" (click)="volver()">← Volver</button>
+    <button class="btn-reset" (click)="volver()">← {{ 'COMMON.BACK' | translate }}</button>
     <div>
-      <h1>Detalle de venta</h1>
+      <h1>{{ 'SALES.DETAIL.TITLE' | translate }}</h1>
     </div>
   </div>
 
   @if (loading()) {
     <div class="estado-loading">
       <div class="spinner"></div>
-      <span>Cargando venta...</span>
+      <span>{{ 'SALES.DETAIL.LOADING' | translate }}</span>
     </div>
   }
 
@@ -24,13 +24,15 @@
       <!-- VENTA -->
       <div class="detail-card">
         <div class="detail-card-header">
-          <span class="detail-card-title">Venta #{{ venta()!.idVenta }}</span>
-          <span class="badge badge-activo">✓ Cerrada</span>
+          <span class="detail-card-title">{{
+            'SALES.DETAIL.SALE_NUM' | translate: { id: venta()!.idVenta }
+          }}</span>
+          <span class="badge badge-activo">{{ 'SALES.DETAIL.CLOSED' | translate }}</span>
         </div>
 
         <div class="detail-section">
           <div class="detail-row">
-            <span class="detail-lbl">Valor real</span>
+            <span class="detail-lbl">{{ 'SALES.DETAIL.REAL_VALUE' | translate }}</span>
             <span class="detail-val venta-valor-lg">
               {{ venta()!.valorVenta | currency: 'COP' : 'symbol' : '1.0-0' }}
             </span>
@@ -39,7 +41,7 @@
           <!-- Diferencia con estimado -->
           @if (oportunidad()) {
             <div class="detail-row">
-              <span class="detail-lbl">vs. Valor estimado</span>
+              <span class="detail-lbl">{{ 'SALES.DETAIL.VS_ESTIMATED' | translate }}</span>
               <span
                 class="detail-val"
                 [style.color]="diferencia() >= 0 ? 'var(--success)' : 'var(--danger)'"
@@ -51,19 +53,19 @@
           }
 
           <div class="detail-row">
-            <span class="detail-lbl">Método de pago</span>
+            <span class="detail-lbl">{{ 'SALES.LIST.COL_METHOD' | translate }}</span>
             <span
               class="badge"
               [style.background]="getMetodoConfig(venta()!.paymentMethod).bg"
               [style.color]="getMetodoConfig(venta()!.paymentMethod).color"
             >
               {{ getMetodoConfig(venta()!.paymentMethod).icon }}
-              {{ venta()!.paymentMethod }}
+              {{ 'SALES.PAYMENT.' + venta()!.paymentMethod | translate }}
             </span>
           </div>
 
           <div class="detail-row">
-            <span class="detail-lbl">Fecha de venta</span>
+            <span class="detail-lbl">{{ 'SALES.DETAIL.SALE_DATE' | translate }}</span>
             <span class="detail-val">
               {{ venta()!.fechaVenta | date: 'dd/MM/yyyy HH:mm' }}
             </span>
@@ -71,7 +73,7 @@
 
           @if (venta()!.notas) {
             <div class="detail-row detail-row--col">
-              <span class="detail-lbl">Notas del cierre</span>
+              <span class="detail-lbl">{{ 'SALES.DETAIL.NOTES' | translate }}</span>
               <p class="detail-nota">{{ venta()!.notas }}</p>
             </div>
           }
@@ -82,22 +84,22 @@
       @if (oportunidad()) {
         <div class="detail-card">
           <div class="detail-card-header">
-            <span class="detail-card-title">Oportunidad origen</span>
-            <span class="badge badge-activo">GANADA</span>
+            <span class="detail-card-title">{{ 'SALES.DETAIL.ORIGIN' | translate }}</span>
+            <span class="badge badge-activo">{{ 'ENUMS.ESTADO.GANADA' | translate }}</span>
           </div>
           <div class="detail-section">
             <div class="detail-row">
-              <span class="detail-lbl">Descripción</span>
+              <span class="detail-lbl">{{ 'SALES.FORM.DESCRIPTION' | translate }}</span>
               <span class="detail-val">{{ oportunidad()!.descripcion }}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-lbl">Valor estimado</span>
+              <span class="detail-lbl">{{ 'SALES.FORM.ESTIMATED' | translate }}</span>
               <span class="detail-val">
                 {{ oportunidad()!.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
               </span>
             </div>
             <div class="detail-row">
-              <span class="detail-lbl">Probabilidad final</span>
+              <span class="detail-lbl">{{ 'SALES.DETAIL.FINAL_PROB' | translate }}</span>
               <span class="detail-val">{{ oportunidad()!.probabilidad }}%</span>
             </div>
           </div>

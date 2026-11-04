@@ -19,14 +19,19 @@
 
         <div>
           <h3 class="modal-title">
-            {{ titulo }}
+            {{ titulo | translate }}
           </h3>
 
-          <p class="modal-subtitle">Confirma el estado final de la oportunidad</p>
+          <p class="modal-subtitle">{{ 'OPPORTUNITIES.CLOSE_MODAL.SUBTITLE' | translate }}</p>
         </div>
       </div>
 
-      <button type="button" class="btn-close" (click)="cerrar()" aria-label="Cerrar modal">
+      <button
+        type="button"
+        class="btn-close"
+        (click)="cerrar()"
+        [attr.aria-label]="'OPPORTUNITIES.CLOSE_MODAL.CLOSE_ARIA' | translate"
+      >
         ✕
       </button>
     </div>
@@ -37,16 +42,18 @@
       <div class="modal-info-grid">
         <!-- OPORTUNIDAD -->
         <div class="modal-info-card">
-          <span class="info-label"> Oportunidad </span>
+          <span class="info-label"> {{ 'OPPORTUNITIES.CLOSE_MODAL.OPPORTUNITY' | translate }} </span>
 
           <span class="info-value">
-            {{ oportunidad().descripcion ?? 'Sin descripción' }}
+            {{ oportunidad().descripcion ?? ('OPPORTUNITIES.CLOSE_MODAL.NO_DESCRIPTION' | translate) }}
           </span>
         </div>
 
         <!-- VALOR -->
         <div class="modal-info-card">
-          <span class="info-label"> Valor estimado </span>
+          <span class="info-label">
+            {{ 'OPPORTUNITIES.CLOSE_MODAL.ESTIMATED_VALUE' | translate }}
+          </span>
 
           <span class="info-value info-value-success">
             {{ oportunidad().valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
@@ -61,7 +68,7 @@
         [class.modal-alert-danger]="!esGanado"
       >
         <span>
-          {{ mensaje }}
+          {{ mensaje | translate }}
         </span>
       </div>
 
@@ -70,14 +77,16 @@
         <div class="modal-tip">
           <span class="modal-tip-icon">💡</span>
 
-          <span> Al confirmar podrás registrar la venta automáticamente. </span>
+          <span> {{ 'OPPORTUNITIES.CLOSE_MODAL.TIP' | translate }} </span>
         </div>
       }
     </div>
 
     <!-- FOOTER -->
     <div class="modal-actions">
-      <button type="button" class="btn-secondary" (click)="cerrar()">Cancelar</button>
+      <button type="button" class="btn-secondary" (click)="cerrar()">
+        {{ 'COMMON.CANCEL' | translate }}
+      </button>
 
       <button
         type="button"
@@ -86,7 +95,12 @@
         [class.btn-danger]="!esGanado"
         (click)="confirmar()"
       >
-        {{ esGanado ? 'Confirmar cierre ganado' : 'Confirmar cierre perdido' }}
+        {{
+          (esGanado
+            ? 'OPPORTUNITIES.CLOSE_MODAL.CONFIRM_WON'
+            : 'OPPORTUNITIES.CLOSE_MODAL.CONFIRM_LOST'
+          ) | translate
+        }}
       </button>
     </div>
   </div>

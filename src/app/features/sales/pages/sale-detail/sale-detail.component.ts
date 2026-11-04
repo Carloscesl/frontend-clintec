@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { VentaService } from '../../../../core/services/venta.service';
 import { OportunidadService } from '../../../../core/services/oportunidad.service';
 import { VentaResponse, MetodoPago } from '../../../../core/models/venta.model';
@@ -9,7 +10,7 @@ import { OportunidadResponse } from '../../../../core/models/oportunidad.model';
 @Component({
   selector: 'app-sale-detail',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, TranslatePipe],
   templateUrl: './sale-detail.component.html',
   styleUrl: './sale-detail.component.css',
 })
@@ -18,6 +19,7 @@ export class SaleDetailComponent implements OnInit {
   private router = inject(Router);
   private ventaServ = inject(VentaService);
   private opServ = inject(OportunidadService);
+  private translate = inject(TranslateService);
 
   venta = signal<VentaResponse | null>(null);
   oportunidad = signal<OportunidadResponse | null>(null);
@@ -40,7 +42,7 @@ export class SaleDetailComponent implements OnInit {
         this.cargarOportunidad(venta.idOportunidad);
       },
       error: () => {
-        this.error.set('No se encontró la venta');
+        this.error.set(this.translate.instant('SALES.DETAIL.ERROR_NOT_FOUND'));
         this.loading.set(false);
       },
     });

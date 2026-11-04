@@ -4,6 +4,7 @@ import { InteraccionResponse, TipoInteraccion } from '../../../../core/models/in
 import { AuthService } from '../../../../core/services/auth.service';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ClienteResponse } from '../../../../core/models/cliente.model';
 import { InteractionDetailModalComponent } from '../interaction-detail-modal/interaction-detail-modal.component';
 import { InteractionFormComponent } from '../interaction-form/interaction-form.component';
@@ -13,7 +14,12 @@ import { UsuarioService } from '../../../../core/services/usuario.service';
 @Component({
   selector: 'app-list-interactions',
   standalone: true,
-  imports: [CommonModule, InteractionDetailModalComponent, InteractionFormComponent],
+  imports: [
+    CommonModule,
+    InteractionDetailModalComponent,
+    InteractionFormComponent,
+    TranslatePipe,
+  ],
   templateUrl: './list-interactions.component.html',
   styleUrl: './list-interactions.component.css',
 })
@@ -22,6 +28,7 @@ export class ListInteractionsComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly usuariosService = inject(UsuarioService);
   private readonly clienteService = inject(ClienteService);
+  private readonly translate = inject(TranslateService);
 
   error = signal<string | null>(null);
   loading = signal(true);
@@ -51,13 +58,13 @@ export class ListInteractionsComponent implements OnInit {
   });
 
   tipos: { valor: TipoInteraccion | 'TODOS'; label: string; icon: string }[] = [
-    { valor: 'TODOS', label: 'Todos', icon: '◈' },
-    { valor: 'LLAMADA', label: 'Llamada', icon: '📞' },
-    { valor: 'REUNION', label: 'Reunión', icon: '🤝' },
-    { valor: 'EMAIL', label: 'Email', icon: '✉️' },
-    { valor: 'VISITA', label: 'Visita', icon: '🚗' },
-    { valor: 'WHATSAPP', label: 'WhatsApp', icon: '💬' },
-    { valor: 'OTRO', label: 'Otro', icon: '📌' },
+    { valor: 'TODOS', label: 'ENUMS.TIPO_INTERACCION.TODOS', icon: '◈' },
+    { valor: 'LLAMADA', label: 'ENUMS.TIPO_INTERACCION.LLAMADA', icon: '📞' },
+    { valor: 'REUNION', label: 'ENUMS.TIPO_INTERACCION.REUNION', icon: '🤝' },
+    { valor: 'EMAIL', label: 'ENUMS.TIPO_INTERACCION.EMAIL', icon: '✉️' },
+    { valor: 'VISITA', label: 'ENUMS.TIPO_INTERACCION.VISITA', icon: '🚗' },
+    { valor: 'WHATSAPP', label: 'ENUMS.TIPO_INTERACCION.WHATSAPP', icon: '💬' },
+    { valor: 'OTRO', label: 'ENUMS.TIPO_INTERACCION.OTRO', icon: '📌' },
   ];
 
   ngOnInit(): void {
@@ -86,7 +93,7 @@ export class ListInteractionsComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Error al cargar interacciones');
+        this.error.set(this.translate.instant('INTERACTIONS.ERROR_LOAD'));
         this.loading.set(false);
       },
     });
@@ -110,7 +117,9 @@ export class ListInteractionsComponent implements OnInit {
   }
 
   getClienteNombre(id: number): string {
-    return this.clienteMap.get(id)?.nombreCliente ?? 'Cliente';
+    return (
+      this.clienteMap.get(id)?.nombreCliente ?? this.translate.instant('CLIENTS.LIST.COL_CLIENT')
+    );
   }
 
   getClienteEmpresa(id: number): string {

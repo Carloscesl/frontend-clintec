@@ -1,11 +1,12 @@
 import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 import { EstadoOportunidad, OportunidadResponse } from '../../../../core/models/oportunidad.model';
 
 @Component({
   selector: 'app-modal-cierre',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './modal-cierre.component.html',
   styleUrl: './modal-cierre.component.css',
 })
@@ -29,14 +30,18 @@ export class ModalCierreComponent {
     return this.tipoCierre() === 'CIERRE_GANADO';
   }
 
+  /** Clave de traducción del título */
   get titulo(): string {
-    return this.esGanado ? '🏆 Cierre Ganado' : '❌ Cierre Perdido';
+    return this.esGanado
+      ? 'OPPORTUNITIES.CLOSE_MODAL.TITLE_WON'
+      : 'OPPORTUNITIES.CLOSE_MODAL.TITLE_LOST';
   }
 
+  /** Clave de traducción del mensaje */
   get mensaje(): string {
     return this.esGanado
-      ? '¿Confirmas que esta oportunidad fue cerrada exitosamente?'
-      : '¿Confirmas que esta oportunidad fue cerrada sin éxito?';
+      ? 'OPPORTUNITIES.CLOSE_MODAL.MSG_WON'
+      : 'OPPORTUNITIES.CLOSE_MODAL.MSG_LOST';
   }
 
   get colorHeader(): string {

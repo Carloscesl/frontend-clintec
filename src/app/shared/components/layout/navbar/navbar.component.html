@@ -1,10 +1,14 @@
 <header class="navbar">
   <div class="navbar-left">
-    <h2 class="navbar-title">Panel</h2>
+    <h2 class="navbar-title">{{ 'NAVBAR.TITLE' | translate }}</h2>
   </div>
 
   <div class="navbar-right">
-    <button class="theme-btn" (click)="toggleTheme()">Tema</button>
+    <button class="theme-btn" (click)="toggleIdioma()" [title]="'COMMON.LANGUAGE' | translate" data-testid="language-toggle">
+      {{ idiomaActual() }}
+    </button>
+
+    <button class="theme-btn" (click)="toggleTheme()">{{ 'COMMON.THEME' | translate }}</button>
 
     <!-- ROL -->
     <span class="rol-badge badge-{{ rol().toLowerCase() }}">
@@ -23,7 +27,7 @@
     </div>
 
     <!-- LOGOUT -->
-    <button class="btn-logout" (click)="cerrarSesion()">
+    <button class="btn-logout" (click)="cerrarSesion()" [title]="'COMMON.LOGOUT' | translate">
       <svg
         viewBox="0 0 24 24"
         fill="none"

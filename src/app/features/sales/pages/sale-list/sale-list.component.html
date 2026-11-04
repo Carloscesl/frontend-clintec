@@ -1,9 +1,9 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>{{ esAsesor ? 'Mis Ventas' : 'Ventas' }}</h1>
+      <h1>{{ (esAsesor ? 'SALES.LIST.TITLE_MINE' : 'SALES.LIST.TITLE_ALL') | translate }}</h1>
       <p class="page-subtitle">
-        {{ esAsesor ? 'Historial de tus ventas cerradas' : 'Historial de todas las ventas' }}
+        {{ (esAsesor ? 'SALES.LIST.SUBTITLE_MINE' : 'SALES.LIST.SUBTITLE_ALL') | translate }}
       </p>
     </div>
   </div>
@@ -15,14 +15,15 @@
         <span class="pendientes-icon">⚠️</span>
         <div>
           <span class="pendientes-title">
-            Tienes {{ oportunidadesPendientes().length }} oportunidad{{
-              oportunidadesPendientes().length !== 1 ? 'es' : ''
+            {{
+              (oportunidadesPendientes().length === 1
+                ? 'SALES.LIST.PENDING_ONE'
+                : 'SALES.LIST.PENDING_OTHER'
+              ) | translate: { count: oportunidadesPendientes().length }
             }}
-            ganada{{ oportunidadesPendientes().length !== 1 ? 's' : '' }}
-            sin venta registrada
           </span>
           <p class="pendientes-sub text-muted">
-            Registra la venta para completar el ciclo comercial
+            {{ 'SALES.LIST.PENDING_SUB' | translate }}
           </p>
         </div>
       </div>
@@ -30,10 +31,10 @@
         @for (op of oportunidadesPendientes(); track op.idOportunidad) {
           <div class="pendiente-card">
             <div class="pendiente-info">
-              <span class="badge badge-activo">✓ Ganada</span>
+              <span class="badge badge-activo">{{ 'SALES.LIST.WON_BADGE' | translate }}</span>
               <span class="pendiente-desc">{{ op.descripcion }}</span>
               <span class="pendiente-valor text-muted">
-                Valor estimado:
+                {{ 'SALES.LIST.ESTIMATED' | translate }}
                 <strong style="color: var(--success)">
                   {{ op.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
                 </strong>
@@ -44,7 +45,7 @@
               style="height: 38px; padding: 0 18px; border-radius: 10px; font-size: 0.82rem"
               (click)="registrarVenta(op)"
             >
-              Registrar venta →
+              {{ 'SALES.LIST.REGISTER' | translate }}
             </button>
           </div>
         }
@@ -55,14 +56,14 @@
   @if (loading()) {
     <div class="estado-loading">
       <div class="spinner"></div>
-      <span>Cargando ventas...</span>
+      <span>{{ 'SALES.LIST.LOADING' | translate }}</span>
     </div>
   }
 
   @if (error()) {
     <div class="estado-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button (click)="cargar()">{{ 'COMMON.RETRY' | translate }}</button>
     </div>
   }
 
@@ -72,28 +73,30 @@
       <div class="kpi-card">
         <span class="kpi-icon">🧾</span>
         <span class="kpi-num">{{ totalVentas() }}</span>
-        <span class="kpi-lbl">{{ esAsesor ? 'Mis ventas' : 'Total ventas' }}</span>
+        <span class="kpi-lbl">{{
+          (esAsesor ? 'SALES.LIST.KPI_MINE' : 'SALES.LIST.KPI_TOTAL') | translate
+        }}</span>
       </div>
       <div class="kpi-card kpi-card--green">
         <span class="kpi-icon">💰</span>
         <span class="kpi-num">
           {{ valorTotal() | currency: 'COP' : 'symbol' : '1.0-0' }}
         </span>
-        <span class="kpi-lbl">Valor total</span>
+        <span class="kpi-lbl">{{ 'SALES.LIST.KPI_VALUE' | translate }}</span>
       </div>
       <div class="kpi-card kpi-card--blue">
         <span class="kpi-icon">📊</span>
         <span class="kpi-num">
           {{ valorPromedio() | currency: 'COP' : 'symbol' : '1.0-0' }}
         </span>
-        <span class="kpi-lbl">Promedio por venta</span>
+        <span class="kpi-lbl">{{ 'SALES.LIST.KPI_AVG' | translate }}</span>
       </div>
       <div class="kpi-card kpi-card--purple">
         <span class="kpi-icon">🏆</span>
         <span class="kpi-num">
           {{ ventaMayor() | currency: 'COP' : 'symbol' : '1.0-0' }}
         </span>
-        <span class="kpi-lbl">Venta mayor</span>
+        <span class="kpi-lbl">{{ 'SALES.LIST.KPI_MAX' | translate }}</span>
       </div>
     </div>
 
@@ -106,7 +109,7 @@
           (click)="filtroMetodo.set(m.valor)"
         >
           <span>{{ m.icon }}</span>
-          <span>{{ m.label }}</span>
+          <span>{{ m.label | translate }}</span>
         </button>
       }
     </div>
@@ -114,11 +117,7 @@
     @if (ventasFiltradas().length === 0) {
       <div class="empty-state">
         <span>
-          {{
-            esAsesor
-              ? 'Aún no tienes ventas registradas'
-              : 'No hay ventas con el filtro seleccionado'
-          }}
+          {{ (esAsesor ? 'SALES.LIST.EMPTY_MINE' : 'SALES.LIST.EMPTY_ALL') | translate }}
         </span>
       </div>
     } @else {
@@ -127,14 +126,14 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Oportunidad</th>
+              <th>{{ 'SALES.LIST.COL_OPP' | translate }}</th>
               @if (!esAsesor) {
-                <th>Asesor</th>
+                <th>{{ 'SALES.LIST.COL_ADVISOR' | translate }}</th>
               }
-              <th>Valor</th>
-              <th>Método de pago</th>
-              <th>Fecha</th>
-              <th>Acciones</th>
+              <th>{{ 'SALES.LIST.COL_VALUE' | translate }}</th>
+              <th>{{ 'SALES.LIST.COL_METHOD' | translate }}</th>
+              <th>{{ 'SALES.LIST.COL_DATE' | translate }}</th>
+              <th>{{ 'COMMON.ACTIONS' | translate }}</th>
             </tr>
           </thead>
           <tbody>
@@ -142,13 +141,15 @@
               <tr>
                 <td class="text-muted">{{ v.idVenta }}</td>
                 <td>
-                  <span class="badge badge-activa"> Oportunidad #{{ v.idOportunidad }} </span>
+                  <span class="badge badge-activa">
+                    {{ 'SALES.LIST.OPP_NUM' | translate: { id: v.idOportunidad } }}
+                  </span>
                 </td>
                 @if (!esAsesor) {
                   <td>
                     <div class="usuario-cell">
                       <div class="avatar-sm">A</div>
-                      <span>Asesor #{{ v.idAsesor }}</span>
+                      <span>{{ 'SALES.LIST.ADVISOR_NUM' | translate: { id: v.idAsesor } }}</span>
                     </div>
                   </td>
                 }
@@ -164,7 +165,7 @@
                     [style.color]="getMetodoConfig(v.paymentMethod).color"
                   >
                     {{ getMetodoConfig(v.paymentMethod).icon }}
-                    {{ v.paymentMethod }}
+                    {{ 'SALES.PAYMENT.' + v.paymentMethod | translate }}
                   </span>
                 </td>
                 <td class="text-muted">
@@ -172,7 +173,7 @@
                 </td>
                 <td>
                   <button class="btn-icon btn-icon--edit" (click)="irADetalle(v.idVenta)">
-                    Ver
+                    {{ 'COMMON.VIEW' | translate }}
                   </button>
                 </td>
               </tr>

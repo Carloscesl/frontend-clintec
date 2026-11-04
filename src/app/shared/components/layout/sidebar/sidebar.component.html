@@ -30,7 +30,7 @@
           <path [attr.d]="item.icon" />
         </svg>
         @if (!collapsed()) {
-          <span class="nav-label">{{ getLabelItem(item) }}</span>
+          <span class="nav-label">{{ getLabelKey(item) | translate }}</span>
         }
       </a>
     }
@@ -41,7 +41,7 @@
     <button
       class="nav-item"
       (click)="toggleCollapse()"
-      [title]="collapsed() ? 'Expandir' : 'Colapsar'"
+      [title]="(collapsed() ? 'NAV.EXPAND' : 'NAV.COLLAPSE') | translate"
     >
       <svg
         class="nav-icon"
@@ -59,7 +59,7 @@
         }
       </svg>
       @if (!collapsed()) {
-        <span class="nav-label">Colapsar</span>
+        <span class="nav-label">{{ 'NAV.COLLAPSE' | translate }}</span>
       }
     </button>
   </div>

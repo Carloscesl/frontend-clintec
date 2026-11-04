@@ -1,15 +1,20 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>{{ esAsesor ? 'Mis Interacciones' : 'Interacciones' }}</h1>
+      <h1>{{ (esAsesor ? 'INTERACTIONS.TITLE_MINE' : 'INTERACTIONS.TITLE_ALL') | translate }}</h1>
       <p class="page-subtitle">
-        {{ interaccionesFiltradas().length }} registro{{
-          interaccionesFiltradas().length !== 1 ? 's' : ''
+        {{
+          (interaccionesFiltradas().length === 1
+            ? 'INTERACTIONS.RECORDS_ONE'
+            : 'INTERACTIONS.RECORDS_OTHER'
+          ) | translate: { count: interaccionesFiltradas().length }
         }}
       </p>
     </div>
     @if (esAsesor) {
-      <button class="btn-primary" (click)="irACrear()">+ Nueva interacción</button>
+      <button class="btn-primary" (click)="irACrear()">
+        {{ 'INTERACTIONS.NEW' | translate }}
+      </button>
     }
   </div>
 
@@ -22,7 +27,7 @@
         (click)="filtroTipo.set(t.valor)"
       >
         <span>{{ t.icon }}</span>
-        <span>{{ t.label }}</span>
+        <span>{{ t.label | translate }}</span>
       </button>
     }
   </div>
@@ -30,21 +35,21 @@
   @if (loading()) {
     <div class="estado-loading">
       <div class="spinner"></div>
-      <span>Cargando interacciones...</span>
+      <span>{{ 'INTERACTIONS.LOADING' | translate }}</span>
     </div>
   }
 
   @if (error()) {
     <div class="estado-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button (click)="cargar()">{{ 'COMMON.RETRY' | translate }}</button>
     </div>
   }
 
   @if (!loading() && !error()) {
     @if (interaccionesFiltradas().length === 0) {
       <div class="empty-state">
-        <span>No hay interacciones registradas</span>
+        <span>{{ 'INTERACTIONS.EMPTY' | translate }}</span>
       </div>
     } @else {
       <!-- Timeline -->
@@ -84,7 +89,7 @@
                     [style.color]="getTipoConfig(interaccion.tipo).color"
                   >
                     <span class="badge-dot"></span>
-                    {{ interaccion.tipo }}
+                    {{ 'ENUMS.TIPO_INTERACCION.' + interaccion.tipo | translate }}
                   </span>
                   <span class="card-fecha text-muted">
                     {{ interaccion.fecha | date: 'dd/MM/yyyy HH:mm' }}

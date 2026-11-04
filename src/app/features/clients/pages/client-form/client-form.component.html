@@ -3,14 +3,12 @@
   <div class="page-header">
     <div>
       <h1 data-testid="client-form-title">
-        {{ modoEdicion() ? 'Editar cliente' : 'Nuevo cliente' }}
+        {{ (modoEdicion() ? 'CLIENTS.FORM.TITLE_EDIT' : 'CLIENTS.FORM.TITLE_NEW') | translate }}
       </h1>
 
       <p class="page-subtitle" data-testid="client-form-subtitle">
         {{
-          modoEdicion()
-            ? 'Modifica la información del cliente'
-            : 'Completa el formulario para registrar un cliente'
+          (modoEdicion() ? 'CLIENTS.FORM.SUBTITLE_EDIT' : 'CLIENTS.FORM.SUBTITLE_NEW') | translate
         }}
       </p>
     </div>
@@ -27,53 +25,61 @@
   <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form" data-testid="client-form">
     <!-- NOMBRE -->
     <div class="cl-campo">
-      <label for="nombreCliente">Nombre completo *</label>
+      <label for="nombreCliente">{{ 'CLIENTS.FORM.NAME' | translate }}</label>
 
       <input
         id="nombreCliente"
         formControlName="nombreCliente"
         type="text"
-        placeholder="Nombre del cliente"
+        [placeholder]="'CLIENTS.FORM.NAME_PLACEHOLDER' | translate"
         data-testid="input-nombre"
       />
 
       @if (f['nombreCliente'].touched) {
         @if (f['nombreCliente'].hasError('required')) {
-          <span class="cl-error" data-testid="error-nombre-required"> El nombre es requerido </span>
+          <span class="cl-error" data-testid="error-nombre-required">
+            {{ 'CLIENTS.FORM.NAME_REQUIRED' | translate }}
+          </span>
         }
 
         @if (f['nombreCliente'].hasError('minlength')) {
-          <span class="cl-error" data-testid="error-nombre-min"> Mínimo 2 caracteres </span>
+          <span class="cl-error" data-testid="error-nombre-min">
+            {{ 'CLIENTS.FORM.NAME_MIN' | translate }}
+          </span>
         }
       }
     </div>
 
     <!-- EMAIL -->
     <div class="cl-campo">
-      <label for="email">Email *</label>
+      <label for="email">{{ 'CLIENTS.FORM.EMAIL' | translate }}</label>
 
       <input
         id="email"
         formControlName="email"
         type="email"
-        placeholder="correo@ejemplo.com"
+        [placeholder]="'CLIENTS.FORM.EMAIL_PLACEHOLDER' | translate"
         data-testid="input-email"
       />
 
       @if (f['email'].touched) {
         @if (f['email'].hasError('required')) {
-          <span class="cl-error" data-testid="error-email-required"> El email es requerido </span>
+          <span class="cl-error" data-testid="error-email-required">
+            {{ 'CLIENTS.FORM.EMAIL_REQUIRED' | translate }}
+          </span>
         }
 
         @if (f['email'].hasError('email')) {
-          <span class="cl-error" data-testid="error-email-invalid"> Email inválido </span>
+          <span class="cl-error" data-testid="error-email-invalid">
+            {{ 'CLIENTS.FORM.EMAIL_INVALID' | translate }}
+          </span>
         }
       }
     </div>
 
     <!-- TELEFONO -->
     <div class="cl-campo">
-      <label for="telefono">Teléfono *</label>
+      <label for="telefono">{{ 'CLIENTS.FORM.PHONE' | translate }}</label>
 
       <input
         id="telefono"
@@ -85,33 +91,33 @@
 
       @if (f['telefono'].touched && f['telefono'].hasError('required')) {
         <span class="cl-error" data-testid="error-telefono-required">
-          El teléfono es requerido
+          {{ 'CLIENTS.FORM.PHONE_REQUIRED' | translate }}
         </span>
       }
     </div>
 
     <!-- EMPRESA -->
     <div class="cl-campo">
-      <label for="empresa">Empresa</label>
+      <label for="empresa">{{ 'COMMON.COMPANY' | translate }}</label>
 
       <input
         id="empresa"
         formControlName="empresa"
         type="text"
-        placeholder="Nombre de la empresa"
+        [placeholder]="'CLIENTS.FORM.COMPANY_PLACEHOLDER' | translate"
         data-testid="input-empresa"
       />
     </div>
 
     <!-- DIRECCION -->
     <div class="cl-campo">
-      <label for="direccion">Dirección</label>
+      <label for="direccion">{{ 'COMMON.ADDRESS' | translate }}</label>
 
       <input
         id="direccion"
         formControlName="direccion"
         type="text"
-        placeholder="Dirección del cliente"
+        [placeholder]="'CLIENTS.FORM.ADDRESS_PLACEHOLDER' | translate"
         data-testid="input-direccion"
       />
     </div>
@@ -120,14 +126,14 @@
     <div class="cl-form-actions">
       <!-- CANCEL -->
       <button type="button" class="btn-secondary" (click)="cancelar()" data-testid="btn-cancelar">
-        Cancelar
+        {{ 'COMMON.CANCEL' | translate }}
       </button>
 
       <!-- SUBMIT -->
       <button type="submit" class="btn-primary" [disabled]="guardando()" data-testid="btn-guardar">
         @if (guardando()) {
           <span class="spinner-sm"></span>
-          Guardando...
+          {{ 'COMMON.SAVING' | translate }}
         } @else {
           <svg
             viewBox="0 0 24 24"
@@ -140,7 +146,7 @@
             <path d="M12 5v14M5 12h14" />
           </svg>
 
-          {{ modoEdicion() ? 'Actualizar cliente' : 'Crear cliente' }}
+          {{ (modoEdicion() ? 'CLIENTS.FORM.SUBMIT_EDIT' : 'CLIENTS.FORM.SUBMIT_NEW') | translate }}
         }
       </button>
     </div>

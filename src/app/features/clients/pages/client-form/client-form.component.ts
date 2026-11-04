@@ -2,13 +2,14 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { ClienteRequest } from '../../../../core/models/cliente.model';
 
 @Component({
   selector: 'app-client-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './client-form.component.html',
   styleUrl: './client-form.component.css',
 })
@@ -17,6 +18,7 @@ export class ClientFormComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly clienteService = inject(ClienteService);
+  private readonly translate = inject(TranslateService);
 
   modoEdicion = signal(false);
   clienteId = signal<number | null>(null);
@@ -55,7 +57,7 @@ export class ClientFormComponent implements OnInit {
           direccion: c.direccion,
         });
       },
-      error: () => this.error.set('No se pudo cargar el cliente'),
+      error: () => this.error.set(this.translate.instant('CLIENTS.FORM.ERROR_LOAD')),
     });
   }
 
@@ -77,7 +79,7 @@ export class ClientFormComponent implements OnInit {
     operacion.subscribe({
       next: () => this.router.navigate(['/clients']),
       error: (err) => {
-        this.error.set(err.error?.message ?? 'Error al guardar');
+        this.error.set(err.error?.message ?? this.translate.instant('CLIENTS.FORM.ERROR_SAVE'));
         this.guardando.set(false);
       },
     });

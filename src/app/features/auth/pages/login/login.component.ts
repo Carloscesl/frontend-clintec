@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ModalService } from '../../../../shared/services/modal.service';
+import { LanguageService } from '../../../../core/services/language.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -18,11 +20,15 @@ export class LoginComponent {
   cargando = false;
   error = '';
 
+  idiomaActual = computed(() => this.languageService.idioma().toUpperCase());
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly modalService: ModalService,
+    private readonly translate: TranslateService,
+    private readonly languageService: LanguageService,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,6 +38,10 @@ export class LoginComponent {
 
   campo(nombre: string) {
     return this.loginForm.get(nombre);
+  }
+
+  toggleIdioma(): void {
+    this.languageService.toggleIdioma();
   }
 
   onLogin() {
@@ -53,7 +63,8 @@ export class LoginComponent {
       error: (err) => {
         this.cargando = false;
         this.modalService.show(
-          'Error al iniciar sesión: ' + (err.error?.message || 'Error desconocido'),
+          this.translate.instant('LOGIN.ERROR_PREFIX') +
+            (err.error?.message || this.translate.instant('LOGIN.ERROR_UNKNOWN')),
           'error',
         );
       },

@@ -1,15 +1,15 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>Registrar venta</h1>
-      <p class="page-subtitle">Confirma los detalles del cierre</p>
+      <h1>{{ 'SALES.FORM.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'SALES.FORM.SUBTITLE' | translate }}</p>
     </div>
   </div>
 
   @if (loading()) {
     <div class="estado-loading">
       <div class="spinner"></div>
-      <span>Cargando oportunidad...</span>
+      <span>{{ 'SALES.FORM.LOADING' | translate }}</span>
     </div>
   }
 
@@ -23,22 +23,22 @@
     <!-- Resumen de la oportunidad -->
     <div class="op-resumen">
       <div class="op-resumen-header">
-        <span class="badge badge-activo">✓ Oportunidad ganada</span>
+        <span class="badge badge-activo">{{ 'SALES.FORM.WON_BADGE' | translate }}</span>
         <span class="text-muted">#{{ oportunidad()!.idOportunidad }}</span>
       </div>
       <div class="op-resumen-body">
         <div class="op-dato">
-          <span class="op-dato-lbl">Descripción</span>
+          <span class="op-dato-lbl">{{ 'SALES.FORM.DESCRIPTION' | translate }}</span>
           <span class="op-dato-val">{{ oportunidad()!.descripcion }}</span>
         </div>
         <div class="op-dato">
-          <span class="op-dato-lbl">Valor estimado</span>
+          <span class="op-dato-lbl">{{ 'SALES.FORM.ESTIMATED' | translate }}</span>
           <span class="op-dato-val" style="color: var(--success); font-weight: 700">
             {{ oportunidad()!.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}
           </span>
         </div>
         <div class="op-dato">
-          <span class="op-dato-lbl">Probabilidad</span>
+          <span class="op-dato-lbl">{{ 'OPPORTUNITIES.PROBABILITY' | translate }}</span>
           <span class="op-dato-val">{{ oportunidad()!.probabilidad }}%</span>
         </div>
       </div>
@@ -48,11 +48,13 @@
     <form [formGroup]="form" (ngSubmit)="submit()" class="form-card">
       <!-- Valor real de la venta -->
       <div class="form-grupo">
-        <label for="valorVenta">Valor real de la venta *</label>
+        <label for="valorVenta">{{ 'SALES.FORM.REAL_VALUE' | translate }}</label>
         <p class="form-hint text-muted">
-          El valor estimado era
-          {{ oportunidad()!.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0' }}. Ajusta si el
-          cierre fue diferente.
+          {{
+            'SALES.FORM.HINT'
+              | translate
+                : { value: (oportunidad()!.valorEstimado | currency: 'COP' : 'symbol' : '1.0-0') }
+          }}
         </p>
         <div class="input-num-wrap" style="max-width: 240px">
           <input
@@ -66,17 +68,17 @@
         </div>
         @if (f['valorVenta'].touched) {
           @if (f['valorVenta'].hasError('required')) {
-            <span class="campo-error">El valor es requerido</span>
+            <span class="campo-error">{{ 'SALES.FORM.VALUE_REQUIRED' | translate }}</span>
           }
           @if (f['valorVenta'].hasError('min')) {
-            <span class="campo-error">El valor debe ser mayor a 0</span>
+            <span class="campo-error">{{ 'SALES.FORM.VALUE_MIN' | translate }}</span>
           }
         }
       </div>
 
       <!-- Método de pago -->
       <div class="form-grupo">
-        <label>Método de pago *</label>
+        <label>{{ 'SALES.FORM.METHOD' | translate }}</label>
         <div class="tipo-grid">
           @for (m of metodos; track m.valor) {
             <button
@@ -86,29 +88,31 @@
               (click)="f['paymentMethod'].setValue(m.valor)"
             >
               <span class="tipo-icon">{{ m.icon }}</span>
-              <span class="tipo-label">{{ m.label }}</span>
+              <span class="tipo-label">{{ m.label | translate }}</span>
             </button>
           }
         </div>
         @if (f['paymentMethod'].touched && f['paymentMethod'].hasError('required')) {
-          <span class="campo-error">Selecciona el método de pago</span>
+          <span class="campo-error">{{ 'SALES.FORM.METHOD_REQUIRED' | translate }}</span>
         }
       </div>
 
       <!-- Notas del cierre -->
       <div class="form-grupo">
-        <label for="notas">Notas del cierre</label>
+        <label for="notas">{{ 'SALES.FORM.NOTES' | translate }}</label>
         <textarea
           id="notas"
           formControlName="notas"
           class="input-textarea"
           rows="3"
-          placeholder="Condiciones especiales, descuentos aplicados, acuerdos..."
+          [placeholder]="'SALES.FORM.NOTES_PLACEHOLDER' | translate"
         ></textarea>
       </div>
 
       <div class="modal-actions">
-        <button type="button" class="btn-reset" (click)="cancelar()">Cancelar</button>
+        <button type="button" class="btn-reset" (click)="cancelar()">
+          {{ 'COMMON.CANCEL' | translate }}
+        </button>
         <button
           type="submit"
           class="btn-primary"
@@ -117,9 +121,9 @@
         >
           @if (guardando()) {
             <span class="spinner-sm"></span>
-            Registrando...
+            {{ 'SALES.FORM.REGISTERING' | translate }}
           } @else {
-            Confirmar venta
+            {{ 'SALES.FORM.CONFIRM' | translate }}
           }
         </button>
       </div>

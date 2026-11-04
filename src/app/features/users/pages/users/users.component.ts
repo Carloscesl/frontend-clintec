@@ -2,18 +2,20 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { UsuarioService } from '../../../../core/services/usuario.service';
 import { Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { UsuarioResponse } from '../../../../core/models/usuario.model';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
 export class UsersComponent implements OnInit {
   private readonly usuarioService = inject(UsuarioService);
   private readonly routes = inject(Router);
+  private readonly translate = inject(TranslateService);
 
   usuarios = signal<UsuarioResponse[]>([]);
   loading = signal(true);
@@ -34,7 +36,7 @@ export class UsersComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Error al cargar usuarios');
+        this.error.set(this.translate.instant('USERS.ERROR_LOAD'));
         this.loading.set(false);
       },
     });
@@ -61,7 +63,7 @@ export class UsersComponent implements OnInit {
       },
       error: () => {
         this.accionando.set(null);
-        this.error.set('Error al cambiar estado del usuario');
+        this.error.set(this.translate.instant('USERS.ERROR_TOGGLE'));
       },
     });
   }
