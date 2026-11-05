@@ -2,6 +2,7 @@ import '@angular/compiler';
 
 import { inject, provideAppInitializer } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
+import { beforeEach } from 'vitest';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
