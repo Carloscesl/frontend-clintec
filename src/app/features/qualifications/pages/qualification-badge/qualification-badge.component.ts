@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Component, Input } from '@angular/core';
 import {
   QUALIFICATION_CONFIG,
@@ -8,7 +9,7 @@ import {
 @Component({
   selector: 'app-qualification-badge',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './qualification-badge.component.html',
   styleUrl: './qualification-badge.component.css',
 })

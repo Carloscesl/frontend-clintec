@@ -10,17 +10,24 @@ import {
 import { CalificacionService } from '../../../../core/services/calificacion.service';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { forkJoin, map, of, switchMap } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-qualification-priority-panel',
   standalone: true,
-  imports: [CommonModule, QualificationBadgeComponent, QualificationProgressBarComponent],
+  imports: [
+    CommonModule,
+    QualificationBadgeComponent,
+    QualificationProgressBarComponent,
+    TranslatePipe,
+  ],
   templateUrl: './qualification-priority-panel.component.html',
   styleUrls: ['./qualification-priority-panel.component.css'],
 })
 export class QualificationPriorityPanelComponent implements OnInit {
   private readonly svc = inject(CalificacionService);
   private readonly clienteservice = inject(ClienteService);
+  private readonly translate = inject(TranslateService);
   top5 = signal<QualificationClient[]>([]);
   readonly config = QUALIFICATION_CONFIG;
 
@@ -37,7 +44,8 @@ export class QualificationPriorityPanelComponent implements OnInit {
             this.clienteservice.buscarPorId(item.clienteId).pipe(
               map((cliente) => ({
                 ...item,
-                clienteNombre: cliente?.nombreCliente || 'Sin nombre',
+                clienteNombre:
+                  cliente?.nombreCliente || this.translate.instant('INTERACTIONS.DETAIL.NO_NAME'),
                 clienteEmpresa: cliente?.empresa || '',
                 clienteIniciales: this.iniciales(cliente?.nombreCliente),
               })),

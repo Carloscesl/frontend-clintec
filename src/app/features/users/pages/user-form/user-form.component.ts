@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { UsuarioService } from '../../../../core/services/usuario.service';
 import { Rol } from '../../../../core/models/usuario.model';
 import { ModalService } from '../../../../shared/services/modal.service';
@@ -9,7 +10,7 @@ import { ModalService } from '../../../../shared/services/modal.service';
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.css',
 })
@@ -19,6 +20,7 @@ export class UserFormComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly usuarioService = inject(UsuarioService);
   private readonly modalService = inject(ModalService);
+  private readonly translate = inject(TranslateService);
 
   modoEdicion = signal(false);
   usuarioId = signal<number | null>(null);
@@ -57,7 +59,7 @@ export class UserFormComponent implements OnInit {
           rol: usuario.rol,
         });
       },
-      error: () => this.error.set('No se pudo cargar el usuario'),
+      error: () => this.error.set(this.translate.instant('USERS.FORM.ERROR_LOAD')),
     });
   }
 
@@ -82,10 +84,10 @@ export class UserFormComponent implements OnInit {
         .subscribe({
           next: () => {
             this.router.navigate(['/users']);
-            this.modalService.show('Usuario actualizado exitosamente', 'success');
+            this.modalService.show(this.translate.instant('USERS.FORM.SUCCESS_UPDATED'), 'success');
           },
           error: (err) => {
-            this.error.set(err.error?.message ?? 'Error al actualizar');
+            this.error.set(err.error?.message ?? this.translate.instant('USERS.FORM.ERROR_UPDATE'));
             this.guardando.set(false);
           },
         });
@@ -101,11 +103,11 @@ export class UserFormComponent implements OnInit {
         .subscribe({
           next: () => {
             this.router.navigate(['/users']);
-            this.modalService.show('Usuario creado exitosamente', 'success');
+            this.modalService.show(this.translate.instant('USERS.FORM.SUCCESS_CREATED'), 'success');
           },
 
           error: (err) => {
-            this.error.set(err.error?.message ?? 'Error al crear usuario');
+            this.error.set(err.error?.message ?? this.translate.instant('USERS.FORM.ERROR_CREATE'));
             this.guardando.set(false);
           },
         });

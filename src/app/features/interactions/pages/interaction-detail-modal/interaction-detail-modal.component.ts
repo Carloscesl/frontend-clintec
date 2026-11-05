@@ -85,8 +85,8 @@ export class InteractionDetailModalComponent implements OnInit {
         this.clienteNombre.set(
           c.nombreCliente || this.translate.instant('INTERACTIONS.DETAIL.NO_NAME'),
         );
-        // Si no tiene empresa se deja vacío: la plantilla muestra "Sin empresa" traducido
-        this.clienteEmpresa.set(c.empresa || '');
+        // Si no tiene empresa se muestra el texto traducido "Sin empresa"
+        this.clienteEmpresa.set(c.empresa || this.translate.instant('INTERACTIONS.DETAIL.NO_COMPANY'));
       },
       error: (err) => {
         console.error('Error al cargar cliente:', err);

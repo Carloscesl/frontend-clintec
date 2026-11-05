@@ -60,11 +60,11 @@ describe('ModalCierreComponent', () => {
     });
 
     it('titulo debería indicar cierre ganado', () => {
-      expect(component.titulo).toContain('Cierre Ganado');
+      expect(component.titulo).toBe('OPPORTUNITIES.CLOSE_MODAL.TITLE_WON');
     });
 
     it('mensaje debería confirmar éxito', () => {
-      expect(component.mensaje).toContain('exitosamente');
+      expect(component.mensaje).toBe('OPPORTUNITIES.CLOSE_MODAL.MSG_WON');
     });
 
     it('colorHeader debería usar color verde', () => {
@@ -85,11 +85,11 @@ describe('ModalCierreComponent', () => {
     });
 
     it('titulo debería indicar cierre perdido', () => {
-      expect(component.titulo).toContain('Cierre Perdido');
+      expect(component.titulo).toBe('OPPORTUNITIES.CLOSE_MODAL.TITLE_LOST');
     });
 
     it('mensaje debería indicar sin éxito', () => {
-      expect(component.mensaje).toContain('sin éxito');
+      expect(component.mensaje).toBe('OPPORTUNITIES.CLOSE_MODAL.MSG_LOST');
     });
 
     it('colorHeader debería usar color rojo', () => {

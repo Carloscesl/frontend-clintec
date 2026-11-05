@@ -7,6 +7,7 @@ import {
 } from '../../../../core/models/calificacion.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { QualificationProgressBarComponent } from '../qualification-progress-bar/qualification-progress-bar.component';
 import { QualificationBadgeComponent } from '../qualification-badge/qualification-badge.component';
 
@@ -18,6 +19,7 @@ import { QualificationBadgeComponent } from '../qualification-badge/qualificatio
     FormsModule,
     QualificationProgressBarComponent,
     QualificationBadgeComponent,
+    TranslatePipe,
   ],
   templateUrl: './qualification-dashborad.component.html',
   styleUrl: './qualification-dashborad.component.css',

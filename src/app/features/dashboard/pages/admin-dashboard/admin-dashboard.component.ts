@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, signal, ViewChild, ElementRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Chart, registerables } from 'chart.js';
 import { forkJoin } from 'rxjs';
 import { DashboardService } from '../../../../core/services/dashboard.service';
@@ -13,7 +15,7 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, TranslatePipe],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css',
 })
@@ -25,6 +27,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   private readonly service = inject(DashboardService);
   private readonly authService = inject(AuthService);
   private readonly qualificationSvc = inject(CalificacionService);
+  private readonly translate = inject(TranslateService);
+  private distribucionActual?: QualificationDistribucion;
 
   data = signal<AdminDashboard | null>(null);
   loading = signal(true);
@@ -34,6 +38,13 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   private chartEmbudo: Chart | null = null;
   private chartEstado: Chart | null = null;
   private chartDistribucion: Chart | null = null;
+
+  constructor() {
+    // Redibuja las gráficas al cambiar de idioma (los textos viven dentro del canvas)
+    this.translate.onLangChange
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.dibujarGraficas(this.distribucionActual));
+  }
 
   ngOnInit(): void {
     this.cargar();
@@ -48,12 +59,13 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       distribucion: this.qualificationSvc.distribucion(),
     }).subscribe({
       next: ({ dashboard, distribucion }) => {
+        this.distribucionActual = distribucion;
         this.data.set(dashboard);
         this.loading.set(false);
         setTimeout(() => this.dibujarGraficas(distribucion), 100);
       },
       error: () => {
-        this.error.set('Error al cargar el dashboard');
+        this.error.set(this.translate.instant('DASHBOARD.ERROR_LOAD'));
         this.loading.set(false);
       },
     });
@@ -72,16 +84,16 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         type: 'bar',
         data: {
           labels: [
-            'Prospección',
-            'Calificación',
-            'Propuesta',
-            'Negociación',
-            'C. Ganado',
-            'C. Perdido',
+            this.translate.instant('ENUMS.ETAPA.PROSPECCION'),
+            this.translate.instant('ENUMS.ETAPA.CALIFICACION'),
+            this.translate.instant('ENUMS.ETAPA.PROPUESTA'),
+            this.translate.instant('ENUMS.ETAPA.NEGOCIACION'),
+            this.translate.instant('DASHBOARD.CHART.STAGE_WON_SHORT'),
+            this.translate.instant('DASHBOARD.CHART.STAGE_LOST_SHORT'),
           ],
           datasets: [
             {
-              label: 'Oportunidades',
+              label: this.translate.instant('DASHBOARD.CHART.DATASET_OPPS'),
               data: [
                 d.enProspeccion,
                 d.enCalificacion,
@@ -111,7 +123,11 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       this.chartEstado = new Chart(this.graficaEstadoRef.nativeElement, {
         type: 'doughnut',
         data: {
-          labels: ['Activas', 'Ganadas', 'Perdidas'],
+          labels: [
+            this.translate.instant('DASHBOARD.CHART.STATUS_ACTIVE'),
+            this.translate.instant('DASHBOARD.CHART.STATUS_WON'),
+            this.translate.instant('DASHBOARD.CHART.STATUS_LOST'),
+          ],
           datasets: [
             {
               data: [d.oportunidadesActivas, d.oportunidadesGanadas, d.oportunidadesPerdidas],
@@ -135,7 +151,12 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       this.chartDistribucion = new Chart(this.graficaDistribucionRef.nativeElement, {
         type: 'doughnut',
         data: {
-          labels: ['❄️ Frío', '🌤️ Tibio', '🔥 Caliente', '👑 VIP'],
+          labels: [
+            '❄️ ' + this.translate.instant('ENUMS.NIVEL.FRIO'),
+            '🌤️ ' + this.translate.instant('ENUMS.NIVEL.TIBIO'),
+            '🔥 ' + this.translate.instant('ENUMS.NIVEL.CALIENTE'),
+            '👑 ' + this.translate.instant('ENUMS.NIVEL.VIP'),
+          ],
           datasets: [
             {
               data: [

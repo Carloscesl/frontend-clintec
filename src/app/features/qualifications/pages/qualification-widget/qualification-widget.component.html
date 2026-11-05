@@ -1,10 +1,10 @@
 <!-- qualification-widget.component.html -->
 <div class="qw">
   <div class="qw__header">
-    <h3 class="qw__title">Calificación</h3>
+    <h3 class="qw__title">{{ 'QUALIFICATIONS.WIDGET.TITLE' | translate }}</h3>
     @if (puedeEditar && calificacion()) {
       <button class="qw__edit-btn" (click)="editando.set(!editando())">
-        {{ editando() ? 'Cancelar' : 'Ajustar' }}
+        {{ (editando() ? 'COMMON.CANCEL' : 'QUALIFICATIONS.WIDGET.ADJUST') | translate }}
       </button>
     }
   </div>
@@ -20,7 +20,10 @@
         <app-qualification-badge [nivel]="q.clasificacion" />
         <app-qualification-progress-bar [puntaje]="q.puntaje" [nivel]="q.clasificacion" />
         <span class="qw__score-fecha">
-          Actualizado {{ q.ultimaActualizacion | date: 'dd MMM yyyy' }}
+          {{
+            'QUALIFICATIONS.WIDGET.UPDATED'
+              | translate: { date: (q.ultimaActualizacion | date: 'dd MMM yyyy') }
+          }}
         </span>
       </div>
     </div>
@@ -28,7 +31,9 @@
     <!-- Editor inline -->
     @if (editando()) {
       <div class="qw__editor">
-        <label class="qw__editor-label" for="editor">Nuevo puntaje (0–100)</label>
+        <label class="qw__editor-label" for="editor">{{
+          'QUALIFICATIONS.WIDGET.NEW_SCORE' | translate
+        }}</label>
         <div class="qw__editor-row">
           <input
             id="editor"
@@ -43,14 +48,16 @@
             {{ nuevoPuntaje() }}
           </span>
         </div>
-        <button class="qw__save-btn" (click)="guardar()">Guardar cambio</button>
+        <button class="qw__save-btn" (click)="guardar()">
+          {{ 'QUALIFICATIONS.WIDGET.SAVE' | translate }}
+        </button>
       </div>
     }
 
     <!-- Historial -->
     @if (historial().length > 0) {
       <div class="qw__historial">
-        <p class="qw__historial-title">Últimos cambios</p>
+        <p class="qw__historial-title">{{ 'QUALIFICATIONS.WIDGET.HISTORY' | translate }}</p>
         <ul class="qw__historial-list">
           @for (h of historial(); track h.id) {
             <li class="qw__historial-item">
@@ -70,6 +77,6 @@
       </div>
     }
   } @else {
-    <div class="qw__empty">Sin calificación registrada</div>
+    <div class="qw__empty">{{ 'QUALIFICATIONS.WIDGET.EMPTY' | translate }}</div>
   }
 </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, signal, ViewChild, ElementRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Chart, registerables } from 'chart.js';
 import { DashboardService } from '../../../../core/services/dashboard.service';
 import { AsesorDashboard } from '../../../../core/models/dashboard.model';
@@ -11,7 +13,7 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-asesor-dashboard',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, QualificationPriorityPanelComponent],
+  imports: [CommonModule, CurrencyPipe, QualificationPriorityPanelComponent, TranslatePipe],
   templateUrl: './asesor-dashboard.component.html',
   styleUrl: './asesor-dashboard.component.css',
 })
@@ -20,6 +22,7 @@ export class AsesorDashboardComponent implements OnInit, OnDestroy {
 
   private readonly service = inject(DashboardService);
   private readonly authService = inject(AuthService);
+  private readonly translate = inject(TranslateService);
 
   data = signal<AsesorDashboard | null>(null);
   loading = signal(true);
@@ -27,6 +30,11 @@ export class AsesorDashboardComponent implements OnInit, OnDestroy {
   usuario = this.authService.obtenerUsuario();
 
   private chartEmbudo: Chart | null = null;
+
+  constructor() {
+    // Redibuja la gráfica al cambiar de idioma (los textos viven dentro del canvas)
+    this.translate.onLangChange.pipe(takeUntilDestroyed()).subscribe(() => this.dibujarGraficas());
+  }
 
   ngOnInit(): void {
     this.cargar();
@@ -42,7 +50,7 @@ export class AsesorDashboardComponent implements OnInit, OnDestroy {
         setTimeout(() => this.dibujarGraficas(), 100);
       },
       error: () => {
-        this.error.set('Error al cargar el dashboard');
+        this.error.set(this.translate.instant('DASHBOARD.ERROR_LOAD'));
         this.loading.set(false);
       },
     });
@@ -59,16 +67,16 @@ export class AsesorDashboardComponent implements OnInit, OnDestroy {
         type: 'bar',
         data: {
           labels: [
-            'Prospección',
-            'Calificación',
-            'Propuesta',
-            'Negociación',
-            'C. Ganado',
-            'C. Perdido',
+            this.translate.instant('ENUMS.ETAPA.PROSPECCION'),
+            this.translate.instant('ENUMS.ETAPA.CALIFICACION'),
+            this.translate.instant('ENUMS.ETAPA.PROPUESTA'),
+            this.translate.instant('ENUMS.ETAPA.NEGOCIACION'),
+            this.translate.instant('DASHBOARD.CHART.STAGE_WON_SHORT'),
+            this.translate.instant('DASHBOARD.CHART.STAGE_LOST_SHORT'),
           ],
           datasets: [
             {
-              label: 'Mis oportunidades',
+              label: this.translate.instant('DASHBOARD.CHART.DATASET_MY_OPPS'),
               data: [
                 d.enProspeccion,
                 d.enCalificacion,

@@ -1,9 +1,9 @@
 <div class="dashboard">
   <div class="dash-header">
     <div class="dash-header-info">
-      <h1>Panel de Gerencia</h1>
+      <h1>{{ 'DASHBOARD.GERENTE_TITLE' | translate }}</h1>
       <p>
-        Bienvenido, <strong>{{ usuario?.username }}</strong>
+        {{ 'DASHBOARD.WELCOME' | translate }} <strong>{{ usuario?.username }}</strong>
       </p>
     </div>
     <button class="btn-refresh" (click)="cargar()" [disabled]="loading()">
@@ -19,21 +19,21 @@
           d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
         />
       </svg>
-      Actualizar
+      {{ 'DASHBOARD.REFRESH' | translate }}
     </button>
   </div>
 
   @if (loading()) {
     <div class="dash-loading">
       <div class="spinner"></div>
-      <span>Cargando datos...</span>
+      <span>{{ 'DASHBOARD.LOADING' | translate }}</span>
     </div>
   }
 
   @if (error()) {
     <div class="dash-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button (click)="cargar()">{{ 'COMMON.RETRY' | translate }}</button>
     </div>
   }
 
@@ -55,7 +55,7 @@
           </svg>
         </div>
         <div class="kpi-body">
-          <span class="kpi-label">Clientes</span>
+          <span class="kpi-label">{{ 'CLIENTS.LIST.TITLE' | translate }}</span>
           <span class="kpi-value">{{ data()!.totalClientes }}</span>
         </div>
       </div>
@@ -74,7 +74,7 @@
           </svg>
         </div>
         <div class="kpi-body">
-          <span class="kpi-label">Oportunidades ganadas</span>
+          <span class="kpi-label">{{ 'DASHBOARD.KPI.WON_OPPS' | translate }}</span>
           <span class="kpi-value">{{ data()!.oportunidadesGanadas }}</span>
         </div>
       </div>
@@ -93,7 +93,7 @@
           </svg>
         </div>
         <div class="kpi-body">
-          <span class="kpi-label">Oportunidades activas</span>
+          <span class="kpi-label">{{ 'DASHBOARD.KPI.ACTIVE_OPPS' | translate }}</span>
           <span class="kpi-value">{{ data()!.oportunidadesActivas }}</span>
         </div>
       </div>
@@ -114,7 +114,7 @@
           </svg>
         </div>
         <div class="kpi-body">
-          <span class="kpi-label">Valor ganado</span>
+          <span class="kpi-label">{{ 'DASHBOARD.KPI.WON_VALUE' | translate }}</span>
           <span class="kpi-value kpi-value--sm">
             {{ data()!.valorOportunidadesGanadas | currency: 'COP' : 'symbol' : '1.0-0' }}
           </span>
@@ -137,7 +137,7 @@
           </svg>
         </div>
         <div class="kpi-body">
-          <span class="kpi-label">Total ventas</span>
+          <span class="kpi-label">{{ 'SALES.LIST.KPI_TOTAL' | translate }}</span>
           <span class="kpi-value">{{ data()!.totalVentas }}</span>
         </div>
       </div>
@@ -146,8 +146,8 @@
     <div class="charts-grid">
       <div class="chart-card">
         <div class="chart-card-header">
-          <h3>Embudo de ventas</h3>
-          <span class="chart-subtitle">Oportunidades por etapa</span>
+          <h3>{{ 'DASHBOARD.CHART.FUNNEL_TITLE' | translate }}</h3>
+          <span class="chart-subtitle">{{ 'DASHBOARD.CHART.FUNNEL_SUB' | translate }}</span>
         </div>
         <div class="chart-wrap">
           <canvas #graficaEmbudo></canvas>
@@ -156,8 +156,8 @@
 
       <div class="chart-card">
         <div class="chart-card-header">
-          <h3>Estado de oportunidades</h3>
-          <span class="chart-subtitle">Distribución actual</span>
+          <h3>{{ 'DASHBOARD.CHART.STATUS_TITLE' | translate }}</h3>
+          <span class="chart-subtitle">{{ 'DASHBOARD.CHART.STATUS_SUB' | translate }}</span>
         </div>
         <div class="chart-wrap chart-wrap--donut">
           <canvas #graficaEstado></canvas>
@@ -167,38 +167,38 @@
 
     <div class="summary-card">
       <div class="chart-card-header">
-        <h3>Detalle del embudo</h3>
-        <span class="chart-subtitle">Conteo por etapa</span>
+        <h3>{{ 'DASHBOARD.CHART.FUNNEL_DETAIL' | translate }}</h3>
+        <span class="chart-subtitle">{{ 'DASHBOARD.CHART.FUNNEL_COUNT' | translate }}</span>
       </div>
       <div class="funnel-list">
         <div class="funnel-item">
           <span class="funnel-dot" style="background: #3b82f6"></span>
-          <span class="funnel-label">Prospección</span>
+          <span class="funnel-label">{{ 'ENUMS.ETAPA.PROSPECCION' | translate }}</span>
           <span class="funnel-value">{{ data()!.enProspeccion }}</span>
         </div>
         <div class="funnel-item">
           <span class="funnel-dot" style="background: #8b5cf6"></span>
-          <span class="funnel-label">Calificación</span>
+          <span class="funnel-label">{{ 'ENUMS.ETAPA.CALIFICACION' | translate }}</span>
           <span class="funnel-value">{{ data()!.enCalificacion }}</span>
         </div>
         <div class="funnel-item">
           <span class="funnel-dot" style="background: #f59e0b"></span>
-          <span class="funnel-label">Propuesta</span>
+          <span class="funnel-label">{{ 'ENUMS.ETAPA.PROPUESTA' | translate }}</span>
           <span class="funnel-value">{{ data()!.enPropuesta }}</span>
         </div>
         <div class="funnel-item">
           <span class="funnel-dot" style="background: #ec4899"></span>
-          <span class="funnel-label">Negociación</span>
+          <span class="funnel-label">{{ 'ENUMS.ETAPA.NEGOCIACION' | translate }}</span>
           <span class="funnel-value">{{ data()!.enNegociacion }}</span>
         </div>
         <div class="funnel-item">
           <span class="funnel-dot" style="background: #10b981"></span>
-          <span class="funnel-label">Cierre ganado</span>
+          <span class="funnel-label">{{ 'ENUMS.ETAPA.CIERRE_GANADO' | translate }}</span>
           <span class="funnel-value">{{ data()!.enCierreGanado }}</span>
         </div>
         <div class="funnel-item">
           <span class="funnel-dot" style="background: #ef4444"></span>
-          <span class="funnel-label">Cierre perdido</span>
+          <span class="funnel-label">{{ 'ENUMS.ETAPA.CIERRE_PERDIDO' | translate }}</span>
           <span class="funnel-value">{{ data()!.enCierrePerdido }}</span>
         </div>
       </div>

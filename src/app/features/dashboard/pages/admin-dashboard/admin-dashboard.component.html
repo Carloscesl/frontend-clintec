@@ -2,10 +2,10 @@
   <!-- HEADER -->
   <div class="page-header">
     <div>
-      <h1 data-testid="dashboard-title">Panel de Administración</h1>
+      <h1 data-testid="dashboard-title">{{ 'DASHBOARD.ADMIN_TITLE' | translate }}</h1>
 
       <p class="page-subtitle" data-testid="dashboard-welcome">
-        Bienvenido de nuevo,
+        {{ 'DASHBOARD.WELCOME_BACK' | translate }}
 
         <strong data-testid="dashboard-username">
           {{ usuario?.username }}
@@ -32,7 +32,7 @@
         />
       </svg>
 
-      Actualizar
+      {{ 'DASHBOARD.REFRESH' | translate }}
     </button>
   </div>
 
@@ -41,7 +41,7 @@
     <div class="estado-loading" data-testid="dashboard-loading">
       <div class="spinner"></div>
 
-      <span>Cargando datos...</span>
+      <span>{{ 'DASHBOARD.LOADING' | translate }}</span>
     </div>
   }
 
@@ -51,7 +51,7 @@
       <span>{{ error() }}</span>
 
       <button class="btn-primary" data-testid="retry-dashboard" (click)="cargar()">
-        Reintentar
+        {{ 'COMMON.RETRY' | translate }}
       </button>
     </div>
   }
@@ -79,7 +79,7 @@
           </div>
 
           <div class="kpi-body">
-            <span class="kpi-label">Clientes</span>
+            <span class="kpi-label">{{ 'CLIENTS.LIST.TITLE' | translate }}</span>
 
             <span class="kpi-value" data-testid="value-clientes">
               {{ data()!.totalClientes }}
@@ -103,7 +103,7 @@
           </div>
 
           <div class="kpi-body">
-            <span class="kpi-label">Oportunidades ganadas</span>
+            <span class="kpi-label">{{ 'DASHBOARD.KPI.WON_OPPS' | translate }}</span>
 
             <span class="kpi-value">
               {{ data()!.oportunidadesGanadas }}
@@ -127,7 +127,7 @@
           </div>
 
           <div class="kpi-body">
-            <span class="kpi-label">Oportunidades activas</span>
+            <span class="kpi-label">{{ 'DASHBOARD.KPI.ACTIVE_OPPS' | translate }}</span>
 
             <span class="kpi-value">
               {{ data()!.oportunidadesActivas }}
@@ -153,7 +153,7 @@
           </div>
 
           <div class="kpi-body">
-            <span class="kpi-label">Valor ganado</span>
+            <span class="kpi-label">{{ 'DASHBOARD.KPI.WON_VALUE' | translate }}</span>
 
             <span class="kpi-value kpi-value--sm">
               {{ data()!.valorOportunidadesGanadas | currency: 'COP' : 'symbol' : '1.0-0' }}
@@ -179,7 +179,7 @@
           </div>
 
           <div class="kpi-body">
-            <span class="kpi-label">Usuarios</span>
+            <span class="kpi-label">{{ 'USERS.TITLE' | translate }}</span>
 
             <span class="kpi-value" data-testid="value-usuarios">
               {{ data()!.totalUsuarios }}
@@ -205,7 +205,7 @@
           </div>
 
           <div class="kpi-body">
-            <span class="kpi-label">Alertas pendientes</span>
+            <span class="kpi-label">{{ 'DASHBOARD.KPI.PENDING_ALERTS' | translate }}</span>
 
             <span class="kpi-value">
               {{ data()!.alertasPendientes }}
@@ -222,8 +222,8 @@
         <div class="dashboard-card chart-card">
           <div class="chart-card-header">
             <div>
-              <h3>Distribución de cartera</h3>
-              <span class="chart-subtitle">Clasificación de clientes</span>
+              <h3>{{ 'DASHBOARD.CHART.PORTFOLIO_TITLE' | translate }}</h3>
+              <span class="chart-subtitle">{{ 'DASHBOARD.CHART.PORTFOLIO_SUB' | translate }}</span>
             </div>
           </div>
           <div class="chart-wrap chart-wrap--donut">
@@ -234,8 +234,8 @@
         <div class="dashboard-card chart-card">
           <div class="chart-card-header">
             <div>
-              <h3>Estado de oportunidades</h3>
-              <span class="chart-subtitle">Distribución actual</span>
+              <h3>{{ 'DASHBOARD.CHART.STATUS_TITLE' | translate }}</h3>
+              <span class="chart-subtitle">{{ 'DASHBOARD.CHART.STATUS_SUB' | translate }}</span>
             </div>
           </div>
           <div class="chart-wrap chart-wrap--donut">
@@ -249,8 +249,8 @@
         <div class="dashboard-card chart-card">
           <div class="chart-card-header">
             <div>
-              <h3>Embudo de ventas</h3>
-              <span class="chart-subtitle">Oportunidades por etapa</span>
+              <h3>{{ 'DASHBOARD.CHART.FUNNEL_TITLE' | translate }}</h3>
+              <span class="chart-subtitle">{{ 'DASHBOARD.CHART.FUNNEL_SUB' | translate }}</span>
             </div>
           </div>
           <div class="chart-wrap chart-wrap--bar">
@@ -264,9 +264,9 @@
     <div class="dashboard-card summary-card" data-testid="dashboard-summary">
       <div class="chart-card-header">
         <div>
-          <h3>Detalle del embudo</h3>
+          <h3>{{ 'DASHBOARD.CHART.FUNNEL_DETAIL' | translate }}</h3>
 
-          <span class="chart-subtitle"> Conteo por etapa </span>
+          <span class="chart-subtitle"> {{ 'DASHBOARD.CHART.FUNNEL_COUNT' | translate }} </span>
         </div>
       </div>
 
@@ -274,7 +274,7 @@
         <div class="funnel-item" data-testid="funnel-prospeccion">
           <div class="funnel-left">
             <span class="funnel-dot" style="background: #3b82f6"></span>
-            <span class="funnel-label">Prospección</span>
+            <span class="funnel-label">{{ 'ENUMS.ETAPA.PROSPECCION' | translate }}</span>
           </div>
 
           <span class="funnel-value">
@@ -285,7 +285,7 @@
         <div class="funnel-item" data-testid="funnel-calificacion">
           <div class="funnel-left">
             <span class="funnel-dot" style="background: #8b5cf6"></span>
-            <span class="funnel-label">Calificación</span>
+            <span class="funnel-label">{{ 'ENUMS.ETAPA.CALIFICACION' | translate }}</span>
           </div>
 
           <span class="funnel-value">
@@ -296,7 +296,7 @@
         <div class="funnel-item" data-testid="funnel-propuesta">
           <div class="funnel-left">
             <span class="funnel-dot" style="background: #f59e0b"></span>
-            <span class="funnel-label">Propuesta</span>
+            <span class="funnel-label">{{ 'ENUMS.ETAPA.PROPUESTA' | translate }}</span>
           </div>
 
           <span class="funnel-value">
@@ -307,7 +307,7 @@
         <div class="funnel-item" data-testid="funnel-negociacion">
           <div class="funnel-left">
             <span class="funnel-dot" style="background: #ec4899"></span>
-            <span class="funnel-label">Negociación</span>
+            <span class="funnel-label">{{ 'ENUMS.ETAPA.NEGOCIACION' | translate }}</span>
           </div>
 
           <span class="funnel-value">
@@ -318,7 +318,7 @@
         <div class="funnel-item" data-testid="funnel-ganado">
           <div class="funnel-left">
             <span class="funnel-dot" style="background: #10b981"></span>
-            <span class="funnel-label">Cierre ganado</span>
+            <span class="funnel-label">{{ 'ENUMS.ETAPA.CIERRE_GANADO' | translate }}</span>
           </div>
 
           <span class="funnel-value">
@@ -329,7 +329,7 @@
         <div class="funnel-item" data-testid="funnel-perdido">
           <div class="funnel-left">
             <span class="funnel-dot" style="background: #ef4444"></span>
-            <span class="funnel-label">Cierre perdido</span>
+            <span class="funnel-label">{{ 'ENUMS.ETAPA.CIERRE_PERDIDO' | translate }}</span>
           </div>
 
           <span class="funnel-value">
