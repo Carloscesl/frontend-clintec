@@ -2,15 +2,20 @@
   <!-- HEADER -->
   <div class="page-header">
     <div>
-      <h1>{{ esAsesor ? 'Mis Alertas' : 'Alertas' }}</h1>
+      <h1>{{ (esAsesor ? 'ALERTS.TITLE_MINE' : 'ALERTS.TITLE_ALL') | translate }}</h1>
 
       <p class="page-subtitle">
-        {{ alertasFiltradas().length }}
-        alerta{{ alertasFiltradas().length !== 1 ? 's' : '' }}
+        {{
+          (alertasFiltradas().length === 1 ? 'ALERTS.COUNT_ONE' : 'ALERTS.COUNT_OTHER')
+            | translate: { count: alertasFiltradas().length }
+        }}
 
         @if (filtroTipo() !== 'TODOS' || filtroEstado() !== 'TODOS') {
           <span class="filtro-info">
-            de {{ alertas().length }} total{{ alertas().length !== 1 ? 'es' : '' }}
+            {{
+              (alertas().length === 1 ? 'ALERTS.OF_TOTAL_ONE' : 'ALERTS.OF_TOTAL_OTHER')
+                | translate: { count: alertas().length }
+            }}
           </span>
         }
       </p>
@@ -22,7 +27,7 @@
     <div class="filtros">
       <!-- TIPO -->
       <div class="filtros-grupo">
-        <span class="filtros-label">Tipo</span>
+        <span class="filtros-label">{{ 'ALERTS.FILTER_TYPE' | translate }}</span>
 
         <div class="filtros-actions">
           @for (t of tipos; track t.valor) {
@@ -32,7 +37,7 @@
               (click)="filtroTipo.set(t.valor)"
             >
               <span class="filtro-icon">{{ t.icon }}</span>
-              <span>{{ t.label }}</span>
+              <span>{{ t.label | translate }}</span>
             </button>
           }
         </div>
@@ -40,7 +45,7 @@
 
       <!-- ESTADO -->
       <div class="filtros-grupo">
-        <span class="filtros-label">Estado</span>
+        <span class="filtros-label">{{ 'ALERTS.FILTER_STATE' | translate }}</span>
 
         <div class="filtros-actions">
           @for (e of estados; track e.valor) {
@@ -49,7 +54,7 @@
               [class.active]="filtroEstado() === e.valor"
               (click)="filtroEstado.set(e.valor)"
             >
-              <span>{{ e.label }}</span>
+              <span>{{ e.label | translate }}</span>
             </button>
           }
         </div>
@@ -61,7 +66,7 @@
   @if (loading()) {
     <div class="estado-loading">
       <div class="spinner"></div>
-      <span>Cargando alertas...</span>
+      <span>{{ 'ALERTS.LOADING' | translate }}</span>
     </div>
   }
 
@@ -71,11 +76,13 @@
       <span class="error-icon">⚠️</span>
 
       <div class="estado-error-info">
-        <span class="error-title">Error al cargar alertas</span>
+        <span class="error-title">{{ 'ALERTS.ERROR_TITLE' | translate }}</span>
         <span class="error-message">{{ error() }}</span>
       </div>
 
-      <button class="btn-primary" (click)="cargarAlertas()">Reintentar</button>
+      <button class="btn-primary" (click)="cargarAlertas()">
+        {{ 'COMMON.RETRY' | translate }}
+      </button>
     </div>
   }
 
@@ -89,17 +96,17 @@
 
         <span class="empty-title">
           @if (alertas().length === 0) {
-            No hay alertas disponibles
+            {{ 'ALERTS.EMPTY_TITLE_NONE' | translate }}
           } @else {
-            No se encontraron alertas
+            {{ 'ALERTS.EMPTY_TITLE_FILTER' | translate }}
           }
         </span>
 
         <span class="empty-message">
           @if (alertas().length === 0) {
-            Aún no existen alertas registradas en el sistema.
+            {{ 'ALERTS.EMPTY_MSG_NONE' | translate }}
           } @else {
-            Prueba cambiando o limpiando los filtros actuales.
+            {{ 'ALERTS.EMPTY_MSG_FILTER' | translate }}
           }
         </span>
 
@@ -108,7 +115,7 @@
             class="btn-secondary"
             (click)="filtroTipo.set('TODOS'); filtroEstado.set('TODOS')"
           >
-            Limpiar filtros
+            {{ 'ALERTS.CLEAR_FILTERS' | translate }}
           </button>
         }
       </div>
@@ -135,18 +142,26 @@
               <div class="alert-main">
                 <div class="alert-title-row">
                   <span class="alert-title">
-                    {{ alerta.tipo }}
+                    {{ 'ENUMS.TIPO_ALERTA.' + alerta.tipo | translate }}
                   </span>
 
                   <div class="alert-badges">
                     @if (alerta.estado === 'PENDIENTE') {
-                      <span class="badge-estado pendiente">Pendiente</span>
+                      <span class="badge-estado pendiente">{{
+                        'ENUMS.ESTADO_ALERTA.PENDIENTE' | translate
+                      }}</span>
                     } @else if (alerta.estado === 'VISTA') {
-                      <span class="badge-estado vista">Vista</span>
+                      <span class="badge-estado vista">{{
+                        'ENUMS.ESTADO_ALERTA.VISTA' | translate
+                      }}</span>
                     } @else if (alerta.estado === 'RESUELTA') {
-                      <span class="badge-estado resuelta">Resuelta</span>
+                      <span class="badge-estado resuelta">{{
+                        'ENUMS.ESTADO_ALERTA.RESUELTA' | translate
+                      }}</span>
                     } @else if (alerta.estado === 'VENCIDA') {
-                      <span class="badge-estado vencida">Vencida</span>
+                      <span class="badge-estado vencida">{{
+                        'ENUMS.ESTADO_ALERTA.VENCIDA' | translate
+                      }}</span>
                     }
                   </div>
                 </div>
@@ -163,7 +178,7 @@
 
               <div class="alert-meta">
                 <div class="meta-row">
-                  <span class="meta-label">Cliente</span>
+                  <span class="meta-label">{{ 'ALERTS.CLIENT' | translate }}</span>
 
                   <div class="meta-content">
                     <span class="badge badge-cliente">
@@ -177,7 +192,7 @@
                 </div>
 
                 <div class="meta-row">
-                  <span class="meta-label">Usuario</span>
+                  <span class="meta-label">{{ 'ALERTS.USER' | translate }}</span>
 
                   <div class="meta-content">
                     <span class="badge badge-usuario">
@@ -193,17 +208,21 @@
               <div class="alert-actions-left">
                 @if (alerta.estado === 'PENDIENTE') {
                   <button class="btn-secondary" (click)="marcarVista(alerta.id)">
-                    Marcar vista
+                    {{ 'ALERTS.MARK_SEEN' | translate }}
                   </button>
                 }
               </div>
 
               <div class="alert-actions-right">
                 @if (alerta.estado !== 'RESUELTA') {
-                  <button class="btn-primary" (click)="resolver(alerta.id)">Resolver</button>
+                  <button class="btn-primary" (click)="resolver(alerta.id)">
+                    {{ 'ALERTS.RESOLVE' | translate }}
+                  </button>
                 }
 
-                <button class="btn-outline" (click)="irADetalle(alerta.id)">Ver detalle</button>
+                <button class="btn-outline" (click)="irADetalle(alerta.id)">
+                  {{ 'ALERTS.VIEW_DETAIL' | translate }}
+                </button>
               </div>
             </div>
           </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, signal, ViewChild, ElementRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Chart, registerables } from 'chart.js';
 import { DashboardService } from '../../../../core/services/dashboard.service';
 import { GerenteDashboard } from '../../../../core/models/dashboard.model';
@@ -10,7 +12,7 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-gerente-dashboard',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, TranslatePipe],
   templateUrl: './gerente-dashboard.component.html',
   styleUrl: './gerente-dashboard.component.css',
 })
@@ -20,6 +22,7 @@ export class GerenteDashboardComponent implements OnInit, OnDestroy {
 
   private readonly service = inject(DashboardService);
   private readonly authService = inject(AuthService);
+  private readonly translate = inject(TranslateService);
 
   data = signal<GerenteDashboard | null>(null);
   loading = signal(true);
@@ -28,6 +31,11 @@ export class GerenteDashboardComponent implements OnInit, OnDestroy {
 
   private chartEmbudo: Chart | null = null;
   private chartEstado: Chart | null = null;
+
+  constructor() {
+    // Redibuja las gráficas al cambiar de idioma (los textos viven dentro del canvas)
+    this.translate.onLangChange.pipe(takeUntilDestroyed()).subscribe(() => this.dibujarGraficas());
+  }
 
   ngOnInit(): void {
     this.cargar();
@@ -43,7 +51,7 @@ export class GerenteDashboardComponent implements OnInit, OnDestroy {
         setTimeout(() => this.dibujarGraficas(), 100);
       },
       error: () => {
-        this.error.set('Error al cargar el dashboard');
+        this.error.set(this.translate.instant('DASHBOARD.ERROR_LOAD'));
         this.loading.set(false);
       },
     });
@@ -61,16 +69,16 @@ export class GerenteDashboardComponent implements OnInit, OnDestroy {
         type: 'bar',
         data: {
           labels: [
-            'Prospección',
-            'Calificación',
-            'Propuesta',
-            'Negociación',
-            'C. Ganado',
-            'C. Perdido',
+            this.translate.instant('ENUMS.ETAPA.PROSPECCION'),
+            this.translate.instant('ENUMS.ETAPA.CALIFICACION'),
+            this.translate.instant('ENUMS.ETAPA.PROPUESTA'),
+            this.translate.instant('ENUMS.ETAPA.NEGOCIACION'),
+            this.translate.instant('DASHBOARD.CHART.STAGE_WON_SHORT'),
+            this.translate.instant('DASHBOARD.CHART.STAGE_LOST_SHORT'),
           ],
           datasets: [
             {
-              label: 'Oportunidades',
+              label: this.translate.instant('DASHBOARD.CHART.DATASET_OPPS'),
               data: [
                 d.enProspeccion,
                 d.enCalificacion,
@@ -99,7 +107,11 @@ export class GerenteDashboardComponent implements OnInit, OnDestroy {
       this.chartEstado = new Chart(this.graficaEstadoRef.nativeElement, {
         type: 'doughnut',
         data: {
-          labels: ['Activas', 'Ganadas', 'Perdidas'],
+          labels: [
+            this.translate.instant('DASHBOARD.CHART.STATUS_ACTIVE'),
+            this.translate.instant('DASHBOARD.CHART.STATUS_WON'),
+            this.translate.instant('DASHBOARD.CHART.STATUS_LOST'),
+          ],
           datasets: [
             {
               data: [d.oportunidadesActivas, d.oportunidadesGanadas, d.oportunidadesPerdidas],

@@ -3,8 +3,8 @@
   <!-- Header -->
   <div class="qd__header">
     <div>
-      <h1 class="qd__title">Calificación de Cartera</h1>
-      <p class="qd__sub">Seguimiento automático por comportamiento e interacciones</p>
+      <h1 class="qd__title">{{ 'QUALIFICATIONS.DASHBOARD.TITLE' | translate }}</h1>
+      <p class="qd__sub">{{ 'QUALIFICATIONS.DASHBOARD.SUBTITLE' | translate }}</p>
     </div>
   </div>
 
@@ -22,7 +22,7 @@
         <span class="kpi-card__count">
           {{ distribucion() ? (distribucion()![nivel] ?? 0) : '—' }}
         </span>
-        <span class="kpi-card__label">{{ config[nivel].label }}</span>
+        <span class="kpi-card__label">{{ 'ENUMS.NIVEL.' + nivel | translate }}</span>
       </button>
     }
   </div>
@@ -30,16 +30,16 @@
   <!-- Tabla -->
   <div class="qd__table-wrap">
     @if (loading()) {
-      <div class="qd__loading">Cargando clientes...</div>
+      <div class="qd__loading">{{ 'QUALIFICATIONS.DASHBOARD.LOADING' | translate }}</div>
     } @else {
       <table class="qd__table">
         <thead>
           <tr>
-            <th>Cliente</th>
-            <th>Empresa</th>
-            <th>Puntaje</th>
-            <th>Clasificación</th>
-            <th>Última act.</th>
+            <th>{{ 'CLIENTS.LIST.COL_CLIENT' | translate }}</th>
+            <th>{{ 'COMMON.COMPANY' | translate }}</th>
+            <th>{{ 'QUALIFICATIONS.DASHBOARD.COL_SCORE' | translate }}</th>
+            <th>{{ 'QUALIFICATIONS.DASHBOARD.COL_CLASS' | translate }}</th>
+            <th>{{ 'QUALIFICATIONS.DASHBOARD.COL_UPDATED' | translate }}</th>
             <th></th>
           </tr>
         </thead>
@@ -51,7 +51,10 @@
                 <div class="avatar" [style.background]="config[c.clasificacion].color">
                   {{ iniciales(c.clienteNombre) }}
                 </div>
-                <span>{{ c.clienteNombre ?? 'Cliente #' + c.clienteId }}</span>
+                <span>{{
+                  c.clienteNombre ??
+                    ('QUALIFICATIONS.DASHBOARD.CLIENT_NUM' | translate: { id: c.clienteId })
+                }}</span>
               </td>
               <!-- Empresa -->
               <td class="qd__cell-muted">{{ c.clienteEmpresa ?? '—' }}</td>
@@ -82,7 +85,9 @@
                     <button class="btn-cancel" (click)="editando.set(null)">✕</button>
                   </div>
                 } @else {
-                  <button class="btn-edit" (click)="iniciarEdicion(c)">Ajustar</button>
+                  <button class="btn-edit" (click)="iniciarEdicion(c)">
+                    {{ 'QUALIFICATIONS.DASHBOARD.ADJUST' | translate }}
+                  </button>
                 }
               </td>
             </tr>

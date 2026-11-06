@@ -1,6 +1,7 @@
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { UsuarioService } from '../../../../core/services/usuario.service';
 import { OportunidadService } from '../../../../core/services/oportunidad.service';
@@ -17,7 +18,7 @@ interface AsesorConOportunidades extends UsuarioResponse {
 @Component({
   selector: 'app-opportunity-main',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, DatePipe],
+  imports: [CommonModule, CurrencyPipe, DatePipe, TranslatePipe],
   templateUrl: './opportunity-main.component.html',
   styleUrl: './opportunity-main.component.css',
 })
@@ -25,6 +26,7 @@ export class OpportunityMainComponent implements OnInit {
   private readonly usuarioService = inject(UsuarioService);
   private readonly oportunidadService = inject(OportunidadService);
   private readonly router = inject(Router);
+  private readonly translate = inject(TranslateService);
 
   // Usamos una sola señal para mantener el estado agrupado
   dataAsesores = signal<AsesorConOportunidades[]>([]);
@@ -55,7 +57,7 @@ export class OpportunityMainComponent implements OnInit {
       },
       error: () => {
         this.loading.set(false);
-        this.error.set('Error al cargar la lista de asesores');
+        this.error.set(this.translate.instant('OPPORTUNITIES.MAIN.ERROR_ADVISORS'));
       },
     });
   }
@@ -82,7 +84,7 @@ export class OpportunityMainComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Error al cargar el detalle de oportunidades');
+        this.error.set(this.translate.instant('OPPORTUNITIES.MAIN.ERROR_DETAILS'));
         this.loading.set(false);
       },
     });

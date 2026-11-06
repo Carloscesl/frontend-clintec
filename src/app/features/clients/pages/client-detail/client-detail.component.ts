@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { ClienteResponse } from '../../../../core/models/cliente.model';
 import { QualificationWidgetComponent } from '../../../qualifications/pages/qualification-widget/qualification-widget.component';
@@ -9,7 +10,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 @Component({
   selector: 'app-client-detail',
   standalone: true,
-  imports: [CommonModule, QualificationWidgetComponent],
+  imports: [CommonModule, QualificationWidgetComponent, TranslatePipe],
   templateUrl: './client-detail.component.html',
   styleUrl: './client-detail.component.css',
 })
@@ -18,6 +19,7 @@ export class ClientDetailComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly clienteService = inject(ClienteService);
   private readonly authService = inject(AuthService);
+  private readonly translate = inject(TranslateService);
 
   cliente = signal<ClienteResponse | null>(null);
   loading = signal(true);
@@ -42,7 +44,7 @@ export class ClientDetailComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('No se encontró el cliente');
+        this.error.set(this.translate.instant('CLIENTS.DETAIL.ERROR_NOT_FOUND'));
         this.loading.set(false);
       },
     });

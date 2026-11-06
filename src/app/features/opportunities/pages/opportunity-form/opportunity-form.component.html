@@ -1,85 +1,155 @@
-<!-- CLIENTE -->
-<div class="cl-campo">
-  <label for="clienteId">Cliente *</label>
-  <select
-    id="clienteId"
-    formControlName="clienteId"
-    data-testid="select-cliente-oportunidad"
-  >
-    <option value="0">Selecciona un cliente</option>
-    @for (cliente of ListaClientes(); track cliente.id) {
-      <option [value]="cliente.id">{{ cliente.nombre }}</option>
-    }
-  </select>
+<div class="page-container">
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h1>
+        {{
+          (modoEdicion() ? 'OPPORTUNITIES.FORM.TITLE_EDIT' : 'OPPORTUNITIES.FORM.TITLE_NEW')
+            | translate
+        }}
+      </h1>
 
-  @if (f["clienteId"].touched && f["clienteId"].invalid) {
-    <span class="cl-error">Debes seleccionar un cliente</span>
+      <p class="page-subtitle">
+        {{
+          (modoEdicion() ? 'OPPORTUNITIES.FORM.SUBTITLE_EDIT' : 'OPPORTUNITIES.FORM.SUBTITLE_NEW')
+            | translate
+        }}
+      </p>
+    </div>
+  </div>
+
+  <!-- ERROR -->
+  @if (error()) {
+    <div class="estado-error">
+      {{ error() }}
+    </div>
   }
-</div>
 
-<!-- ASESOR -->
-<div class="cl-campo">
-  <label for="asesorId">Asesor *</label>
+  <!-- FORM -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
+    <!-- CLIENTE -->
+    <div class="cl-campo">
+      <label for="clienteId"> {{ 'OPPORTUNITIES.FORM.CLIENT' | translate }} </label>
+      <select id="clienteId" formControlName="clienteId">
+        <option value="0">{{ 'OPPORTUNITIES.FORM.SELECT_CLIENT' | translate }}</option>
 
-  <select
-    id="asesorId"
-    formControlName="asesorId"
-    data-testid="select-asesor-oportunidad"
-  >
-    <option value="0">Selecciona un asesor</option>
+        @for (cliente of ListaClientes(); track cliente.id) {
+          <option [value]="cliente.id">
+            {{ cliente.nombre }}
+          </option>
+        }
+      </select>
 
-    @for (asesor of ListaUsuarios(); track asesor.id) {
-      <option [value]="asesor.id">{{ asesor.nombre }}</option>
-    }
-  </select>
+      @if (f['clienteId'].touched && f['clienteId'].invalid) {
+        <span class="cl-error"> {{ 'OPPORTUNITIES.FORM.CLIENT_REQUIRED' | translate }} </span>
+      }
+    </div>
 
-  @if (f["asesorId"].touched && f["asesorId"].invalid) {
-    <span class="cl-error">Debes seleccionar un asesor</span>
-  }
-</div>
+    <!-- ASESOR -->
+    <div class="cl-campo">
+      <label for="asesorId"> {{ 'OPPORTUNITIES.FORM.ADVISOR' | translate }} </label>
+      <select id="asesorId" formControlName="asesorId">
+        <option value="0">{{ 'OPPORTUNITIES.FORM.SELECT_ADVISOR' | translate }}</option>
 
-<!-- DESCRIPCION -->
-<div class="cl-campo">
-  <label for="descripcion">Descripción *</label>
+        @for (asesor of ListaUsuarios(); track asesor.id) {
+          <option [value]="asesor.id">
+            {{ asesor.nombre }}
+          </option>
+        }
+      </select>
 
-  <textarea
-    id="descripcion"
-    formControlName="descripcion"
-    data-testid="input-descripcion-oportunidad"
-    rows="5"
-    placeholder="Describe la oportunidad..."
-  ></textarea>
+      @if (f['asesorId'].touched && f['asesorId'].invalid) {
+        <span class="cl-error"> {{ 'OPPORTUNITIES.FORM.ADVISOR_REQUIRED' | translate }} </span>
+      }
+    </div>
 
-  @if (f["descripcion"].touched) {
-    @if (f["descripcion"].hasError("required")) {
-      <span class="cl-error">La descripción es requerida</span>
-    }
+    <!-- DESCRIPCION -->
+    <div class="cl-campo">
+      <label for="descripcion"> {{ 'OPPORTUNITIES.FORM.DESCRIPTION' | translate }} </label>
 
-    @if (f["descripcion"].hasError("minlength")) {
-      <span class="cl-error">Mínimo 10 caracteres</span>
-    }
-  }
-</div>
+      <textarea
+        id="descripcion"
+        formControlName="descripcion"
+        rows="5"
+        [placeholder]="'OPPORTUNITIES.FORM.DESCRIPTION_PLACEHOLDER' | translate"
+      ></textarea>
 
-<!-- VALOR -->
-<div class="cl-campo">
-  <label for="valorEstimado">Valor estimado *</label>
+      @if (f['descripcion'].touched) {
+        @if (f['descripcion'].hasError('required')) {
+          <span class="cl-error">
+            {{ 'OPPORTUNITIES.FORM.DESCRIPTION_REQUIRED' | translate }}
+          </span>
+        }
 
-  <input
-    id="valorEstimado"
-    formControlName="valorEstimado"
-    data-testid="input-valor-oportunidad"
-    type="number"
-    placeholder="Ej: 5000000"
-  />
+        @if (f['descripcion'].hasError('minlength')) {
+          <span class="cl-error"> {{ 'OPPORTUNITIES.FORM.DESCRIPTION_MIN' | translate }} </span>
+        }
+      }
+    </div>
 
-  @if (f["valorEstimado"].touched) {
-    @if (f["valorEstimado"].hasError("required")) {
-      <span class="cl-error">El valor es requerido</span>
-    }
+    <!-- VALOR -->
+    <div class="cl-campo">
+      <label for="valorEstimado"> {{ 'OPPORTUNITIES.FORM.VALUE' | translate }} </label>
 
-    @if (f["valorEstimado"].hasError("min")) {
-      <span class="cl-error"> El valor debe ser mayor o igual a 0 </span>
-    }
-  }
+      <input
+        id="valorEstimado"
+        formControlName="valorEstimado"
+        type="number"
+        [placeholder]="'OPPORTUNITIES.FORM.VALUE_PLACEHOLDER' | translate"
+      />
+      @if (f['valorEstimado'].touched) {
+        @if (f['valorEstimado'].hasError('required')) {
+          <span class="cl-error"> {{ 'OPPORTUNITIES.FORM.VALUE_REQUIRED' | translate }} </span>
+        }
+
+        @if (f['valorEstimado'].hasError('min')) {
+          <span class="cl-error"> {{ 'OPPORTUNITIES.FORM.VALUE_MIN' | translate }} </span>
+        }
+      }
+    </div>
+
+    <!-- FECHA -->
+    <div class="cl-campo">
+      <label for="fechaCierreEstimada"> {{ 'OPPORTUNITIES.FORM.DATE' | translate }} </label>
+
+      <input id="fechaCierreEstimada" formControlName="fechaCierreEstimada" type="date" />
+
+      @if (f['fechaCierreEstimada'].touched && f['fechaCierreEstimada'].hasError('required')) {
+        <span class="cl-error"> {{ 'OPPORTUNITIES.FORM.DATE_REQUIRED' | translate }} </span>
+      }
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="cl-form-actions">
+      <!-- CANCELAR -->
+      <button type="button" class="btn-secondary" (click)="cancelar()">
+        {{ 'COMMON.CANCEL' | translate }}
+      </button>
+
+      <!-- SUBMIT -->
+      <button type="submit" class="btn-primary" [disabled]="guardando()">
+        @if (guardando()) {
+          <span class="spinner-sm"></span>
+
+          {{ 'COMMON.SAVING' | translate }}
+        } @else {
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+
+          {{
+            (modoEdicion() ? 'OPPORTUNITIES.FORM.SUBMIT_EDIT' : 'OPPORTUNITIES.FORM.SUBMIT_NEW')
+              | translate
+          }}
+        }
+      </button>
+    </div>
+  </form>
 </div>

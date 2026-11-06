@@ -47,29 +47,29 @@ describe('SidebarComponent', () => {
   describe('itemsVisibles según rol', () => {
     it('ADMINISTRADOR debería ver: Dashboard, Usuarios, Clientes, Oportunidades, Alertas', async () => {
       await setup('ADMINISTRADOR');
-      const labels = component.itemsVisibles.map((i) => i.label);
-      expect(labels).toContain('Dashboard');
-      expect(labels).toContain('Usuarios');
-      expect(labels).toContain('Clientes');
-      expect(labels).toContain('Oportunidades');
-      expect(labels).toContain('Alertas');
-      expect(labels).not.toContain('Ventas');
+      const keys = component.itemsVisibles.map((i) => i.key);
+      expect(keys).toContain('DASHBOARD');
+      expect(keys).toContain('USERS');
+      expect(keys).toContain('CLIENTS');
+      expect(keys).toContain('OPPORTUNITIES');
+      expect(keys).toContain('ALERTS');
+      expect(keys).not.toContain('SALES');
     });
 
     it('ASESOR no debería ver Usuarios', async () => {
       await setup('ASESOR');
-      const labels = component.itemsVisibles.map((i) => i.label);
-      expect(labels).not.toContain('Usuarios');
-      expect(labels).toContain('Ventas');
-      expect(labels).toContain('Interacciones');
+      const keys = component.itemsVisibles.map((i) => i.key);
+      expect(keys).not.toContain('USERS');
+      expect(keys).toContain('SALES');
+      expect(keys).toContain('INTERACTIONS');
     });
 
     it('GERENTE debería ver Ventas e Interacciones', async () => {
       await setup('GERENTE');
-      const labels = component.itemsVisibles.map((i) => i.label);
-      expect(labels).toContain('Ventas');
-      expect(labels).toContain('Interacciones');
-      expect(labels).not.toContain('Usuarios');
+      const keys = component.itemsVisibles.map((i) => i.key);
+      expect(keys).toContain('SALES');
+      expect(keys).toContain('INTERACTIONS');
+      expect(keys).not.toContain('USERS');
     });
 
     it('sin rol no debería ver ningún item', async () => {
@@ -78,17 +78,25 @@ describe('SidebarComponent', () => {
     });
   });
 
-  describe('getLabelItem()', () => {
-    it('debería retornar el label por rol si existe', async () => {
+  describe('getLabelKey() / getLabelItem()', () => {
+    it('debería usar la clave por rol si existe', async () => {
       await setup('ASESOR');
       const dashboard = component.navItems[0];
+      expect(component.getLabelKey(dashboard)).toBe('NAV.DASHBOARD.ASESOR');
       expect(component.getLabelItem(dashboard)).toBe('Mi Panel');
     });
 
-    it('debería retornar el label por defecto si no hay labelPorRol', async () => {
+    it('debería usar la clave DEFAULT si el rol no tiene etiqueta propia', async () => {
       await setup('ADMINISTRADOR');
-      const usuarios = component.navItems.find((i) => i.label === 'Usuarios')!;
+      const usuarios = component.navItems.find((i) => i.key === 'USERS')!;
+      expect(component.getLabelKey(usuarios)).toBe('NAV.USERS.DEFAULT');
       expect(component.getLabelItem(usuarios)).toBe('Usuarios');
+    });
+
+    it('ASESOR debería ver "Mis Clientes" y ADMINISTRADOR "Clientes"', async () => {
+      await setup('ASESOR');
+      const clientes = component.navItems.find((i) => i.key === 'CLIENTS')!;
+      expect(component.getLabelItem(clientes)).toBe('Mis Clientes');
     });
   });
 

@@ -2,6 +2,7 @@
 import { Component, Input, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { QualificationBadgeComponent } from '../qualification-badge/qualification-badge.component';
 import { QualificationProgressBarComponent } from '../qualification-progress-bar/qualification-progress-bar.component';
 import {
@@ -19,6 +20,7 @@ import { CalificacionService } from '../../../../core/services/calificacion.serv
     FormsModule,
     QualificationBadgeComponent,
     QualificationProgressBarComponent,
+    TranslatePipe,
   ],
   templateUrl: './qualification-widget.component.html',
   styleUrls: ['./qualification-widget.component.css'],
@@ -28,6 +30,7 @@ export class QualificationWidgetComponent implements OnInit {
   @Input() puedeEditar = false; // true para ADMIN/GERENTE, false para ASESOR
 
   private readonly svc = inject(CalificacionService);
+  private readonly translate = inject(TranslateService);
 
   calificacion = signal<QualificationClient | null>(null);
   historial = signal<QualificationHistory[]>([]);
@@ -66,13 +69,18 @@ export class QualificationWidgetComponent implements OnInit {
 
   motivoLabel(motivo: string): string {
     const map: Record<string, string> = {
-      VENTA_CERRADA: '🏆 Venta cerrada',
-      INACTIVIDAD_AUTOMATICA: '⏰ Inactividad',
+      VENTA_CERRADA: 'QUALIFICATIONS.WIDGET.REASON_SALE',
+      INACTIVIDAD_AUTOMATICA: 'QUALIFICATIONS.WIDGET.REASON_INACTIVITY',
     };
-    if (map[motivo]) return map[motivo];
-    if (motivo.startsWith('INTERACCION_'))
-      return '💬 ' + motivo.replace('INTERACCION_', '').toLowerCase();
-    if (motivo.startsWith('ETAPA_')) return '📈 Avance de etapa';
+    if (map[motivo]) return this.translate.instant(map[motivo]);
+    if (motivo.startsWith('INTERACCION_')) {
+      const tipo = motivo.replace('INTERACCION_', '');
+      const clave = `ENUMS.TIPO_INTERACCION.${tipo}`;
+      const traducido = this.translate.instant(clave);
+      // Si no existe la clave, instant devuelve la propia clave: se usa el texto original
+      return '💬 ' + (traducido === clave ? tipo : traducido).toLowerCase();
+    }
+    if (motivo.startsWith('ETAPA_')) return this.translate.instant('QUALIFICATIONS.WIDGET.REASON_STAGE');
     return motivo;
   }
 }

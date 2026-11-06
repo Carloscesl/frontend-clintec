@@ -1,139 +1,91 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1>{{ modoEdicion() ? "Editar usuario" : "Nuevo usuario" }}</h1>
+      <h1>
+        {{ (modoEdicion() ? 'USERS.FORM.TITLE_EDIT' : 'USERS.FORM.TITLE_NEW') | translate }}
+      </h1>
       <p class="page-subtitle">
-        {{
-          modoEdicion()
-            ? "Modifica los datos del usuario"
-            : "Completa el formulario para crear un usuario"
-        }}
+        {{ (modoEdicion() ? 'USERS.FORM.SUBTITLE_EDIT' : 'USERS.FORM.SUBTITLE_NEW') | translate }}
       </p>
     </div>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="submit()" class="cl-form">
     @if (error()) {
-      <div class="estado-error" data-testid="user-form-error">
-        {{ error() }}
-      </div>
+      <div class="estado-error">{{ error() }}</div>
     }
 
+    <!-- Nombre -->
     <div class="cl-campo">
-      <<<<<<< HEAD
-      <label>Nombre de usuario</label>
-      <input
-        data-testid="input-nombre-usuario"
-        formControlName="nombre"
-        type="text"
-        placeholder="Ej: Carlos Mendoza"
-      />
-      =======
-      <label for="nombre">Nombre de usuario</label>
+      <label for="nombre">{{ 'USERS.FORM.NAME' | translate }}</label>
       <input
         id="nombre"
         formControlName="nombre"
         type="text"
-        placeholder="Ej: Carlos Mendoza"
+        [placeholder]="'USERS.FORM.NAME_PLACEHOLDER' | translate"
       />
-      >>>>>>> 22945d2231326afeb9ac87154f797dc4449fd7cd
-      @if (f["nombre"].touched) {
-        @if (f["nombre"].hasError("required")) {
-          <span class="cl-error">El nombre es requerido</span>
+      @if (f['nombre'].touched) {
+        @if (f['nombre'].hasError('required')) {
+          <span class="cl-error">{{ 'USERS.FORM.NAME_REQUIRED' | translate }}</span>
         }
-        @if (f["nombre"].hasError("minlength")) {
-          <span class="cl-error">Mínimo 3 caracteres</span>
+        @if (f['nombre'].hasError('minlength')) {
+          <span class="cl-error">{{ 'USERS.FORM.NAME_MIN' | translate }}</span>
         }
       }
     </div>
 
+    <!-- Email -->
     <div class="cl-campo">
-      <<<<<<< HEAD
-      <label>Email</label>
-      <input
-        data-testid="input-email-usuario"
-        formControlName="email"
-        type="email"
-        placeholder="correo@ejemplo.com"
-      />
-      =======
-      <label for="email">Email</label>
+      <label for="email">{{ 'COMMON.EMAIL' | translate }}</label>
       <input
         id="email"
         formControlName="email"
         type="email"
-        placeholder="correo@ejemplo.com"
+        [placeholder]="'USERS.FORM.EMAIL_PLACEHOLDER' | translate"
       />
-      >>>>>>> 22945d2231326afeb9ac87154f797dc4449fd7cd
-      @if (f["email"].touched && f["email"].hasError("email")) {
-        <span class="cl-error">Ingresa un email válido</span>
+      @if (f['email'].touched && f['email'].hasError('email')) {
+        <span class="cl-error">{{ 'USERS.FORM.EMAIL_INVALID' | translate }}</span>
       }
     </div>
 
+    <!-- Password -->
     <div class="cl-campo">
       <label for="password">
-        Contraseña
+        {{ 'USERS.FORM.PASSWORD' | translate }}
         @if (modoEdicion()) {
-          <span class="campo-hint">— dejar vacío para no cambiar</span>
+          <span class="campo-hint">{{ 'USERS.FORM.PASSWORD_HINT' | translate }}</span>
         }
       </label>
-      <<<<<<< HEAD
-      <input
-        data-testid="input-password-usuario"
-        formControlName="password"
-        type="password"
-        placeholder="••••••••"
-      />
-      =======
-      <input
-        id="password"
-        formControlName="password"
-        type="password"
-        placeholder="••••••••"
-      />
-      >>>>>>> 22945d2231326afeb9ac87154f797dc4449fd7cd
-      @if (
-        !modoEdicion() &&
-        f["password"].touched &&
-        f["password"].hasError("required")
-      ) {
-        <span class="cl-error">La contraseña es requerida</span>
+      <input id="password" formControlName="password" type="password" placeholder="••••••••" />
+      @if (!modoEdicion() && f['password'].touched && f['password'].hasError('required')) {
+        <span class="cl-error">{{ 'USERS.FORM.PASSWORD_REQUIRED' | translate }}</span>
       }
     </div>
 
+    <!-- Rol -->
     <div class="cl-campo">
-      <label for="rol">Rol</label>
-      <select id="rol" data-testid="select-rol-usuario" formControlName="rol">
-        <option value="">Selecciona un rol</option>
-        <option value="ADMINISTRADOR">Administrador</option>
-        <option value="ASESOR">Asesor</option>
-        <option value="GERENTE">Gerente</option>
+      <label for="rol">{{ 'USERS.COL_ROLE' | translate }}</label>
+      <select id="rol" formControlName="rol">
+        <option value="">{{ 'USERS.FORM.SELECT_ROLE' | translate }}</option>
+        <option value="ADMINISTRADOR">{{ 'ENUMS.ROL.ADMINISTRADOR' | translate }}</option>
+        <option value="ASESOR">{{ 'ENUMS.ROL.ASESOR' | translate }}</option>
+        <option value="GERENTE">{{ 'ENUMS.ROL.GERENTE' | translate }}</option>
       </select>
-      @if (f["rol"].touched && f["rol"].hasError("required")) {
-        <span class="cl-error">El rol es requerido</span>
+      @if (f['rol'].touched && f['rol'].hasError('required')) {
+        <span class="cl-error">{{ 'USERS.FORM.ROLE_REQUIRED' | translate }}</span>
       }
     </div>
 
     <div class="cl-form-actions">
-      <button
-        type="button"
-        class="btn-secondary"
-        data-testid="btn-cancelar-usuario"
-        (click)="cancelar()"
-      >
-        Cancelar
+      <button type="button" class="btn-secondary" (click)="cancelar()">
+        {{ 'COMMON.CANCEL' | translate }}
       </button>
-      <button
-        type="submit"
-        class="btn-primary"
-        data-testid="btn-guardar-usuario"
-        [disabled]="guardando()"
-      >
+      <button type="submit" class="btn-primary" [disabled]="guardando()">
         @if (guardando()) {
           <span class="spinner-sm"></span>
-          Guardando...
+          {{ 'COMMON.SAVING' | translate }}
         } @else {
-          {{ modoEdicion() ? "Actualizar usuario" : "Crear usuario" }}
+          {{ (modoEdicion() ? 'USERS.FORM.SUBMIT_EDIT' : 'USERS.FORM.SUBMIT_NEW') | translate }}
         }
       </button>
     </div>

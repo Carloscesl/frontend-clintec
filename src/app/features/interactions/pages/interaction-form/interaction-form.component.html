@@ -1,19 +1,14 @@
+<!-- Side Panel Overlay -->
 <div class="side-panel-overlay" (click)="cerrar.emit()">
+  <!-- Side Panel -->
   <div class="side-panel" (click)="$event.stopPropagation()">
     <!-- Header -->
     <div class="side-panel-header">
       <div>
-        <h3 class="side-panel-title">Nueva Interacción</h3>
-        <p class="side-panel-subtitle">Registra una nueva interacción con el cliente</p>
+        <h3 class="side-panel-title">{{ 'INTERACTIONS.FORM.TITLE' | translate }}</h3>
+        <p class="side-panel-subtitle">{{ 'INTERACTIONS.FORM.SUBTITLE' | translate }}</p>
       </div>
-      <button
-        type="button"
-        class="btn-close"
-        data-testid="btn-cerrar-interaccion"
-        (click)="cerrar.emit()"
-      >
-        ✕
-      </button>
+      <button type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
     </div>
 
     <!-- Content -->
@@ -21,117 +16,104 @@
       <form [formGroup]="form" (ngSubmit)="submit()">
         <!-- Cliente -->
         <div class="form-group">
-          <label for="clienteId">Cliente *</label>
+          <label for="clienteId">{{ 'INTERACTIONS.FORM.CLIENT' | translate }}</label>
           <select
             id="clienteId"
             formControlName="clienteId"
-            data-testid="select-cliente-interaccion"
             (change)="onClienteChange(+$any($event.target).value)"
             [class.invalid]="f['clienteId'].invalid && f['clienteId'].touched"
           >
-            <option value="">Seleccionar cliente</option>
+            <option value="">{{ 'INTERACTIONS.FORM.SELECT_CLIENT' | translate }}</option>
             @for (c of clientesFiltrados(); track c.id) {
               <option [value]="c.id">{{ c.nombreCliente }} - {{ c.empresa }}</option>
             }
           </select>
           @if (f['clienteId'].invalid && f['clienteId'].touched) {
-            <span class="error-text">El cliente es requerido</span>
+            <span class="error-text">{{ 'INTERACTIONS.FORM.CLIENT_REQUIRED' | translate }}</span>
           }
         </div>
 
         <!-- Oportunidad -->
         <div class="form-group">
-          <label for="oportunidadId">Oportunidad *</label>
+          <label for="oportunidadId">{{ 'INTERACTIONS.FORM.OPPORTUNITY' | translate }}</label>
           <select
             id="oportunidadId"
             formControlName="oportunidadId"
-            data-testid="select-oportunidad-interaccion"
             [class.invalid]="f['oportunidadId'].invalid && f['oportunidadId'].touched"
           >
-            <option value="">Seleccionar oportunidad</option>
+            <option value="">{{ 'INTERACTIONS.FORM.SELECT_OPP' | translate }}</option>
             @for (op of oportunidades(); track op.idOportunidad) {
               <option [value]="op.idOportunidad">{{ op.descripcion }}</option>
             }
           </select>
           @if (f['oportunidadId'].invalid && f['oportunidadId'].touched) {
-            <span class="error-text">La oportunidad es requerida</span>
+            <span class="error-text">{{ 'INTERACTIONS.FORM.OPP_REQUIRED' | translate }}</span>
           }
         </div>
 
         <!-- Tipo -->
         <div class="form-group">
-          <label>Tipo de interacción *</label>
+          <label>{{ 'INTERACTIONS.FORM.TYPE' | translate }}</label>
           <div class="tipo-grid">
             @for (t of tipos; track t.valor) {
               <button
                 type="button"
                 class="tipo-btn"
-                [attr.data-testid]="'tipo-btn-' + t.valor"
                 [class.active]="f['tipo'].value === t.valor"
                 (click)="f['tipo'].setValue(t.valor)"
               >
                 <span class="tipo-icon">{{ t.icon }}</span>
-                <span class="tipo-label">{{ t.label }}</span>
+                <span class="tipo-label">{{ t.label | translate }}</span>
               </button>
             }
           </div>
           @if (f['tipo'].invalid && f['tipo'].touched) {
-            <span class="error-text">El tipo es requerido</span>
+            <span class="error-text">{{ 'INTERACTIONS.FORM.TYPE_REQUIRED' | translate }}</span>
           }
         </div>
 
         <!-- Nota -->
         <div class="form-group">
-          <label for="nota">Nota *</label>
+          <label for="nota">{{ 'INTERACTIONS.FORM.NOTE' | translate }}</label>
           <textarea
             id="nota"
             formControlName="nota"
-            data-testid="textarea-nota-interaccion"
             rows="5"
-            placeholder="Describe los detalles de la interacción..."
+            [placeholder]="'INTERACTIONS.FORM.NOTE_PLACEHOLDER' | translate"
             [class.invalid]="f['nota'].invalid && f['nota'].touched"
           ></textarea>
           @if (f['nota'].invalid && f['nota'].touched) {
             <span class="error-text">
               @if (f['nota'].hasError('required')) {
-                La nota es requerida
+                {{ 'INTERACTIONS.FORM.NOTE_REQUIRED' | translate }}
               }
               @if (f['nota'].hasError('minlength')) {
-                Mínimo 5 caracteres
+                {{ 'INTERACTIONS.FORM.NOTE_MIN' | translate }}
               }
             </span>
           }
         </div>
 
+        <!-- Error general -->
         @if (error()) {
-          <div class="alert-error" data-testid="interaction-form-error">{{ error() }}</div>
+          <div class="alert-error">
+            {{ error() }}
+          </div>
         }
       </form>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer con acciones -->
     <div class="side-panel-footer">
-      <button
-        type="button"
-        class="btn-secondary"
-        data-testid="btn-cancelar-interaccion"
-        (click)="cancelar()"
-        [disabled]="guardando()"
-      >
-        Cancelar
+      <button type="button" class="btn-secondary" (click)="cancelar()" [disabled]="guardando()">
+        {{ 'COMMON.CANCEL' | translate }}
       </button>
-      <button
-        type="button"
-        class="btn-primary"
-        data-testid="btn-guardar-interaccion"
-        (click)="submit()"
-        [disabled]="guardando()"
-      >
+      <button type="button" class="btn-primary" (click)="submit()" [disabled]="guardando()">
         @if (guardando()) {
           <span class="spinner-sm"></span>
-          Guardando...
+          {{ 'COMMON.SAVING' | translate }}
         } @else {
-          Crear interacción
+          {{ 'INTERACTIONS.FORM.SUBMIT' | translate }}
         }
       </button>
     </div>

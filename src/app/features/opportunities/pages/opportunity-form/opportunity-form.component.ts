@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { OportunidadService } from '../../../../core/services/oportunidad.service';
 import { LookupItem, OportunidadRequest } from '../../../../core/models/oportunidad.model';
 import { ModalService } from '../../../../shared/services/modal.service';
@@ -11,7 +12,7 @@ import { UsuarioService } from '../../../../core/services/usuario.service';
 @Component({
   selector: 'app-opportunity-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './opportunity-form.component.html',
   styleUrl: './opportunity-form.component.css',
 })
@@ -21,6 +22,7 @@ export class OpportunityFormComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly oportunidadService = inject(OportunidadService);
   private readonly modalService = inject(ModalService);
+  private readonly translate = inject(TranslateService);
 
   private readonly clienteService = inject(ClienteService);
   private readonly usuarioService = inject(UsuarioService);
@@ -100,7 +102,7 @@ export class OpportunityFormComponent implements OnInit {
           this.form.get('clienteId')?.disable();
         }
       },
-      error: () => this.error.set('No se pudo cargar la oportunidad'),
+      error: () => this.error.set(this.translate.instant('OPPORTUNITIES.FORM.ERROR_LOAD')),
     });
   }
 
@@ -120,14 +122,16 @@ export class OpportunityFormComponent implements OnInit {
 
     operacion.subscribe({
       next: () => {
-        const mensaje = this.modoEdicion() ? 'Actualizada' : 'Creada';
-        this.modalService.show(`Oportunidad ${mensaje} con éxito`, 'success');
+        const clave = this.modoEdicion()
+          ? 'OPPORTUNITIES.FORM.SUCCESS_UPDATED'
+          : 'OPPORTUNITIES.FORM.SUCCESS_CREATED';
+        this.modalService.show(this.translate.instant(clave), 'success');
         this.router.navigate(['/opportunities']);
       },
       error: (err) => {
         this.guardando.set(false);
         console.log('Detalles del error:', err.error.detalles);
-        this.modalService.show('Error al procesar la solicitud', 'error');
+        this.modalService.show(this.translate.instant('OPPORTUNITIES.FORM.ERROR_PROCESS'), 'error');
         console.error(err);
       },
     });

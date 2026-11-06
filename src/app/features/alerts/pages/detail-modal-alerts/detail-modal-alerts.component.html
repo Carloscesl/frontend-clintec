@@ -5,8 +5,8 @@
     <!-- HEADER -->
     <div class="modal-header">
       <div>
-        <h2 class="modal-title">Detalle de alerta</h2>
-        <p class="modal-subtitle">Información completa de la alerta seleccionada</p>
+        <h2 class="modal-title">{{ 'ALERTS.DETAIL.TITLE' | translate }}</h2>
+        <p class="modal-subtitle">{{ 'ALERTS.DETAIL.SUBTITLE' | translate }}</p>
       </div>
 
       <button class="btn-close" (click)="cerrar.emit()">✕</button>
@@ -16,7 +16,7 @@
     @if (loading()) {
       <div class="estado-loading">
         <div class="spinner"></div>
-        <span>Cargando alerta...</span>
+        <span>{{ 'ALERTS.DETAIL.LOADING' | translate }}</span>
       </div>
     }
 
@@ -26,7 +26,9 @@
         <span class="error-icon">⚠️</span>
         <span>{{ error() }}</span>
 
-        <button class="btn-primary" (click)="cargar(alertaId())">Reintentar</button>
+        <button class="btn-primary" (click)="cargar(alertaId())">
+          {{ 'COMMON.RETRY' | translate }}
+        </button>
       </div>
     }
 
@@ -44,11 +46,11 @@
 
         <div class="alerta-info">
           <span class="alerta-tipo">
-            {{ alerta()!.tipo }}
+            {{ 'ENUMS.TIPO_ALERTA.' + alerta()!.tipo | translate }}
           </span>
 
           <span class="alerta-fecha">
-            fecha de Creacion:
+            {{ 'ALERTS.DETAIL.CREATED' | translate }}
             {{ alerta()!.fecha | date: 'dd/MM/yyyy HH:mm' }}
           </span>
         </div>
@@ -57,24 +59,24 @@
       <!-- BODY -->
       <div class="detail-grid">
         <div class="detail-card full">
-          <span class="detail-label">Descripción</span>
+          <span class="detail-label">{{ 'ALERTS.DETAIL.DESCRIPTION' | translate }}</span>
           <p class="detail-text">
             {{ alerta()!.descripcion }}
           </p>
         </div>
 
         <div class="detail-card">
-          <span class="detail-label">Cliente</span>
+          <span class="detail-label">{{ 'ALERTS.CLIENT' | translate }}</span>
           <span class="detail-value">{{ clienteNombre() }}</span>
         </div>
 
         <div class="detail-card">
-          <span class="detail-label">Usuario</span>
+          <span class="detail-label">{{ 'ALERTS.USER' | translate }}</span>
           <span class="detail-value">{{ usuarioNombre() }}</span>
         </div>
 
         <div class="detail-card">
-          <span class="detail-label">Estado</span>
+          <span class="detail-label">{{ 'ALERTS.FILTER_STATE' | translate }}</span>
 
           <span
             class="badge-estado"
@@ -85,7 +87,7 @@
               vencida: alerta()!.estado === 'VENCIDA',
             }"
           >
-            {{ alerta()!.estado }}
+            {{ 'ENUMS.ESTADO_ALERTA.' + alerta()!.estado | translate }}
           </span>
         </div>
 
@@ -95,14 +97,14 @@
         </div>
 
         <div class="detail-card">
-          <span class="detail-label">Ultima Actualizacion</span>
+          <span class="detail-label">{{ 'ALERTS.DETAIL.LAST_UPDATE' | translate }}</span>
           <span class="detail-value">{{
             alerta()!.fechaActualizacion | date: 'dd/MM/yyyy HH:mm'
           }}</span>
         </div>
 
         <div class="detail-card">
-          <span class="detail-label">Fecha de Vencimiento</span>
+          <span class="detail-label">{{ 'ALERTS.DETAIL.DUE' | translate }}</span>
           <span class="detail-value">{{
             alerta()!.fechaVencimiento | date: 'dd/MM/yyyy HH:mm'
           }}</span>
@@ -111,7 +113,9 @@
 
       <!-- FOOTER -->
       <div class="modal-actions">
-        <button class="btn-secondary" (click)="cerrar.emit()">Cerrar</button>
+        <button class="btn-secondary" (click)="cerrar.emit()">
+          {{ 'ALERTS.DETAIL.CLOSE' | translate }}
+        </button>
       </div>
     }
   </div>

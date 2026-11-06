@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { OportunidadService } from '../../../../core/services/oportunidad.service';
 import { ClienteService } from '../../../../core/services/cliente.service';
@@ -44,6 +45,7 @@ interface KanbanColumn {
     ModalProbabilidadComponent,
     QualificationBadgeComponent,
     ModalCierreComponent,
+    TranslatePipe,
   ],
   templateUrl: './opportunity-asesor.component.html',
   styleUrls: ['./opportunity-asesor.component.css'],
@@ -54,6 +56,7 @@ export class OpportunityAsesorComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly qualificationSvc = inject(CalificacionService);
+  private readonly translate = inject(TranslateService);
   private readonly calificaciones = signal<Map<number, QualificationClient>>(new Map());
 
   oportunidades = signal<OportunidadResponse[]>([]);
@@ -76,36 +79,42 @@ export class OpportunityAsesorComponent implements OnInit {
   columnas: KanbanColumn[] = [
     {
       etapa: 'PROSPECCION',
-      label: 'Prospección',
+      label: 'OPPORTUNITIES.KANBAN.STAGE.PROSPECCION',
       color: '#3B82F6',
       colorRgb: '59,130,246',
       items: [],
     },
     {
       etapa: 'CALIFICACION',
-      label: 'Calificación',
+      label: 'OPPORTUNITIES.KANBAN.STAGE.CALIFICACION',
       color: '#A855F7',
       colorRgb: '168,85,247',
       items: [],
     },
-    { etapa: 'PROPUESTA', label: 'Propuesta', color: '#06B6D4', colorRgb: '6,182,212', items: [] },
+    {
+      etapa: 'PROPUESTA',
+      label: 'OPPORTUNITIES.KANBAN.STAGE.PROPUESTA',
+      color: '#06B6D4',
+      colorRgb: '6,182,212',
+      items: [],
+    },
     {
       etapa: 'NEGOCIACION',
-      label: 'Negociación',
+      label: 'OPPORTUNITIES.KANBAN.STAGE.NEGOCIACION',
       color: '#F59E0B',
       colorRgb: '245,158,11',
       items: [],
     },
     {
       etapa: 'CIERRE_GANADO',
-      label: 'Cierre',
+      label: 'OPPORTUNITIES.KANBAN.STAGE.CIERRE_GANADO',
       color: '#10B981',
       colorRgb: '16,185,129',
       items: [],
     },
     {
       etapa: 'CIERRE_PERDIDO',
-      label: 'Perdido',
+      label: 'OPPORTUNITIES.KANBAN.STAGE.CIERRE_PERDIDO',
       color: '#EF4444',
       colorRgb: '239,68,68',
       items: [],
@@ -130,7 +139,7 @@ export class OpportunityAsesorComponent implements OnInit {
     const asesorId = this.authService.obtenerUsuarioId();
 
     if (!asesorId) {
-      this.error.set('Usuario no autenticado');
+      this.error.set(this.translate.instant('OPPORTUNITIES.KANBAN.ERROR_NOT_AUTH'));
       this.loading.set(false);
       return;
     }
@@ -146,7 +155,7 @@ export class OpportunityAsesorComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Error al cargar oportunidades');
+        this.error.set(this.translate.instant('OPPORTUNITIES.KANBAN.ERROR_LOAD'));
         this.loading.set(false);
       },
     });
@@ -237,7 +246,9 @@ export class OpportunityAsesorComponent implements OnInit {
 
   // ── HELPERS ──────────────────────────────────────────────
   getClienteNombre(id: number): string {
-    return this.clienteMap.get(id)?.nombreCliente ?? 'Cliente';
+    return (
+      this.clienteMap.get(id)?.nombreCliente ?? this.translate.instant('CLIENTS.LIST.COL_CLIENT')
+    );
   }
 
   getClienteEmpresa(id: number): string {
@@ -323,7 +334,7 @@ export class OpportunityAsesorComponent implements OnInit {
         this.cargar();
       },
       error: () => {
-        this.error.set('Error al cerrar la oportunidad');
+        this.error.set(this.translate.instant('OPPORTUNITIES.KANBAN.ERROR_CLOSE'));
         this.cargar();
       },
     });

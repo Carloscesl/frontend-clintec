@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { VentaService } from '../../../../core/services/venta.service';
 import { OportunidadService } from '../../../../core/services/oportunidad.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -10,7 +11,7 @@ import { OportunidadResponse } from '../../../../core/models/oportunidad.model';
 @Component({
   selector: 'app-sale-list',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, TranslatePipe],
   templateUrl: './sale-list.component.html',
   styleUrl: './sale-list.component.css',
 })
@@ -19,6 +20,7 @@ export class SaleListComponent implements OnInit {
   private readonly opService = inject(OportunidadService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly translate = inject(TranslateService);
 
   ventas = signal<VentaResponse[]>([]);
   oportunidadesPendientes = signal<OportunidadResponse[]>([]);
@@ -33,11 +35,11 @@ export class SaleListComponent implements OnInit {
   esAsesor = this.rol === 'ASESOR';
 
   metodos: { valor: MetodoPago | 'TODOS'; label: string; icon: string }[] = [
-    { valor: 'TODOS', label: 'Todos', icon: '◈' },
-    { valor: 'EFECTIVO', label: 'Efectivo', icon: '💵' },
-    { valor: 'TRANSFERENCIA', label: 'Transferencia', icon: '🏦' },
-    { valor: 'TARJETA_CREDITO', label: 'Tarjeta crédito', icon: '💳' },
-    { valor: 'TARJETA_DEBITO', label: 'Tarjeta débito', icon: '💳' },
+    { valor: 'TODOS', label: 'SALES.PAYMENT.TODOS', icon: '◈' },
+    { valor: 'EFECTIVO', label: 'SALES.PAYMENT.EFECTIVO', icon: '💵' },
+    { valor: 'TRANSFERENCIA', label: 'SALES.PAYMENT.TRANSFERENCIA', icon: '🏦' },
+    { valor: 'TARJETA_CREDITO', label: 'SALES.PAYMENT.TARJETA_CREDITO', icon: '💳' },
+    { valor: 'TARJETA_DEBITO', label: 'SALES.PAYMENT.TARJETA_DEBITO', icon: '💳' },
   ];
 
   ventasFiltradas = computed(() => {
@@ -80,7 +82,7 @@ export class SaleListComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Error al cargar ventas');
+        this.error.set(this.translate.instant('SALES.LIST.ERROR_LOAD'));
         this.loading.set(false);
       },
     });

@@ -1,18 +1,19 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h1 data-testid="interactions-title">
-        {{ esAsesor ? 'Mis Interacciones' : 'Interacciones' }}
-      </h1>
+      <h1>{{ (esAsesor ? 'INTERACTIONS.TITLE_MINE' : 'INTERACTIONS.TITLE_ALL') | translate }}</h1>
       <p class="page-subtitle">
-        {{ interaccionesFiltradas().length }} registro{{
-          interaccionesFiltradas().length !== 1 ? 's' : ''
+        {{
+          (interaccionesFiltradas().length === 1
+            ? 'INTERACTIONS.RECORDS_ONE'
+            : 'INTERACTIONS.RECORDS_OTHER'
+          ) | translate: { count: interaccionesFiltradas().length }
         }}
       </p>
     </div>
     @if (esAsesor) {
-      <button class="btn-primary" data-testid="new-interaction-btn" (click)="irACrear()">
-        + Nueva interacción
+      <button class="btn-primary" (click)="irACrear()">
+        {{ 'INTERACTIONS.NEW' | translate }}
       </button>
     }
   </div>
@@ -22,43 +23,40 @@
     @for (t of tipos; track t.valor) {
       <button
         class="filtro-btn"
-        [attr.data-testid]="'filtro-' + t.valor"
         [class.active]="filtroTipo() === t.valor"
         (click)="filtroTipo.set(t.valor)"
       >
         <span>{{ t.icon }}</span>
-        <span>{{ t.label }}</span>
+        <span>{{ t.label | translate }}</span>
       </button>
     }
   </div>
 
   @if (loading()) {
-    <div class="estado-loading" data-testid="interactions-loading">
+    <div class="estado-loading">
       <div class="spinner"></div>
-      <span>Cargando interacciones...</span>
+      <span>{{ 'INTERACTIONS.LOADING' | translate }}</span>
     </div>
   }
 
   @if (error()) {
-    <div class="estado-error" data-testid="interactions-error">
+    <div class="estado-error">
       <span>{{ error() }}</span>
-      <button (click)="cargar()">Reintentar</button>
+      <button (click)="cargar()">{{ 'COMMON.RETRY' | translate }}</button>
     </div>
   }
 
   @if (!loading() && !error()) {
     @if (interaccionesFiltradas().length === 0) {
-      <div class="empty-state" data-testid="interactions-empty">
-        <span>No hay interacciones registradas</span>
+      <div class="empty-state">
+        <span>{{ 'INTERACTIONS.EMPTY' | translate }}</span>
       </div>
     } @else {
-      <div class="timeline" data-testid="interactions-timeline">
+      <!-- Timeline -->
+      <div class="timeline">
         @for (interaccion of interaccionesFiltradas(); track interaccion.id) {
-          <div
-            class="timeline-item"
-            [attr.data-testid]="'interaction-item-' + interaccion.id"
-            (click)="irADetalle(interaccion.id)"
-          >
+          <div class="timeline-item" (click)="irADetalle(interaccion.id)">
+            <!-- Línea vertical + icono tipo -->
             <div
               class="timeline-icon"
               [style.background]="getTipoConfig(interaccion.tipo).bg"
@@ -68,6 +66,7 @@
             </div>
             <div class="timeline-line"></div>
 
+            <!-- Card -->
             <div class="timeline-card">
               <div class="card-top">
                 <div class="usuario-cell">
@@ -75,10 +74,7 @@
                     {{ getClienteNombre(interaccion.clienteId).charAt(0) }}
                   </div>
                   <div>
-                    <span
-                      class="usuario-nombre"
-                      [attr.data-testid]="'interaction-cliente-' + interaccion.id"
-                    >
+                    <span class="usuario-nombre">
                       {{ getClienteNombre(interaccion.clienteId) }}
                     </span>
                     <span class="text-muted" style="display: block; font-size: 0.78rem">
@@ -89,12 +85,11 @@
                 <div class="card-meta">
                   <span
                     class="badge"
-                    [attr.data-testid]="'interaction-tipo-' + interaccion.id"
                     [style.background]="getTipoConfig(interaccion.tipo).bg"
                     [style.color]="getTipoConfig(interaccion.tipo).color"
                   >
                     <span class="badge-dot"></span>
-                    {{ interaccion.tipo }}
+                    {{ 'ENUMS.TIPO_INTERACCION.' + interaccion.tipo | translate }}
                   </span>
                   <span class="card-fecha text-muted">
                     {{ interaccion.fecha | date: 'dd/MM/yyyy HH:mm' }}
@@ -103,9 +98,7 @@
               </div>
 
               @if (interaccion.nota) {
-                <p class="card-nota" [attr.data-testid]="'interaction-nota-' + interaccion.id">
-                  {{ interaccion.nota }}
-                </p>
+                <p class="card-nota">{{ interaccion.nota }}</p>
               }
             </div>
           </div>

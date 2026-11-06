@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 // Servicios
 import { ClienteService } from '../../../../core/services/cliente.service';
@@ -18,7 +19,7 @@ import { QualificationBadgeComponent } from '../../../qualifications/pages/quali
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [CommonModule, QualificationBadgeComponent],
+  imports: [CommonModule, QualificationBadgeComponent, TranslatePipe],
   templateUrl: './client-list.component.html',
   styleUrl: './client-list.component.css',
 })
@@ -28,6 +29,7 @@ export class ClientListComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly qualificationSvc = inject(CalificacionService);
+  private readonly translate = inject(TranslateService);
 
   private readonly clientes = signal<ClienteResponse[]>([]);
   private readonly oportunidades = signal<OportunidadResponse[]>([]);
@@ -78,7 +80,7 @@ export class ClientListComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        this.error.set('Error al sincronizar datos de clientes y oportunidades');
+        this.error.set(this.translate.instant('CLIENTS.LIST.ERROR_SYNC'));
         this.loading.set(false);
       },
     });

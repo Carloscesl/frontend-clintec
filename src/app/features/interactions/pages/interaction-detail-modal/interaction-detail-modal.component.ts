@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InteraccionService } from '../../../../core/services/interaccion.service';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { InteraccionResponse, TipoInteraccion } from '../../../../core/models/interaccion.model';
@@ -9,7 +10,7 @@ import { UsuarioService } from '../../../../core/services/usuario.service';
 @Component({
   selector: 'app-interaction-detail-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './interaction-detail-modal.component.html',
   styleUrl: './interaction-detail-modal.component.css',
 })
@@ -25,6 +26,7 @@ export class InteractionDetailModalComponent implements OnInit {
   private readonly service = inject(InteraccionService);
   private readonly clienteServ = inject(ClienteService);
   private readonly usuarioService = inject(UsuarioService);
+  private readonly translate = inject(TranslateService);
   private readonly rol = this.authService.obtenerRol() ?? '';
   noEsAsesor = this.rol !== 'ASESOR';
 
@@ -52,7 +54,7 @@ export class InteractionDetailModalComponent implements OnInit {
         this.cargarUsuario(data.usuarioId);
       },
       error: () => {
-        this.error.set('No se encontró la interacción');
+        this.error.set(this.translate.instant('INTERACTIONS.DETAIL.ERROR_NOT_FOUND'));
         this.loading.set(false);
       },
     });
@@ -61,15 +63,17 @@ export class InteractionDetailModalComponent implements OnInit {
   cargarUsuario(id: number): void {
     if (this.rol === 'ASESOR') {
       const usuarioLogueado = this.authService.obtenerUsuario();
-      this.usuarioNombre.set(usuarioLogueado?.username ?? 'Mi Usuario');
+      this.usuarioNombre.set(
+        usuarioLogueado?.username ?? this.translate.instant('INTERACTIONS.DETAIL.MY_USER'),
+      );
       return;
     }
     this.usuarioService.buscarPorId(id).subscribe({
       next: (u) => {
-        this.usuarioNombre.set(u.nombre || 'Sin nombre');
+        this.usuarioNombre.set(u.nombre || this.translate.instant('INTERACTIONS.DETAIL.NO_NAME'));
       },
       error: () => {
-        this.usuarioNombre.set('Usuario desconocido');
+        this.usuarioNombre.set(this.translate.instant('INTERACTIONS.DETAIL.UNKNOWN_USER'));
       },
     });
   }
@@ -78,13 +82,15 @@ export class InteractionDetailModalComponent implements OnInit {
     this.clienteServ.buscarPorId(id).subscribe({
       next: (c) => {
         console.log('Cliente cargado:', c); // Para debug
-        this.clienteNombre.set(c.nombreCliente || 'Sin nombre');
-        // Prueba diferentes posibles nombres de propiedad
-        this.clienteEmpresa.set(c.empresa || 'Sin empresa');
+        this.clienteNombre.set(
+          c.nombreCliente || this.translate.instant('INTERACTIONS.DETAIL.NO_NAME'),
+        );
+        // Si no tiene empresa se muestra el texto traducido "Sin empresa"
+        this.clienteEmpresa.set(c.empresa || this.translate.instant('INTERACTIONS.DETAIL.NO_COMPANY'));
       },
       error: (err) => {
         console.error('Error al cargar cliente:', err);
-        this.clienteNombre.set('Cliente desconocido');
+        this.clienteNombre.set(this.translate.instant('INTERACTIONS.DETAIL.UNKNOWN_CLIENT'));
         this.clienteEmpresa.set('');
       },
     });

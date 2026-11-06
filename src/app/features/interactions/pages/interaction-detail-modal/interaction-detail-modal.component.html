@@ -5,8 +5,8 @@
     <!-- HEADER -->
     <div class="modal-header">
       <div>
-        <h3 class="modal-title">Detalle de interacción</h3>
-        <p class="modal-subtitle">Información completa del registro</p>
+        <h3 class="modal-title">{{ 'INTERACTIONS.DETAIL.TITLE' | translate }}</h3>
+        <p class="modal-subtitle">{{ 'INTERACTIONS.DETAIL.SUBTITLE' | translate }}</p>
       </div>
       <button type="button" class="btn-close" (click)="cerrar.emit()">✕</button>
     </div>
@@ -15,7 +15,7 @@
     @if (loading()) {
       <div class="estado-loading">
         <div class="spinner"></div>
-        <span>Cargando interacción...</span>
+        <span>{{ 'INTERACTIONS.DETAIL.LOADING' | translate }}</span>
       </div>
     }
 
@@ -39,11 +39,11 @@
         </div>
 
         <div class="top-info">
-          <h4>{{ i.tipo }}</h4>
+          <h4>{{ 'ENUMS.TIPO_INTERACCION.' + i.tipo | translate }}</h4>
           @if (clienteNombre()) {
             <p>{{ clienteNombre() }}</p>
           } @else {
-            <p class="text-muted">Cargando cliente...</p>
+            <p class="text-muted">{{ 'INTERACTIONS.DETAIL.LOADING_CLIENT' | translate }}</p>
           }
           @if (clienteEmpresa()) {
             <span>{{ clienteEmpresa() }}</span>
@@ -54,74 +54,76 @@
       <!-- GRID -->
       <div class="detail-grid">
         <div class="detail-item">
-          <span class="detail-label">Fecha</span>
+          <span class="detail-label">{{ 'INTERACTIONS.DETAIL.DATE' | translate }}</span>
           <strong>{{ i.fecha | date: 'dd/MM/yyyy HH:mm' }}</strong>
         </div>
 
         <div class="detail-item">
-          <span class="detail-label">Tipo</span>
+          <span class="detail-label">{{ 'INTERACTIONS.DETAIL.TYPE' | translate }}</span>
           <strong>
             <span
               class="badge"
               [style.background]="getTipoConfig(i.tipo).bg"
               [style.color]="getTipoConfig(i.tipo).color"
             >
-              {{ getTipoConfig(i.tipo).icon }} {{ i.tipo }}
+              {{ getTipoConfig(i.tipo).icon }} {{ 'ENUMS.TIPO_INTERACCION.' + i.tipo | translate }}
             </span>
           </strong>
         </div>
 
         <div class="detail-item">
-          <span class="detail-label">Cliente</span>
+          <span class="detail-label">{{ 'INTERACTIONS.DETAIL.CLIENT' | translate }}</span>
           <strong>
             @if (clienteNombre()) {
               {{ clienteNombre() }}
             } @else {
-              <span class="text-muted">Cargando...</span>
+              <span class="text-muted">{{ 'INTERACTIONS.DETAIL.LOADING_SHORT' | translate }}</span>
             }
           </strong>
         </div>
 
         <div class="detail-item">
-          <span class="detail-label">Empresa</span>
+          <span class="detail-label">{{ 'COMMON.COMPANY' | translate }}</span>
           <strong>
             @if (clienteEmpresa()) {
               {{ clienteEmpresa() }}
             } @else {
-              <span class="text-muted">Sin empresa</span>
+              <span class="text-muted">{{ 'INTERACTIONS.DETAIL.NO_COMPANY' | translate }}</span>
             }
           </strong>
         </div>
 
         <div class="detail-item">
-          <span class="detail-label">ID Interacción</span>
+          <span class="detail-label">{{ 'INTERACTIONS.DETAIL.ID' | translate }}</span>
           <strong>#{{ i.id }}</strong>
         </div>
 
         @if (noEsAsesor) {
           <div class="detail-item">
-            <span class="detail-label">Nombre Usuario</span>
+            <span class="detail-label">{{ 'INTERACTIONS.DETAIL.USER_NAME' | translate }}</span>
             <strong>
               @if (usuarioNombre()) {
                 {{ usuarioNombre() }}
               } @else {
-                <span class="text-muted">Sin usuario</span>
+                <span class="text-muted">{{ 'INTERACTIONS.DETAIL.NO_USER' | translate }}</span>
               }
             </strong>
           </div>
         }
 
         <div class="detail-item full">
-          <span class="detail-label">Nota</span>
+          <span class="detail-label">{{ 'INTERACTIONS.DETAIL.NOTE' | translate }}</span>
           <p class="nota-box">
-            {{ i.nota || 'Sin observaciones registradas.' }}
+            {{ i.nota || ('INTERACTIONS.DETAIL.NO_NOTES' | translate) }}
           </p>
         </div>
       </div>
 
       <!-- ACTIONS -->
       <div class="modal-actions">
-        <button type="button" class="btn-primary" (click)="cerrar.emit()">Cerrar</button>
+        <button type="button" class="btn-primary" (click)="cerrar.emit()">
+          {{ 'INTERACTIONS.DETAIL.CLOSE' | translate }}
+        </button>
       </div>
     }
   </div>

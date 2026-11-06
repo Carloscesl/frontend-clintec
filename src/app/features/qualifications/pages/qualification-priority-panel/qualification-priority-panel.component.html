@@ -1,8 +1,8 @@
 <!-- qualification-priority-panel.component.html -->
 <div class="qpp">
   <div class="qpp__header">
-    <span class="qpp__title">🎯 Clientes prioritarios hoy</span>
-    <span class="qpp__sub">Enfócate en estos primero</span>
+    <span class="qpp__title">{{ 'QUALIFICATIONS.PRIORITY.TITLE' | translate }}</span>
+    <span class="qpp__sub">{{ 'QUALIFICATIONS.PRIORITY.SUBTITLE' | translate }}</span>
   </div>
 
   <div class="qpp__list">
@@ -13,17 +13,20 @@
           {{ iniciales(c.clienteNombre) }}
         </div>
         <div class="qpp__info">
-          <span class="qpp__nombre">{{ c.clienteNombre ?? 'Cliente #' + c.clienteId }}</span>
+          <span class="qpp__nombre">{{
+            c.clienteNombre ??
+              ('QUALIFICATIONS.DASHBOARD.CLIENT_NUM' | translate: { id: c.clienteId })
+          }}</span>
           <app-qualification-badge [nivel]="c.clasificacion" />
         </div>
         <div class="qpp__puntaje" [style.color]="config[c.clasificacion].color">
-          {{ c.puntaje }}<span class="qpp__pts">pts</span>
+          {{ c.puntaje }}<span class="qpp__pts">{{ 'QUALIFICATIONS.PRIORITY.PTS' | translate }}</span>
         </div>
       </div>
     }
 
     @if (top5().length === 0) {
-      <div class="qpp__empty">Sin clientes registrados aún</div>
+      <div class="qpp__empty">{{ 'QUALIFICATIONS.PRIORITY.EMPTY' | translate }}</div>
     }
   </div>
 </div>
