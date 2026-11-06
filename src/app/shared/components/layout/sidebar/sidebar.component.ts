@@ -77,6 +77,12 @@ export class SidebarComponent {
       path: '/alerts',
       roles: ['ASESOR', 'GERENTE', 'ADMINISTRADOR'],
     },
+    {
+      key: 'BACKUPS',
+      icon: 'M4 7c0-1.657 3.582-3 8-3s8 1.343 8 3-3.582 3-8 3-8-1.343-8-3zM4 7v5c0 1.657 3.582 3 8 3s8-1.343 8-3V7M4 12v5c0 1.657 3.582 3 8 3s8-1.343 8-3v-5',
+      path: '/backups',
+      roles: ['ADMINISTRADOR'],
+    },
   ];
 
   /** Clave de traducción de la etiqueta según el rol actual */

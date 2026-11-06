@@ -1,0 +1,80 @@
+<!-- OVERLAY -->
+<div class="modal-overlay" (click)="cerrar()">
+  <!-- MODAL -->
+  <div class="modal-panel" (click)="$event.stopPropagation()">
+    <!-- HEADER -->
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-title">{{ 'BACKUPS.RESTORE_MODAL.TITLE' | translate }}</h3>
+        <p class="modal-subtitle">{{ 'BACKUPS.RESTORE_MODAL.SUBTITLE' | translate }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="btn-close"
+        (click)="cerrar()"
+        [attr.aria-label]="'BACKUPS.RESTORE_MODAL.CLOSE_ARIA' | translate"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="restaurar-info">
+      <span class="restaurar-label">{{ 'BACKUPS.RESTORE_MODAL.BACKUP_LABEL' | translate }}</span>
+      <span class="restaurar-valor">{{ backup().nombreArchivo }}</span>
+      <span class="restaurar-meta">
+        {{
+          'BACKUPS.RESTORE_MODAL.CREATED_ON'
+            | translate
+              : {
+                  date: (backup().fechaCreacion | date: 'dd/MM/yyyy HH:mm'),
+                  user: backup().creadoPorNombre,
+                }
+        }}
+      </span>
+    </div>
+
+    <div class="restaurar-alerta">
+      <p>{{ 'BACKUPS.RESTORE_MODAL.WARNING_1' | translate }}</p>
+      <p>{{ 'BACKUPS.RESTORE_MODAL.WARNING_2' | translate }}</p>
+    </div>
+
+    <div class="restaurar-confirmar">
+      <label for="confirmacion">
+        {{ 'BACKUPS.RESTORE_MODAL.CONFIRM_LABEL' | translate }} <strong>{{ palabra }}</strong>
+      </label>
+      <input
+        id="confirmacion"
+        type="text"
+        autocomplete="off"
+        [value]="texto()"
+        (input)="onInput($event)"
+        (keydown.enter)="confirmar()"
+        [disabled]="restaurando()"
+        [placeholder]="palabra"
+      />
+    </div>
+
+    <!-- FOOTER -->
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" (click)="cerrar()" [disabled]="restaurando()">
+        {{ 'COMMON.CANCEL' | translate }}
+      </button>
+
+      <button
+        type="button"
+        class="btn-peligro"
+        (click)="confirmar()"
+        [disabled]="!puedeConfirmar() || restaurando()"
+      >
+        @if (restaurando()) {
+          <span class="spinner-sm"></span>
+          {{ 'BACKUPS.RESTORE_MODAL.RESTORING' | translate }}
+        } @else {
+          {{ 'BACKUPS.RESTORE_MODAL.CONFIRM' | translate }}
+        }
+      </button>
+    </div>
+  </div>
+</div>

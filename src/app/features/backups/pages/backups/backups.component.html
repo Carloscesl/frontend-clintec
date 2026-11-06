@@ -1,0 +1,177 @@
+<div class="page-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>{{ 'BACKUPS.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'BACKUPS.SUBTITLE' | translate }}</p>
+    </div>
+    <button class="btn-primary" (click)="crearBackup()" [disabled]="creando() || restaurando()">
+      @if (creando()) {
+        <span class="spinner-sm"></span>
+        {{ 'BACKUPS.CREATING' | translate }}
+      } @else {
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+        {{ 'BACKUPS.CREATE' | translate }}
+      }
+    </button>
+  </div>
+
+  <!-- Estado: cargando -->
+  @if (loading()) {
+    <div class="estado-loading">
+      <div class="spinner"></div>
+      <span>{{ 'BACKUPS.LOADING' | translate }}</span>
+    </div>
+  }
+
+  <!-- Estado: error -->
+  @if (error()) {
+    <div class="estado-error">
+      <span>{{ error() }}</span>
+      <button (click)="cargar()">{{ 'COMMON.RETRY' | translate }}</button>
+    </div>
+  }
+
+  <!-- Tabla -->
+  @if (!loading() && !error()) {
+    <div class="table-wrapper">
+      <table class="cl-table">
+        <thead>
+          <tr>
+            <th>{{ 'BACKUPS.COL_FILE' | translate }}</th>
+            <th>{{ 'BACKUPS.COL_DATE' | translate }}</th>
+            <th>{{ 'BACKUPS.COL_CREATED_BY' | translate }}</th>
+            <th>{{ 'BACKUPS.COL_SIZE' | translate }}</th>
+            <th>{{ 'BACKUPS.COL_TYPE' | translate }}</th>
+            <th>{{ 'COMMON.ACTIONS' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (b of backups(); track b.id) {
+            <tr>
+              <!-- Archivo -->
+              <td>
+                <span class="backup-archivo">{{ b.nombreArchivo }}</span>
+              </td>
+
+              <!-- Fecha -->
+              <td class="text-muted">{{ b.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}</td>
+
+              <!-- Creador -->
+              <td>
+                <div class="usuario-cell">
+                  <div class="avatar-sm">{{ b.creadoPorNombre.slice(0, 2).toUpperCase() }}</div>
+                  <div class="backup-creador">
+                    <span class="usuario-nombre">{{ b.creadoPorNombre }}</span>
+                    <span class="text-muted backup-email">{{ b.creadoPorEmail }}</span>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Tamaño -->
+              <td class="text-muted">{{ formatearTamano(b.tamanoBytes) }}</td>
+
+              <!-- Tipo -->
+              <td>
+                @if (b.tipo === 'MANUAL') {
+                  <span class="badge badge-info">{{ 'BACKUPS.TYPE_MANUAL' | translate }}</span>
+                } @else {
+                  <span class="badge badge-warning">{{
+                    'BACKUPS.TYPE_PRE_RESTORE' | translate
+                  }}</span>
+                }
+              </td>
+
+              <!-- Acciones -->
+              <td>
+                <div class="acciones-cell">
+                  <button
+                    class="btn-icon btn-icon--edit"
+                    (click)="descargar(b)"
+                    [disabled]="descargandoId() === b.id"
+                    [title]="'BACKUPS.DOWNLOAD' | translate"
+                  >
+                    @if (descargandoId() === b.id) {
+                      <span class="spinner-sm"></span>
+                    } @else {
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.75"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+                      </svg>
+                    }
+                    {{ 'BACKUPS.DOWNLOAD' | translate }}
+                  </button>
+
+                  <button
+                    class="btn-icon btn-icon--danger"
+                    (click)="abrirRestaurar(b)"
+                    [disabled]="creando() || restaurando()"
+                    [title]="'BACKUPS.RESTORE_TITLE' | translate"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.75"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8M3 3v5h5" />
+                    </svg>
+                    {{ 'BACKUPS.RESTORE' | translate }}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+
+          <!-- Lista vacía -->
+          @if (backups().length === 0) {
+            <tr>
+              <td colspan="6" class="empty-state">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M4 7c0-1.657 3.582-3 8-3s8 1.343 8 3-3.582 3-8 3-8-1.343-8-3zM4 7v5c0 1.657 3.582 3 8 3s8-1.343 8-3V7M4 12v5c0 1.657 3.582 3 8 3s8-1.343 8-3v-5"
+                  />
+                </svg>
+                <span>{{ 'BACKUPS.EMPTY' | translate }}</span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+<!-- Modal de confirmación para restaurar -->
+@if (backupARestaurar(); as backup) {
+  <app-modal-restaurar
+    [backup]="backup"
+    [restaurando]="restaurando()"
+    (confirmado)="confirmarRestaurar()"
+    (cancelado)="cancelarRestaurar()"
+  />
+}

@@ -1,0 +1,25 @@
+/* Estilos específicos SOLO de backups */
+
+.backup-archivo {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.backup-creador {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.backup-email {
+  font-size: 0.78rem;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
